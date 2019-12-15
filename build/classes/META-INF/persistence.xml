@@ -13,7 +13,7 @@
 	</persistence-unit>
 
 	<persistence-unit name="Lap8a" transaction-type="JTA">
-		<jta-data-source>jdbc/eMarket</jta-data-source>
+		<jta-data-source>jdbc/emarket</jta-data-source>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties />
 	</persistence-unit>

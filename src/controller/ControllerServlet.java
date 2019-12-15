@@ -33,7 +33,8 @@ import entity.ProductDetail;
 																		   "/checkout", 
 																		   "/purchase",
 																		   "/login",
-																		   "/chooseLanguage" })
+																		   "/chooseLanguage",
+																		   "/addproduct"})
 public class ControllerServlet extends HttpServlet {
 
 	@EJB
@@ -112,7 +113,72 @@ public class ControllerServlet extends HttpServlet {
 			cart.update(product, quantity);
 			String userView = (String) session.getAttribute("view");
 			userPath = userView;
-		} 
+		} else if(userPath.equals("/addproduct")) {
+			PrintWriter out = response.getWriter();
+				
+			// get info from web
+			int productId = Integer.parseInt(request.getParameter("productId"));
+			String name = request.getParameter("name");
+			String description = request.getParameter("description");
+			String descriptionDetail= request.getParameter("descriptionDetail");
+			String information = request.getParameter("information");
+			int categoryId = Integer.parseInt(request.getParameter("categoryId")) ;
+			String accessories = request.getParameter("accessories");
+			String guaranty = request.getParameter("guaranty");
+			Double price = Double.parseDouble(request.getParameter("price"));
+			String image = request.getParameter("image");
+			String image1 = request.getParameter("image1");
+			String image2 = request.getParameter("image2");
+			String image3 = request.getParameter("image3");
+			String image4 = request.getParameter("image4");
+			String image5 = request.getParameter("image5");
+			
+			try {
+
+				Product product = new Product();
+				Category category = new Category();
+				ProductDetail productDetail = new ProductDetail();
+				
+				// create product
+				category = categorySB.find(categoryId);
+				product.setProductId(productId);
+				product.setName(name);
+				product.setPrice(price);
+				product.setDescription(description);
+				product.setDescriptionDetail(descriptionDetail);
+				product.setCategory(category);
+				product.setImage(image);					
+				productSB.create(product);
+				
+				// create productDetail
+				productDetail.setProductId(productId);
+				productDetail.setInformation(information);
+				productDetail.setAccessories(accessories);
+				productDetail.setGuaranty(guaranty);
+				productDetail.setImage1(image1);
+				productDetail.setImage2(image2);
+				productDetail.setImage3(image3);
+				productDetail.setImage4(image4);
+				productDetail.setImage5(image5);
+				productDetailSB.create(productDetail);
+				
+				//select this product to preview
+				Product selectedProduct;
+				ProductDetail selectedProductDetail;
+				selectedProduct = productSB.find(productId);
+				selectedProductDetail = productDetailSB.find(productId);
+				session.setAttribute("selectedProduct", selectedProduct);
+				session.setAttribute("selectedProductDetail", selectedProductDetail);
+				out.print("<script type=\"text/javascript\">\r\n" + 
+						"		alert('Add product successfully');\r\n" + 
+						"	</script>");
+				request.getRequestDispatcher("index.jsp").include(request, response);
+			} catch(Exception ex) {
+				System.out.println(ex);
+			}
+			
+					
+		}
 
 
 		String url = userPath + ".jsp";

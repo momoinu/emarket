@@ -94,6 +94,9 @@
 										<%=selectedProductDetail.getInformation()%>
 									</p>
 									
+									<a href="<c:url value='delete?${selectedProduct.getProductId()}'/>" >
+										<div class="button btn btn-primary btn-lg btn-block">Delete Product</div></a>
+										
 								</div>
 							</div>
 						</div>
