@@ -10,6 +10,9 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.naming.Context;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -34,7 +37,8 @@ import entity.ProductDetail;
 																		   "/purchase",
 																		   "/login",
 																		   "/chooseLanguage",
-																		   "/addproduct"})
+																		   "/addproduct",
+																		   "/deleteproduct"})
 public class ControllerServlet extends HttpServlet {
 
 	@EJB
@@ -60,6 +64,7 @@ public class ControllerServlet extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		String userPath = request.getRequestURI().substring(request.getContextPath().length());
+		// view category
 		if (userPath.equals("/category")) {
 			String categoryId = request.getQueryString();
 			if (categoryId != null) {
@@ -71,7 +76,9 @@ public class ControllerServlet extends HttpServlet {
 				categoryProducts = (List<Product>) selectedCategory.getProducts();
 				session.setAttribute("categoryProducts", categoryProducts);
 			}
-		} else if (userPath.equals("/product")) {
+		} 
+		//view product
+		else if (userPath.equals("/product")) {
 			Product selectedProduct;
 			ProductDetail selectedProductDetail;
 			String productId = request.getQueryString();
@@ -82,13 +89,17 @@ public class ControllerServlet extends HttpServlet {
 				session.setAttribute("selectedProduct", selectedProduct);
 				session.setAttribute("selectedProductDetail", selectedProductDetail);
 			}
-		} else if (userPath.equals("/viewCart")) {
+		}
+		//viewCart
+		else if (userPath.equals("/viewCart")) {
 			String clear = request.getParameter("clear");
 			if ((clear != null) && clear.equals("true")) {
 				ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
 				cart.clear();
 			}
-		} else if (userPath.equals("/addToCart")) {
+		} 
+		//addtoCart
+		else if (userPath.equals("/addToCart")) {
 			// if user is adding item to cart for first time
 			// create cart object and attach it to user session
 			ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
@@ -105,7 +116,9 @@ public class ControllerServlet extends HttpServlet {
 			}
 //			String userView = (String) session.getAttribute("view");
 			userPath = "/index";
-		} else if (userPath.equals("/updateCart")) {
+		}
+		//updateCart
+		else if (userPath.equals("/updateCart")) {
 			ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
 			String productId = request.getParameter("productId");
 			String quantity = request.getParameter("quantity");
@@ -113,7 +126,9 @@ public class ControllerServlet extends HttpServlet {
 			cart.update(product, quantity);
 			String userView = (String) session.getAttribute("view");
 			userPath = userView;
-		} else if(userPath.equals("/addproduct")) {
+		} 
+		//addproduct
+		else if(userPath.equals("/addproduct")) {
 			PrintWriter out = response.getWriter();
 				
 			// get info from web
@@ -160,6 +175,7 @@ public class ControllerServlet extends HttpServlet {
 				productDetail.setImage3(image3);
 				productDetail.setImage4(image4);
 				productDetail.setImage5(image5);
+				
 				productDetailSB.create(productDetail);
 				
 				//select this product to preview
@@ -169,15 +185,31 @@ public class ControllerServlet extends HttpServlet {
 				selectedProductDetail = productDetailSB.find(productId);
 				session.setAttribute("selectedProduct", selectedProduct);
 				session.setAttribute("selectedProductDetail", selectedProductDetail);
+				
 				out.print("<script type=\"text/javascript\">\r\n" + 
-						"		alert('Add product successfully');\r\n" + 
+						"		alert('Add product successfully!');\r\n" + 
 						"	</script>");
-				request.getRequestDispatcher("index.jsp").include(request, response);
+				userPath = "product";
 			} catch(Exception ex) {
 				System.out.println(ex);
 			}
 			
-					
+		}
+		// delete product
+		else if(userPath.equals("/deleteproduct")) {
+			PrintWriter out = response.getWriter();
+			int productId = Integer.parseInt(request.getQueryString());
+			if(productId != 0) {
+				Product product = productSB.find(productId);
+				ProductDetail productDetail = productDetailSB.find(productId);
+				productDetailSB.remove(productDetail);
+				productSB.remove(product);
+			
+				out.print("<script type=\"text/javascript\">\r\n" + 
+						"		alert('Delete product successfully!');\r\n" + 
+						"	</script>");
+				request.getRequestDispatcher("index.jsp").include(request, response);
+			}
 		}
 
 
@@ -198,9 +230,9 @@ public class ControllerServlet extends HttpServlet {
 			String user = request.getParameter("user");
 			String pass = request.getParameter("pass");
 			PrintWriter out = response.getWriter();
-			if (user.equals("rongden1211") && pass.equals("admin")) {
+			if ((user.equals("rongden1211") && pass.equals("admin")) || (user.equals("momoinu") && pass.equals("admin"))) {
 				out.print("<script type=\"text/javascript\">\r\n" + 
-							"		alert('Welcome Thinh');\r\n" + 
+							"		alert('Welcome Admin');\r\n" + 
 							"	</script>");
 				session.setAttribute("account", (int) 1);	
 				request.getRequestDispatcher("index.jsp").include(request, response);

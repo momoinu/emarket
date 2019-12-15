@@ -93,10 +93,12 @@
 									<p style="padding-bottom:20px;">
 										<%=selectedProductDetail.getInformation()%>
 									</p>
-									
-									<a href="<c:url value='delete?${selectedProduct.getProductId()}'/>" >
-										<div class="button btn btn-primary btn-lg btn-block">Delete Product</div></a>
-										
+									<c:choose>
+										<c:when test="${account == 1}">
+											<a href="<c:url value='deleteproduct?${selectedProduct.getProductId()}'/>" >
+										<div class="button btn btn-primary btn-lg btn-block">Delete Product</div></a>										
+										</c:when>										
+									</c:choose>									
 								</div>
 							</div>
 						</div>

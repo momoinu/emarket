@@ -67,7 +67,7 @@
 					</c:when>
 					<c:when test="${account == 1}">
 						
-						<li class="nav-item dropdown"><a class="nav-link text-light " href="#">Admin(Thinh)</a>
+						<li class="nav-item dropdown"><a class="nav-link text-light " href="#">Admin</a>
 							<div class="dropdown-content">
 								<a class="dropdown-item" href="#">Profile</a>
 								<a class="dropdown-item" href="addProduct.jsp">Add Product</a>
