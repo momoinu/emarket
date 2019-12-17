@@ -1,13 +1,16 @@
 package session_bean;
 
-import entity.ProductDetail;
+import entity.Customer;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+/**
+ *
+ * @author ThanDieu
+ */
 @Stateless
-public class ProductDetailSessionBean extends AbstractSessionBean<ProductDetail> {
-
+public class CustomerSessionBean extends AbstractSessionBean<Customer> {
 	@PersistenceContext(unitName = "Lab8a")
 	private EntityManager em;
 
@@ -15,7 +18,7 @@ public class ProductDetailSessionBean extends AbstractSessionBean<ProductDetail>
 		return em;
 	}
 
-	public ProductDetailSessionBean() {
-		super(ProductDetail.class);
+	public CustomerSessionBean() {
+		super(Customer.class);
 	}
 }

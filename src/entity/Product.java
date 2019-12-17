@@ -3,6 +3,7 @@ package entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -10,35 +11,35 @@ import java.util.Date;
  * 
  */
 @Entity
-@Table(name="product")
 @NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="product_id", unique=true, nullable=false)
+	@Column(name="product_id")
 	private int productId;
 
-	@Column(length=255)
 	private String description;
 
-	@Column(name="description_detail", length=1000)
+	@Column(name="description_detail")
 	private String descriptionDetail;
 
-	@Column(length=255)
 	private String image;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="last_update")
 	private Date lastUpdate;
 
-	@Column(length=255)
 	private String name;
 
 	private double price;
 
-	@Column(name="thumb_image", length=255)
+	@Column(name="thumb_image")
 	private String thumbImage;
+
+	//bi-directional many-to-one association to OrderedProduct
+	@OneToMany(mappedBy="product")
+	private List<OrderedProduct> orderedProducts;
 
 	//bi-directional many-to-one association to Category
 	@ManyToOne
@@ -46,7 +47,7 @@ public class Product implements Serializable {
 	private Category category;
 
 	//bi-directional one-to-one association to ProductDetail
-	@OneToOne(mappedBy="product")
+	@OneToOne(mappedBy="product", cascade={CascadeType.ALL})
 	private ProductDetail productDetail;
 
 	public Product() {
@@ -114,6 +115,28 @@ public class Product implements Serializable {
 
 	public void setThumbImage(String thumbImage) {
 		this.thumbImage = thumbImage;
+	}
+
+	public List<OrderedProduct> getOrderedProducts() {
+		return this.orderedProducts;
+	}
+
+	public void setOrderedProducts(List<OrderedProduct> orderedProducts) {
+		this.orderedProducts = orderedProducts;
+	}
+
+	public OrderedProduct addOrderedProduct(OrderedProduct orderedProduct) {
+		getOrderedProducts().add(orderedProduct);
+		orderedProduct.setProduct(this);
+
+		return orderedProduct;
+	}
+
+	public OrderedProduct removeOrderedProduct(OrderedProduct orderedProduct) {
+		getOrderedProducts().remove(orderedProduct);
+		orderedProduct.setProduct(null);
+
+		return orderedProduct;
 	}
 
 	public Category getCategory() {

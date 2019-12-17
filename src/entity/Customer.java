@@ -10,28 +10,30 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="customer")
 @NamedQuery(name="Customer.findAll", query="SELECT c FROM Customer c")
 public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="customer_id", unique=true, nullable=false)
+	@Column(name="customer_id")
 	private int customerId;
 
-	@Column(length=255)
 	private String address;
 
-	@Column(name="city_region", length=255)
+	private String ccNumber;
+
+	@Column(name="city_region")
 	private String cityRegion;
 
-	private int email;
+	private String email;
 
-	@Column(length=255)
 	private String name;
 
-	@Column(length=255)
+	private String password;
+
 	private String phone;
+
+	private String username;
 
 	//bi-directional many-to-one association to CustomerOrder
 	@OneToMany(mappedBy="customer")
@@ -56,6 +58,14 @@ public class Customer implements Serializable {
 		this.address = address;
 	}
 
+	public String getCcNumber() {
+		return this.ccNumber;
+	}
+
+	public void setCcNumber(String ccNumber) {
+		this.ccNumber = ccNumber;
+	}
+
 	public String getCityRegion() {
 		return this.cityRegion;
 	}
@@ -64,11 +74,11 @@ public class Customer implements Serializable {
 		this.cityRegion = cityRegion;
 	}
 
-	public int getEmail() {
+	public String getEmail() {
 		return this.email;
 	}
 
-	public void setEmail(int email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 
@@ -80,12 +90,28 @@ public class Customer implements Serializable {
 		this.name = name;
 	}
 
+	public String getPassword() {
+		return this.password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public String getPhone() {
 		return this.phone;
 	}
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getUsername() {
+		return this.username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public List<CustomerOrder> getCustomerOrders() {

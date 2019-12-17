@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class CategorySessionBean extends AbstractSessionBean<Category> {
 
-	@PersistenceContext(unitName = "Lap8a")
+	@PersistenceContext(unitName = "Lab8a")
 	private EntityManager em;
 
 	protected EntityManager getEntityManager() {

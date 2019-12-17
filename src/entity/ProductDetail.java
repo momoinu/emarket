@@ -1,10 +1,17 @@
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
 
 /**
@@ -13,53 +20,35 @@ import java.util.List;
  */
 @Entity
 @Table(name="product_detail")
-@NamedQueries({
-	 @NamedQuery(name = "ProductDetail.findAll", query = "SELECT p FROM	ProductDetail p"),
-	 @NamedQuery(name = "ProductDetail.findByProductId", query = "SELECT p FROM ProductDetail p WHERE p.productId = :productId"),
-	 @NamedQuery(name = "ProductDetail.findByImage1", query = "SELECT p FROM ProductDetail p WHERE p.image1 = :image1"),
-	 @NamedQuery(name = "ProductDetail.findByImage2", query = "SELECT p FROM ProductDetail p WHERE p.image2 = :image2"),
-	 @NamedQuery(name = "ProductDetail.findByImage3", query = "SELECT p FROM ProductDetail p WHERE p.image3 = :image3"),
-	 @NamedQuery(name = "ProductDetail.findByImage4", query = "SELECT p FROM ProductDetail p WHERE p.image4 = :image4"),
-	 @NamedQuery(name = "ProductDetail.findByImage5", query = "SELECT p FROM ProductDetail p WHERE p.image5 = :image5")})
-	 
+@NamedQuery(name="ProductDetail.findAll", query="SELECT p FROM ProductDetail p")
 public class ProductDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="product_id", unique=true, nullable=false)
+	@Column(name="product_id")
 	private int productId;
 
-	@Column(length=2000)
 	private String accessories;
 
-	@Column(length=2000)
 	private String guaranty;
 
-	@Column(length=255)
 	private String image1;
 
-	@Column(length=255)
 	private String image2;
 
-	@Column(length=255)
 	private String image3;
 
-	@Column(length=255)
 	private String image4;
 
-	@Column(length=255)
 	private String image5;
 
-	@Column(length=1000)
 	private String information;
 
-	//bi-directional many-to-one association to OrderedProduct
-	@OneToMany(mappedBy="productDetail")
-	private List<OrderedProduct> orderedProducts;
+	private int quantity;
 
 	//bi-directional one-to-one association to Product
-	@OneToOne
-	@JoinColumn(name="product_id", nullable=false, insertable=false, updatable=false)
+	@OneToOne(cascade={CascadeType.ALL})
+	@PrimaryKeyJoinColumn
 	private Product product;
 
 	public ProductDetail() {
@@ -137,26 +126,12 @@ public class ProductDetail implements Serializable {
 		this.information = information;
 	}
 
-	public List<OrderedProduct> getOrderedProducts() {
-		return this.orderedProducts;
+	public int getQuantity() {
+		return this.quantity;
 	}
 
-	public void setOrderedProducts(List<OrderedProduct> orderedProducts) {
-		this.orderedProducts = orderedProducts;
-	}
-
-	public OrderedProduct addOrderedProduct(OrderedProduct orderedProduct) {
-		getOrderedProducts().add(orderedProduct);
-		orderedProduct.setProductDetail(this);
-
-		return orderedProduct;
-	}
-
-	public OrderedProduct removeOrderedProduct(OrderedProduct orderedProduct) {
-		getOrderedProducts().remove(orderedProduct);
-		orderedProduct.setProductDetail(null);
-
-		return orderedProduct;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 	public Product getProduct() {
@@ -166,6 +141,7 @@ public class ProductDetail implements Serializable {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
+	
 	public List<String> getAllImages(){
 		 List<String> images = new ArrayList<String>();
 		 if (image1 != null) images.add(image1);
@@ -174,11 +150,6 @@ public class ProductDetail implements Serializable {
 		 if (image4 != null) images.add(image4);
 		 if (image5 != null) images.add(image5);
 		 return images;
-	}
-
-	@Override
-	public String toString() {
-		return "entity.ProductDetail[ productId=" + productId + " ]";
 	}
 
 }

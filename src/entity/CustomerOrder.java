@@ -2,6 +2,7 @@ package entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -17,10 +18,10 @@ public class CustomerOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="order_id", unique=true, nullable=false)
+	@Column(name="order_id")
 	private int orderId;
 
-	private int amount;
+	private BigDecimal amount;
 
 	@Column(name="confirmation_number")
 	private int confirmationNumber;
@@ -49,11 +50,11 @@ public class CustomerOrder implements Serializable {
 		this.orderId = orderId;
 	}
 
-	public int getAmount() {
+	public BigDecimal getAmount() {
 		return this.amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 

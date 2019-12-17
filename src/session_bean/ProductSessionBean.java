@@ -11,7 +11,7 @@ import entity.Product;
 @Stateless
 public class ProductSessionBean extends AbstractSessionBean<Product> {
 
-	@PersistenceContext(unitName = "Lap8a")
+	@PersistenceContext(unitName = "Lab8a")
 	private EntityManager em;
 	@EJB
 	private CategorySessionBean categorySB;

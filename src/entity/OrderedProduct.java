@@ -10,35 +10,44 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="ordered_product")
-@NamedQuery(name="OrderedProduct.findAll", query="SELECT o FROM OrderedProduct o")
+@NamedQueries({
+    @NamedQuery(name = "OrderedProduct.findAll", query = "SELECT o FROM OrderedProduct o"),
+    @NamedQuery(name = "OrderedProduct.findByOrderId", query = "SELECT o FROM OrderedProduct o WHERE o.id.orderId = :orderId"),
+    @NamedQuery(name = "OrderedProduct.findByProductId", query = "SELECT o FROM OrderedProduct o WHERE o.id.productId = :productId"),
+    @NamedQuery(name = "OrderedProduct.findByQuantity", query = "SELECT o FROM OrderedProduct o WHERE o.quantity = :quantity")})
+
 public class OrderedProduct implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name="order_product_id", unique=true, nullable=false, length=23)
-	private String orderProductId;
+	@EmbeddedId
+	private OrderedProductPK id;
 
 	private int quantity;
 
 	//bi-directional many-to-one association to CustomerOrder
 	@ManyToOne
-	@JoinColumn(name="order_id", nullable=false)
+	@JoinColumn(name="order_id")
 	private CustomerOrder customerOrder;
 
-	//bi-directional many-to-one association to ProductDetail
+	//bi-directional many-to-one association to Product
 	@ManyToOne
-	@JoinColumn(name="product_id", nullable=false)
-	private ProductDetail productDetail;
+	@JoinColumn(name="product_id")
+	private Product product;
 
 	public OrderedProduct() {
 	}
-
-	public String getOrderProductId() {
-		return this.orderProductId;
+	
+	public OrderedProduct(OrderedProductPK orderedProductPK) {
+		this.id = orderedProductPK;
+		
 	}
 
-	public void setOrderProductId(String orderProductId) {
-		this.orderProductId = orderProductId;
+	public OrderedProductPK getId() {
+		return this.id;
+	}
+
+	public void setId(OrderedProductPK id) {
+		this.id = id;
 	}
 
 	public int getQuantity() {
@@ -57,12 +66,12 @@ public class OrderedProduct implements Serializable {
 		this.customerOrder = customerOrder;
 	}
 
-	public ProductDetail getProductDetail() {
-		return this.productDetail;
+	public Product getProduct() {
+		return this.product;
 	}
 
-	public void setProductDetail(ProductDetail productDetail) {
-		this.productDetail = productDetail;
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
 }
