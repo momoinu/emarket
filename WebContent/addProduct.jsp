@@ -3,20 +3,11 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 
-<form class="form-horizontal" action="addproduct" method="get">
+<form class="form-horizontal" action="<c:url value='/addproduct'/>" method="get">
 	<fieldset>
 
 		<!-- Form Name -->
 		<legend style="text-align: center">ADD PRODUCT</legend>
-
-		<!-- Text input-->
-		<div class="form-group">
-			<label class="col-md-4 control-label" for="product_id">PRODUCT ID</label>
-			<div class="col-md-4">
-				<input id="product_id" name="productId" placeholder="PRODUCT ID" class="form-control input-md" type="text">
-
-			</div>
-		</div>
 
 		<!-- Text input-->
 		<div class="form-group">
@@ -51,7 +42,7 @@
 				<textarea class="form-control" id="product_information" placeholder="INFORMATION" name="information"></textarea>
 			</div>
 		</div>
-		
+
 		<!-- Select Basic -->
 		<div class="form-group">
 			<label class="col-md-4 control-label" for="product_category">CATEGORY</label>
@@ -65,6 +56,7 @@
 			</div>
 		</div>
 
+		
 		<!-- Text input-->
 		<div class="form-group">
 			<label class="col-md-4 control-label" for="product_accessories">ACCESSORIES</label>
@@ -91,7 +83,16 @@
 
 			</div>
 		</div>
+		
+		<!-- Text input-->
+		<div class="form-group">
+			<label class="col-md-4 control-label" for="product_quantity">QUANTITY</label>
+			<div class="col-md-4">
+				<input id="product_quantity" name="quantity" placeholder="QUANTITY" class="form-control input-md" type="text">
 
+			</div>
+		</div>
+		
 		<!-- File Button -->
 		<div class="form-group">
 			<label class="col-md-4 control-label" for="filebutton">IMAGE</label>
@@ -99,6 +100,7 @@
 				<input id="filebutton" name="image" class="input-file" type="file">
 			</div>
 		</div>
+		
 		<!-- File Button -->
 		<div class="form-group">
 			<label class="col-md-4 control-label" for="filebutton">auxiliary_images1</label>

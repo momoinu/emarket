@@ -37,7 +37,7 @@
 <body>
 	<div class="form-1">
 	<h1 style="text-align:center;">Lol.team</h1>
-	<form action="/Lap8a/login" method="post">
+	<form action="/Lab8a/login" method="post">
 	<strong>
 		UserName:  <input  type="text" name="user" required="required"/>
 		<br/>

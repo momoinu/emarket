@@ -24,9 +24,9 @@ public class ProductSessionBean extends AbstractSessionBean<Product> {
 	}
 	@Override
 	public void remove(Product p) {
-		p = getEntityManager().merge(p);
-		super.remove(p);
+		p = em.merge(p);
 		Category c = p.getCategory();
+		super.remove(p);	
 		c.removeProduct(p);
 	}
 	@Override 
