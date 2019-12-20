@@ -11,7 +11,7 @@ public class CategorySessionBean extends AbstractSessionBean<Category> {
 	@PersistenceContext(unitName = "Lab8a")
 	private EntityManager em;
 
-	protected EntityManager getEntityManager() {
+	public EntityManager getEntityManager() {
 		return em;
 	}
 

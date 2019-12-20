@@ -56,12 +56,11 @@ public class OrderManager {
     public OrderManager(){}
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public int placeOrder(String name, String email, String phone, String address, String cityRegion, String ccNumber, ShoppingCart cart) {
+    public int placeOrder(String username, String receiver, String phone, String address, String ccNumber, ShoppingCart cart) {
         try {
-            Customer customer = addCustomer(name, email, phone, address,
-                    cityRegion, ccNumber);
-//            System.out.println("!!!!!\n!!!!!!!!!\n!!!!!");
-            CustomerOrder order = addOrder(customer, cart);
+        	Customer customer = customerSB.findByUsername(username);
+            
+            CustomerOrder order = addOrder(customer, cart, receiver, phone, address, ccNumber);
             addOrderedItems(order, cart);
             return order.getOrderId();
         } catch (Exception e) {
@@ -71,22 +70,7 @@ public class OrderManager {
         }
     }
 
-    public Customer addCustomer(String name, String email, String phone,
-            String address, String cityRegion, String ccNumber) {
-        Customer customer = new Customer();
-        customer.setCustomerId(customerSB.findAll().size() + 1);
-        customer.setName(name);
-        customer.setEmail(email);
-        customer.setPhone(phone);
-        customer.setAddress(address);
-        customer.setCityRegion(cityRegion);
-        customer.setCcNumber(ccNumber);
-        customerSB.create(customer);
-        
-        return customer;
-    }
-
-    public CustomerOrder addOrder(Customer customer, ShoppingCart cart) {
+    public CustomerOrder addOrder(Customer customer, ShoppingCart cart, String receiver, String phone, String address, String ccNumber) {
 // set up customer order
         int id = customerOrderSB.findAll().size() + 1;
         CustomerOrder order = new CustomerOrder();
@@ -101,6 +85,10 @@ public class OrderManager {
         order.setConfirmationNumber(i);
 //        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         order.setDateCreated(new Date());
+        order.setAddress(address);
+        order.setCcNumber(ccNumber);
+        order.setReceiver(receiver);
+        order.setPhone(phone);
         customerOrderSB.create(order);
         return order;
     }
@@ -131,8 +119,7 @@ public class OrderManager {
 // get customer
         Customer customer = order.getCustomer();
 // get all ordered products
-        List<OrderedProduct> orderedProducts
-                = orderedProductSB.findByOrderId(orderId);
+        List<OrderedProduct> orderedProducts = orderedProductSB.findByOrderId(orderId);
 // get product details for ordered items
         List<Product> products = new ArrayList<Product>();
         for (OrderedProduct op : orderedProducts) {

@@ -19,7 +19,7 @@ public class OrderedProductSessionBean extends AbstractSessionBean<OrderedProduc
 	private EntityManager em;
 
 	@Override
-	protected EntityManager getEntityManager() {
+	public EntityManager getEntityManager() {
 		return em;
 	}
 

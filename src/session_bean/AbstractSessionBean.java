@@ -10,7 +10,7 @@ public abstract class AbstractSessionBean<T> {
 		this.entityClass = entityClass;
 	}
 
-	protected abstract EntityManager getEntityManager();
+	public abstract EntityManager getEntityManager();
 
 	public void create(T entity) {
 		getEntityManager().persist(entity);

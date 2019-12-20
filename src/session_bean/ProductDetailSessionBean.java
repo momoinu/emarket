@@ -11,7 +11,7 @@ public class ProductDetailSessionBean extends AbstractSessionBean<ProductDetail>
 	@PersistenceContext(unitName = "Lab8a")
 	private EntityManager em;
 
-	protected EntityManager getEntityManager() {
+	public EntityManager getEntityManager() {
 		return em;
 	}
 

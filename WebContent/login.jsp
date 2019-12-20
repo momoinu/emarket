@@ -43,6 +43,9 @@
 		<br/>
 		<br/>
 		PassWord: <input type="text" name="pass" required="required"/>	
+		<br>
+		<br>
+		<input type="checkbox" name="check" value="admin">Admin?<br>
     <br/>
 		<button  type="submit">Login</button>
     </strong>

@@ -15,7 +15,7 @@ public class ProductSessionBean extends AbstractSessionBean<Product> {
 	private EntityManager em;
 	@EJB
 	private CategorySessionBean categorySB;
-	protected EntityManager getEntityManager() {
+	public EntityManager getEntityManager() {
 		return em;
 	}
 
@@ -24,15 +24,17 @@ public class ProductSessionBean extends AbstractSessionBean<Product> {
 	}
 	@Override
 	public void remove(Product p) {
-		p = em.merge(p);
-		Category c = p.getCategory();
+		//p = em.merge(p);
+		Category c = categorySB.find(p.getCategory().getCategoryId());
 		super.remove(p);	
-		c.removeProduct(p);
+		categorySB.getEntityManager().refresh(c);
+//		c.removeProduct(p);
 	}
 	@Override 
 	public void create(Product p) {
 		super.create(p);
 		Category c = categorySB.find(p.getCategory().getCategoryId());
-		c.addProduct(p);
+//		c.addProduct(p);
+		categorySB.getEntityManager().refresh(c);
 	}	
 }

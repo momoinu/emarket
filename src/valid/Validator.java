@@ -12,16 +12,14 @@ public class Validator {
 		    return false;  
 		  }  
 		}
-	public boolean validateForm(String name, String email, String phone, String address, String cityRegion, String ccNumber) {
-		if (name == null)
+	public boolean validateForm(String username,String receiver, String phone, String address, String ccNumber) {
+		if (username == null)
 			return false;
-		if (email == null)
+		if (receiver == null)
 			return false;
 		if (phone == null)
 			return false;
 		if (address == null)
-			return false;
-		if (cityRegion == null)
 			return false;
 		if (ccNumber == null)
 			return false;

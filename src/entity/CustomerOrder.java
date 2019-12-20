@@ -21,7 +21,11 @@ public class CustomerOrder implements Serializable {
 	@Column(name="order_id")
 	private int orderId;
 
+	private String address;
+
 	private BigDecimal amount;
+
+	private String ccNumber;
 
 	@Column(name="confirmation_number")
 	private int confirmationNumber;
@@ -29,6 +33,10 @@ public class CustomerOrder implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name="date_created")
 	private Date dateCreated;
+
+	private String phone;
+
+	private String receiver;
 
 	//bi-directional many-to-one association to Customer
 	@ManyToOne
@@ -50,12 +58,28 @@ public class CustomerOrder implements Serializable {
 		this.orderId = orderId;
 	}
 
+	public String getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public BigDecimal getAmount() {
 		return this.amount;
 	}
 
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
+	}
+
+	public String getCcNumber() {
+		return this.ccNumber;
+	}
+
+	public void setCcNumber(String ccNumber) {
+		this.ccNumber = ccNumber;
 	}
 
 	public int getConfirmationNumber() {
@@ -72,6 +96,22 @@ public class CustomerOrder implements Serializable {
 
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
+	}
+
+	public String getPhone() {
+		return this.phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getReceiver() {
+		return this.receiver;
+	}
+
+	public void setReceiver(String receiver) {
+		this.receiver = receiver;
 	}
 
 	public Customer getCustomer() {

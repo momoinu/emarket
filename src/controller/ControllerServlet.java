@@ -12,6 +12,7 @@ import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,9 +20,11 @@ import javax.servlet.http.HttpSession;
 
 import cart.ShoppingCart;
 import entity.Category;
+import entity.Customer;
 import entity.Product;
 import entity.ProductDetail;
 import session_bean.CategorySessionBean;
+import session_bean.CustomerSessionBean;
 import session_bean.OrderManager;
 import session_bean.ProductDetailSessionBean;
 import session_bean.ProductSessionBean;
@@ -38,6 +41,8 @@ public class ControllerServlet extends HttpServlet {
 	private CategorySessionBean categorySB;
 	@EJB
 	private ProductSessionBean productSB;
+	@EJB
+	private CustomerSessionBean customerSB;
 	@EJB
 	private ProductDetailSessionBean productDetailSB;
 	@EJB
@@ -229,36 +234,53 @@ public class ControllerServlet extends HttpServlet {
 		if (userPath.equals("/login")) {
 			String user = request.getParameter("user");
 			String pass = request.getParameter("pass");
+			String check = request.getParameter("check");
 			PrintWriter out = response.getWriter();
-			if ((user.equals("rongden1211") && pass.equals("admin"))
-					|| (user.equals("momoinu") && pass.equals("admin"))) {
-				out.print(
-						"<script type=\"text/javascript\">\r\n" + "		alert('Welcome Admin');\r\n" + "	</script>");
-				session.setAttribute("account", (int) 1);
-				request.getRequestDispatcher("index.jsp").include(request, response);
+			if(check!=null) {
+				if ((user.equals("rongden1211") && pass.equals("admin"))
+						|| (user.equals("momoinu") && pass.equals("admin"))) {
+					out.print(
+							"<script type=\"text/javascript\">\r\n" + "		alert('Welcome Admin');\r\n" + "	</script>");
+					session.setAttribute("account", (int) 1);
+					request.getRequestDispatcher("index.jsp").include(request, response);
 
-			} else {
-				out.print("<script type=\"text/javascript\">\r\n" + "		alert('You are not Admin');\r\n"
-						+ "	</script>");
-				out.print("</br>");
-				request.getRequestDispatcher("login.jsp").include(request, response);
+				} else {
+					out.print("<script type=\"text/javascript\">\r\n" + "		alert('You are not Admin');\r\n"
+							+ "	</script>");
+					out.print("</br>");
+					request.getRequestDispatcher("login.jsp").include(request, response);
+				}	
+			}else {
+				if ((user.equals("momohaha"))){
+					out.print(
+							"<script type=\"text/javascript\">\r\n" + "		alert('Welcome user!');\r\n" + "	</script>");
+					session.setAttribute("account", (int) 2);
+//					Cookie username = new Cookie("user", user);
+//					username.setMaxAge(60*60*10);
+//					response.addCookie(username);
+					
+//					Customer customer = customerSB.findByUsername(user);
+//					session.setAttribute("customer", customer);
+//					request.getRequestDispatcher("index.jsp").include(request, response);
+
+				}
 			}
+			
 
 		} else if (userPath.equals("/purchase")) {
 			if (cart != null) {
-				String name = request.getParameter("name");
-				String email = request.getParameter("email");
+				String username = request.getParameter("username");
+				String receiver = request.getParameter("receiver");
 				String phone = request.getParameter("phone");
 				String address = request.getParameter("address");
-				String cityRegion = request.getParameter("cityRegion");
-				String ccNumber = request.getParameter("creditcard");
+				String ccNumber = request.getParameter("ccNumber");
 				boolean validationErrorFlag = false;
-				validationErrorFlag = validator.validateForm(name, email, phone, address, cityRegion, ccNumber);
+				validationErrorFlag = validator.validateForm(username, receiver, phone, address, ccNumber);
 				if (!validationErrorFlag) {
 					request.setAttribute("validationErrorFlag", validationErrorFlag);
 					userPath = "checkout";
 				} else {
-					int orderId = orderManager.placeOrder(name, email, phone, address, cityRegion, ccNumber, cart);
+					int orderId = orderManager.placeOrder(username, receiver, phone, address, ccNumber, cart);
 					if (orderId != 0) {
 						Locale locale = (Locale) session.getAttribute("javax.servlet.jsp.jstl.fmt.locale.session");
 						String language = "";

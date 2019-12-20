@@ -15,7 +15,7 @@ public class CustomerOrderSessionBean extends AbstractSessionBean<CustomerOrder>
 	private EntityManager em;
 
 	@Override
-	protected EntityManager getEntityManager() {
+	public EntityManager getEntityManager() {
 		return em;
 	}
 

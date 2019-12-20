@@ -62,7 +62,7 @@
 					</a></li>
 					
 				<c:choose>
-					<c:when test="${account == 0}">
+					<c:when test="${account == 0 || account == 2}">
 						<li class="nav-item text "><a class="nav-link text-light" href="login.jsp">Login</a></li>
 					</c:when>
 					<c:when test="${account == 1}">

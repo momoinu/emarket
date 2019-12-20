@@ -11,6 +11,7 @@ public class ShoppingCart {
 	List<ShoppingCartItem> items;
 	int numberOfItems;
 	double total;
+	public int deliveryFee = 5;
 
 	public ShoppingCart() {
 		items = new ArrayList<ShoppingCartItem>();
@@ -83,7 +84,7 @@ public class ShoppingCart {
 		// cast surcharge as double
 		double s = Double.parseDouble(surcharge);
 		amount = this.getSubtotal();
-		amount += s;
+//		amount += s;
 		total = amount;
 	}
 

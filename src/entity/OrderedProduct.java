@@ -36,11 +36,6 @@ public class OrderedProduct implements Serializable {
 
 	public OrderedProduct() {
 	}
-	
-	public OrderedProduct(OrderedProductPK orderedProductPK) {
-		this.id = orderedProductPK;
-		
-	}
 
 	public OrderedProductPK getId() {
 		return this.id;
@@ -50,6 +45,10 @@ public class OrderedProduct implements Serializable {
 		this.id = id;
 	}
 
+	public OrderedProduct(OrderedProductPK orderedProductPK) {
+		this.id = orderedProductPK;
+	}
+	
 	public int getQuantity() {
 		return this.quantity;
 	}
