@@ -232,13 +232,13 @@ public class ControllerServlet extends HttpServlet {
 		Validator validator = new Validator();
 
 		if (userPath.equals("/login")) {
-			String user = request.getParameter("user");
-			String pass = request.getParameter("pass");
-			String check = request.getParameter("check");
+			String username = request.getParameter("user");
+			String password = request.getParameter("pass");
+			String checkadmin = request.getParameter("check");
 			PrintWriter out = response.getWriter();
-			if(check!=null) {
-				if ((user.equals("rongden1211") && pass.equals("admin"))
-						|| (user.equals("momoinu") && pass.equals("admin"))) {
+			if(checkadmin!=null) {
+				if ((username.equals("rongden1211") && password.equals("admin"))
+						|| (username.equals("momoinu") && password.equals("admin"))) {
 					out.print(
 							"<script type=\"text/javascript\">\r\n" + "		alert('Welcome Admin');\r\n" + "	</script>");
 					session.setAttribute("account", (int) 1);
@@ -251,17 +251,20 @@ public class ControllerServlet extends HttpServlet {
 					request.getRequestDispatcher("login.jsp").include(request, response);
 				}	
 			}else {
-				if ((user.equals("momohaha"))){
+				if ((username.equals("momohaha"))){
 					out.print(
-							"<script type=\"text/javascript\">\r\n" + "		alert('Welcome user!');\r\n" + "	</script>");
+							"<script type=\"text/javascript\">\r\n" + " alert('Welcome user!');\r\n" + "	</script>");
 					session.setAttribute("account", (int) 2);
-//					Cookie username = new Cookie("user", user);
-//					username.setMaxAge(60*60*10);
-//					response.addCookie(username);
 					
-//					Customer customer = customerSB.findByUsername(user);
-//					session.setAttribute("customer", customer);
-//					request.getRequestDispatcher("index.jsp").include(request, response);
+					
+//					Cookie cookie = new Cookie("username",username);
+//					cookie.setMaxAge(60*60*10);
+//					response.addCookie(cookie);
+					
+					Customer customer = customerSB.findByUsername(username);
+					session.setAttribute("customer", customer);
+										
+					request.getRequestDispatcher("index.jsp").include(request, response);
 
 				}
 			}

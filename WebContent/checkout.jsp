@@ -3,16 +3,21 @@
 <%@page import="java.util.List"%>
 <%
 	session.setAttribute("view", "/checkout");	
-	/* Cookie cookie = null;
+	/* Cookie user = null;
 	Cookie[] cookies = request.getCookies();
-	for(int i = 0; i < cookies.length; i++){
-		cookie = cookies[i];
-		if((cookie.getName( )).equals("user")) {
-			String username = cookie.getValue();
-			CustomerSessionBean customerSB = new CustomerSessionBean();			
-			Customer customer = customerSB.findByUsername(username);
-        }		
-	} */
+	for(Cookie cookie: cookies){
+		if(cookie.getName().equals("username")){
+			user = cookie;
+		}
+	}
+	String username = user.getValue();
+	System.out.println(username + "-----------++++++++++++++++++++++++++++++"); */
+	
+	
+/* 	CustomerSessionBean customerSessionBean = new CustomerSessionBean();
+	Customer customer = customerSessionBean.findByUsername(username); */
+
+	
 	Customer customer = (Customer) session.getAttribute("customer");
 %>
 
@@ -62,7 +67,7 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text">User</span>
 						</div>
-						<input type="text" class="form-control" id="username" name="username" value="${customer.getUsername()}" readonly>
+						<input type="text" class="form-control" id="username" name="username" value="${username}" readonly>
 					</div>
 				</div>
 

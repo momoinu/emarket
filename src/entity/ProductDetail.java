@@ -134,8 +134,6 @@ public class ProductDetail implements Serializable {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-
-
 	public List<String> getAllImages(){
 		List<String> adds = new ArrayList();
 		adds.add(image1);
@@ -145,4 +143,5 @@ public class ProductDetail implements Serializable {
 		adds.add(image5);
 		return adds;
 	}
+
 }
