@@ -13,7 +13,15 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="product_detail")
-@NamedQuery(name="ProductDetail.findAll", query="SELECT p FROM ProductDetail p")
+@NamedQueries({
+	 @NamedQuery(name = "ProductDetail.findAll", query = "SELECT p FROM ProductDetail p"),
+	 @NamedQuery(name = "ProductDetail.findByProductId", query = "SELECT p FROM ProductDetail p WHERE p.productId = :productId"),
+	 @NamedQuery(name = "ProductDetail.findByImage1", query = "SELECT p FROM ProductDetail p WHERE p.image1 = :image1"),
+	 @NamedQuery(name = "ProductDetail.findByImage2", query = "SELECT p FROM ProductDetail p WHERE p.image2 = :image2"),
+	 @NamedQuery(name = "ProductDetail.findByImage3", query = "SELECT p FROM ProductDetail p WHERE p.image3 = :image3"),
+	 @NamedQuery(name = "ProductDetail.findByImage4", query = "SELECT p FROM ProductDetail p WHERE p.image4 = :image4"),
+	 @NamedQuery(name = "ProductDetail.findByImage5", query = "SELECT p FROM ProductDetail p WHERE p.image5 = :image5")})
+	 
 public class ProductDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -135,13 +143,18 @@ public class ProductDetail implements Serializable {
 		this.product = product;
 	}
 	public List<String> getAllImages(){
-		List<String> adds = new ArrayList();
-		adds.add(image1);
-		adds.add(image2);
-		adds.add(image3);
-		adds.add(image4);
-		adds.add(image5);
-		return adds;
+		 List<String> images = new ArrayList<String>();
+		 if (image1 != null) images.add(image1);
+		 if (image2 != null) images.add(image2);
+		 if (image3 != null) images.add(image3);
+		 if (image4 != null) images.add(image4);
+		 if (image5 != null) images.add(image5);
+		 return images;
+	}
+
+	@Override
+	public String toString() {
+		return "entity.ProductDetail[ productId=" + productId + " ]";
 	}
 
 }

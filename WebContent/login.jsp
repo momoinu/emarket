@@ -1,57 +1,71 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="utf-8"%>
+  
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<style>
-	.form-1 {
-   		background-color: rgba(255, 255, 255,0.8 );
-    	width: 300px;
-    	margin: 60px auto 30px;
-    	padding: 10px;
-    	position: relative;
-    	box-shadow: 0 0 1px rgba(0, 0, 0, 1), 0 3px 7px rgba(0, 0, 0, 0.3), inset 0 1px rgba(255,255,255,1), inset 0 -3px 2px rgba(0,0,0,0.25);
-    	border-radius: 5px;
-	}
-	input{
-			font-size: 18px;
-			padding: 4px 0px;
-		}
+	<title>Login </title>
+	<meta charset="UTF-8">
 	
-	button{
-  			border: 1px solid;
-  			border-radius: 2px;
-  			text-align: center;
- 			width: 100px;
- 			padding: 7px 10px;
- 			margin:20px 0px 10px 110px;
-	}
-	html{
-  		background-image: url("https://thanhlycuongphat.com/wp-content/uploads/2019/01/H%C3%ACnh-n%E1%BB%81n-m%C3%A1y-t%C3%ADnh-Gradient-m%C3%A0u-x%C3%A1m.png")
-	}
-	
-	</style>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>Login</title>
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
-	<div class="form-1">
-	<h1 style="text-align:center;">Lol.team</h1>
-	<form action="/Lab8a/login" method="post">
-	<strong>
-		UserName:  <input  type="text" name="user" required="required"/>
-		<br/>
-		<br/>
-		PassWord: <input type="text" name="pass" required="required"/>	
-		<br>
-		<br>
-		<input type="checkbox" name="check" value="admin">Admin?<br>
-    <br/>
-		<button  type="submit">Login</button>
-    </strong>
-	</form>
-	</div>
-	<p style="text-align:center;"><a href="index.jsp" >Home</a></p>
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-form-title" style="background-image: url(images/Lol.team.png);">
 
+					<span class="login100-form-title-1">
+						Sign In
+					</span>
+				</div>
+
+				<form action="/Lab8a/login" method="post" class="login100-form validate-form" >
+					<div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
+						<span class="label-input100">Username</span>
+						<input class="input100" type="text" name="username" placeholder="Enter username">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
+						<span class="label-input100">Password</span>
+						<input class="input100" type="password" name="password" placeholder="Enter password">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="flex-sb-m w-full p-b-30">
+						<div class="contact100-form-checkbox">
+							<input class="input-checkbox100" id="ckb1" type="checkbox" name="admin-login">
+							<label class="label-checkbox100" for="ckb1">
+								Login With Admin
+							</label>
+						</div>
+
+						<div>
+							<a href="#" class="txt1">
+								Forgot Password?
+							</a>
+						</div>
+					</div>
+					<div>
+					<div></div>
+					<div class="container-login100-form-btn">
+						<button style="background-color: #8c52ff;" class="login100-form-btn">
+							Login
+						</button>
+					</div>
+				</form>
+				<div>
+					<p style="margin-top: 20px;position:relative; text-align:center;">If you are a new member? <a href="register.jsp" >Register here</a></p>
+					<p style="margin: 20px 0 -60px 0; text-align:center;"><a href="index.jsp">Come back home page</a>
+				</div>
+				
+			</div>
+			
+		</div>
+	</div>
+	
 </body>
 </html>

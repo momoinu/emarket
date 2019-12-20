@@ -3,7 +3,7 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 
-<form class="form-horizontal" action="<c:url value='/addproduct'/>" method="get">
+<form class="form-horizontal" action="<c:url value='/addProduct'/>" method="get">
 	<fieldset>
 
 		<!-- Form Name -->

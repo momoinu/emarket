@@ -13,7 +13,8 @@ import java.util.List;
 
 @NamedQueries({
 	@NamedQuery(name="Customer.findAll", query="SELECT c FROM Customer c"),
-    @NamedQuery(name = "Customer.findByUsername", query = "SELECT o FROM Customer o WHERE o.username = :username")})
+	@NamedQuery(name="Customer.findByUserPass", query="SELECT c FROM Customer c WHERE c.username = :username AND c.password = :password"),
+	@NamedQuery(name="Customer.findByUsername", query="SELECT c FROM Customer c WHERE c.username = :username")})
 
 public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;

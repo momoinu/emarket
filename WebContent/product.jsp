@@ -95,7 +95,7 @@
 									</p>
 									<c:choose>
 										<c:when test="${account == 1}">
-											<a href="<c:url value='deleteproduct?${selectedProduct.getProductId()}'/>" >
+											<a href="<c:url value='deleteProduct?${selectedProduct.getProductId()}'/>" >
 										<div class="button btn btn-primary btn-lg btn-block">Delete Product</div></a>										
 										</c:when>										
 									</c:choose>									

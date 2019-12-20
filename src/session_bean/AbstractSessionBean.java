@@ -1,7 +1,10 @@
 package session_bean;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 public abstract class AbstractSessionBean<T> {
 	private Class<T> entityClass;

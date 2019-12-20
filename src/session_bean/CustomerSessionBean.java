@@ -4,6 +4,7 @@ import entity.Customer;
 import java.util.List;
 
 import javax.ejb.Stateless;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -25,19 +26,32 @@ public class CustomerSessionBean extends AbstractSessionBean<Customer> {
 	public CustomerSessionBean() {
 		super(Customer.class);
 	}
-	
+//	public Customer findByUser(String user) {
+//		 return (Customer) em.createNamedQuery("Customer.findByUser").setParameter("username",user).getSingleResult();
+//	}
+	public Customer findByUserPass(String username, String password) {
+		Query query = em.createNamedQuery("Customer.findByUserPass");
+		query.setParameter("username", username);
+		query.setParameter("password", password);
+		List<Customer> customers = query.getResultList();
+		if(customers.isEmpty()) {
+			return null;
+		}
+		return customers.get(0);
+	}
+
 	public Customer findByUsername(String username) {
 		
 		
-		return (Customer) em.createNamedQuery("Customer.findByUsername")
-				.setParameter("username",username).getSingleResult();
+//		return (Customer) em.createNamedQuery("Customer.findByUsername")
+//				.setParameter("username",username).getSingleResult();
 		
-//		List<Customer> customers =  em.createNamedQuery("Customer.findByUsername")
-//				.setParameter("username",username).getResultList();
-//	    if (customers.isEmpty()) {
-//	        return null;
-//	    }
-//	    return customers.get(0);
+		List<Customer> customers =  em.createNamedQuery("Customer.findByUsername")
+				.setParameter("username",username).getResultList();
+	    if (customers.isEmpty()) {
+	        return null;
+	    }
+	    return customers.get(0);
  
-    }
+    	}
 }

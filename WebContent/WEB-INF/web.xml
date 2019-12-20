@@ -20,6 +20,7 @@
     </jsp-property-group>
     <jsp-property-group>
       <url-pattern>/login.jsp</url-pattern>
+      <url-pattern>/register.jsp</url-pattern>
     </jsp-property-group>
     <jsp-property-group>
       <description>JSP configuration for the admin console </description>
