@@ -1,5 +1,3 @@
-
-
 <script src="js/jquery.tools.min.js"></script>
 <script>
 	$(function() {
@@ -18,19 +16,14 @@
 	});
 </script>
 <c:set var='view' value='/index' scope='session' />
-<!-- carosel -->
+
+<!-- AMAZING SLIDER -->
+
 <div class="bd-example">
-	<div id="carouselExampleCaptions" class="carousel slide carousel-fade"
-		data-ride="carousel">
-		<!-- <ol class="carousel-indicators">
-				<li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
-				<li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-				<li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
-			</ol> -->
+	<div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-ride="carousel">
 		<div class="carousel-inner">
 			<div class="carousel-item active" data-interval="4000">
 				<img src="./images/iphone-11.png" class="d-block w-100" alt="...">
-
 			</div>
 			<div class="carousel-item" data-interval="3000">
 				<img src="./images/laptop-gaming2.png" class="d-block w-100"
@@ -59,11 +52,11 @@
 	</div>
 </div>
 
-
-
+<!-- CONTENT -->
 
 <div class="container-fluid">
 	<div class="row">
+		<!-- left -->
 		<div class="SideBar col-lg-2 col-md-2 col-sm-3 col-xs-12">
 			<div class="SideBarItem">
 				<h4 class="headline">Main Categories</h4>
@@ -92,19 +85,16 @@
 					received a ready-for-pickup notification.</p>
 			</div>
 		</div>
+		<!-- mid -->
 		<div class="Content col-lg-10 col-md-10 col-sm-9 col-xs-12">
 			<!-- product -->
 			<div>
 				<hr>
-				<div>
-					<h1>Current Offers</h1>
-				</div>
+				<h1>Current Offers</h1>				
 				<hr>
 				<div class="row">
 					<c:set var="countProduct" scope="request" value="${1}" />
 					<c:forEach var="product" items="${newProducts}">
-
-
 						<div class="col-xs-6 col-sm-6 col-md-4 col-lg-3">
 							<div class="GirdProduct">
 								<div class="panel panel-default">
@@ -112,10 +102,8 @@
 										<div class="panel-product-image">
 											<a href="<c:url value='product?${product.productId}'/>">
 												<div>
-													<img
-														style="width: 100%; height: 100%; justify-content: center; align-items: center; -webkit-box-pack: center; -webkit-box-align: center; position: absolute; background: rgb(255, 255, 255); top: 0px; left: 0px;"
-														src="${initParam.imgProductPath}${product.getImage()}"
-														alt="">
+													<img style="width: 100%; height: 100%; justify-content: center; align-items: center; -webkit-box-pack: center; -webkit-box-align: center; position: absolute; background: rgb(255, 255, 255); top: 0px; left: 0px;"
+														src="${initParam.imgProductPath}${product.getImage()}" alt="">
 												</div>
 											</a>
 										</div>
@@ -127,17 +115,13 @@
 												<div class="panel-body-addtocart col-6">
 													<div style="position: relative;">
 														<div class="loadable-content-wrap">
-															<a href="<c:url value='addToCart?${product.productId}'/>"  style="background-color: white;" type="button"
-																class="btn btn-primary button">
-																<img class="InlineIcon" src="img/cart.png"
-																	viewBox="0 0 24 24" width="24" heigh="24">
+															<a href="<c:url value='addToCart?${product.productId}'/>"  style="background-color: white;" type="button" class="btn btn-primary button">
+																<img class="InlineIcon" src="img/cart.png" viewBox="0 0 24 24" width="24" heigh="24">
 															</a>
 														</div>
 													</div>
 												</div>
-												<div style="margin: 7px 0px 0px 20px"
-													class="panel-product-price col">$
-													${product.getPrice()}</div>
+												<div style="margin: 7px 0px 0px 20px" class="panel-product-price col">$${product.getPrice()}</div>
 											</div>
 										</div>
 									</div>
@@ -145,18 +129,14 @@
 										<p style="margin-left: 10px;">${product.getDescription() }
 									</div>
 								</div>
-
 							</div>
 						</div>
-
 						<c:set var="countProduct" scope="request"
 							value="${countProduct+1}" />
 					</c:forEach>
-
 					<div style="clear: both; margin-top: 200px;"></div>
 					<hr>
-				</div>
-		
+				</div>	
 			</div>
 			<!-- category -->
 			<div>
@@ -168,8 +148,6 @@
 				<div class="row">
 					<c:set var="countCategory" scope="request" value="${1}" />
 					<c:forEach var="category" items="${newCategories}">
-
-
 						<div class="col-xs-6 col-sm-6 col-md-4 col-lg-3">
 							<div class="GirdProduct">
 								<div style="height: 220px;" class="panel panel-default">
@@ -177,10 +155,8 @@
 										<div class="panel-product-image">
 											<a href="<c:url value='category?${category.categoryId}'/>">
 												<div>
-													<img
-														style="width: 100%; height: 100%; justify-content: center; align-items: center; -webkit-box-pack: center; -webkit-box-align: center; position: absolute; background: rgb(255, 255, 255); top: 0px; left: 0px;"
-														src="${initParam.imgCategoryPath}${category.getImage()}"
-														alt="">
+													<img style="width: 100%; height: 100%; justify-content: center; align-items: center; -webkit-box-pack: center; -webkit-box-align: center; position: absolute; background: rgb(255, 255, 255); top: 0px; left: 0px;"
+														src="${initParam.imgCategoryPath}${category.getImage()}" alt="">
 												</div>
 											</a>
 										</div>
@@ -193,11 +169,9 @@
 								</div>
 							</div>
 						</div>
-
 						<c:set var="countCategory" scope="request"
 							value="${countCategory+1}" />
 					</c:forEach>
-
 					<div style="clear: both; margin-top: 200px;"></div>
 					<hr>
 				</div>

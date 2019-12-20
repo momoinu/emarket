@@ -22,15 +22,15 @@
 			<div class="SideBarItem">
 				<h4>Free Shipping</h4>
 				<p>We offer you a Free Shipping, if your order value is over 1000.000 VND. For more information please check:</p>
-				<p>
-					<a href="#">Free Shipping Information and Conditions</a>
-				</p>
+				<p><a href="#">Free Shipping Information and Conditions</a></p>
 			</div>
 			<div class="SideBarItem">
 				<h4>Pickup</h4>
 				<p>You can pickup your goods, after you placed an order and and received a ready-for-pickup notification.</p>
 			</div>
 		</div>
+	
+		<!-- Content -->
 	
 		<div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
 			<h4 class="headline">Billing address</h4>
@@ -40,10 +40,8 @@
 			<span>Please keep note of your confirmation number: </span>
 			<strong>${orderRecord.confirmationNumber}</strong>
 			<br>
-			<p>If you have any query concerning your order, fell free to <a href="#">contact us</a>. </p>
-			
-			<p>Thank you for shopping at the LoL.team Store!See you soon!</p>
-			
+			<p>If you have any query concerning your order, fell free to <a href="#">contact us</a>. </p>		
+			<p>Thank you for shopping at the LoL.team Store!See you soon!</p>			
 			<div class="row">
 				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 					<h4 class="headline">Order Summary</h4>
@@ -59,29 +57,28 @@
 						<tbody>
 							<c:forEach var="orderedProduct" items="${orderedProducts}" varStatus="iter">
 								<tr>
-								    <td>
-								        ${products[iter.index].name}
-								    </td>
-								    <td>
-								        ${orderedProduct.quantity}
-								    </td>
-								    <td>
-								        ${products[iter.index].price * orderedProduct.quantity}
-								    </td>
+								    <td>${products[iter.index].name}</td>
+								    <td>${orderedProduct.quantity}</td>							    
+								    <td><fmt:formatNumber type="currency" currencySymbol="&dollar; " value="${products[iter.index].price * orderedProduct.quantity}" /></td>
 								</tr>
 					        </c:forEach>
 							<tr>
 								<td>Delivery Surcharge</td>
 								<td></td>
-								<td>5</td>
+								<td><fmt:formatNumber type="currency" currencySymbol="&dollar; " value="5" /></td>
+							</tr>
+							<tr>
+								<td>Promo code</td>
+								<td></td>
+								<td><fmt:formatNumber type="currency" currencySymbol="&dollar; " value="0" /></td>
 							</tr>
 							<tr>
 								<td>Credit Total</td>
-								<td></td>
-								<td>5</td>
+								<td></td>								
+								<td><fmt:formatNumber type="currency" currencySymbol="&dollar; " value="${total + 5 }" /></td>
 							</tr>
 							<tr>
-								<td>Date create</td>
+								<td>Date create: ${orderRecord.dateCreated}</td>
 								<td></td>
 								<td></td>
 							</tr>
@@ -96,13 +93,13 @@
 						<tr>
 							<td colspan="3">
 								<strong>Receiver :</strong>
-								${customer.name}
+								${orderRecord.receiver}
 								<br>
 								<strong>Address :</strong>
-								${customer.address}
+								${orderRecord.address}
 								<br>
 								<strong>Phone :</strong>
-								${customer.phone}
+								${orderRecord.phone}
 							</td>
 						</tr>
 		               </table>

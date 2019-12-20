@@ -68,16 +68,10 @@
 					</div>
 				</form>
 				<div style="margin: -40px 0 20px 0;">
-					<p style="text-align:center;"><a href="login.jsp" >Login</a><a style="margin-left: 50px;" href="index.jsp">Home</a></p>
-					
-				</div>
-				
-			</div>
-			
+					<p style="text-align:center;"><a href="login.jsp" >Login</a><a style="margin-left: 50px;" href="index.jsp">Home</a></p>					
+				</div>			
+			</div>			
 		</div>
 	</div>
-	
-
-
 </body>
 </html>

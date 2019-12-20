@@ -45,34 +45,26 @@
 				</div>
 				<hr>
 				<div class="container">
-					<div class="row row-cols-4">
-						
+					<div class="row row-cols-4">						
 							<%
 								List<Product> categoryProducts = (List<Product>) session.getAttribute("categoryProducts");
 								for (Product p : categoryProducts) {
 							%>
-							<div class="col">	
-									<p>
-										<a title="<%=p.getName()%>" href="img/demo/<%=p.getImage()%>"
-											class="portfolio-item-preview" datarel="prettyPhoto"> 
-											
-										<img src="img/demo/<%=p.getImage()%>" alt="" width="210"
-											height="145" class="portfolio-img pretty-box">
-										</a>
-									</p>
-									<h4>
-										<a href="#"><%=p.getName()%></a>
-									</h4>
-									<p><%=p.getDescription()%></p>
-									<p style="text-align: left">
-										<a href="product?<%=p.getProductId()%>"
-											class="button_small white">See Details &raquo;</a>
-									</p>
-							</div>
+								<div class="col">	
+										<p>
+											<a title="<%=p.getName()%>" href="img/demo/<%=p.getImage()%>" class="portfolio-item-preview" datarel="prettyPhoto"> 							
+											<img src="img/demo/<%=p.getImage()%>" alt="" width="210" height="145" class="portfolio-img pretty-box">
+											</a>
+										</p>
+										<h4><a href="#"><%=p.getName()%></a></h4>
+										<p><%=p.getDescription()%></p>
+										<p style="text-align: left">
+											<a href="product?<%=p.getProductId()%>" class="button_small white">See Details &raquo;</a>
+										</p>
+								</div>
 							<%
 								}
-							%>
-						
+							%>					
 					</div>
 				</div>
 			</div>

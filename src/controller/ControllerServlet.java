@@ -54,8 +54,7 @@ public class ControllerServlet extends HttpServlet {
 		super.init(servletConfig);
 		// store new product list in servlet context
 		getServletContext().setAttribute("newProducts", productSessionBean.findAll());
-		getServletContext().setAttribute("newCategories", categorySB.findAll());	
-		
+		getServletContext().setAttribute("newCategories", categorySB.findAll());			
 	}
 
 	@Override
@@ -165,13 +164,12 @@ public class ControllerServlet extends HttpServlet {
 							language = (String) locale.getLanguage();
 						}
 						// dissociate shopping cart from session
+						double total = cart.getTotal();
 						cart = null;
-						// end session
-						session.invalidate();
-						if (!language.isEmpty()) { //
-
-							request.setAttribute("language", language); //
-
+						session.setAttribute("cart", cart);
+						session.setAttribute("total", total);
+						if (!language.isEmpty()) { 
+							request.setAttribute("language", language); 
 						}
 						Map orderMap = orderManager.getOrderDetails(orderId);
 						// place order details in request scope
@@ -180,7 +178,6 @@ public class ControllerServlet extends HttpServlet {
 						request.setAttribute("orderRecord", orderMap.get("orderRecord"));
 						request.setAttribute("orderedProducts", orderMap.get("orderedProducts"));
 						userPath = "/confirmation";
-
 					} else {
 						userPath = "/checkout";
 						request.setAttribute("orderFailureFlag", true);

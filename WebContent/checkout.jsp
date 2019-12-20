@@ -11,18 +11,15 @@
 		}
 	}
 	String username = user.getValue();
-	System.out.println(username + "-----------++++++++++++++++++++++++++++++"); */
-	
-	
-/* 	CustomerSessionBean customerSessionBean = new CustomerSessionBean();
-	Customer customer = customerSessionBean.findByUsername(username); */
+	CustomerSessionBean customerSessionBean = new CustomerSessionBean();
+	Customer customer = customerSessionBean.findByUsername(username);  */
 
-	
 	Customer customer = (Customer) session.getAttribute("customer");
 %>
 
 <div class="container-fluid">
 	<div class="row">
+		<!-- left -->
 		<div class="SideBar col-lg-2 col-md-2 col-sm-3 col-xs-12">
 			<div class="SideBarItem">
 				<h4 class="headline">Main Categories</h4>
@@ -49,46 +46,44 @@
 				<p>You can pickup your goods, after you placed an order and and received a ready-for-pickup notification.</p>
 			</div>
 		</div>
-
+		
+		<!-- Content -->
+		
 		<div class="Content col-lg-7 col-md-7 col-sm-6 col-xs-12">
 			<c:if test="${!empty orderFailureFlag}">
 				<p style="color: #c00; font-style: italic">We were unable to process your order. Please try again!</p>
 			</c:if>
 			<h4 class="headline">Billing address</h4>
-			<form class="needs-validation" novalidate>
+			<form class="needs-validation" action="<c:url value='purchase' />" method="post" novalidate>
 				<div class="col-md-6 mb-3">
 					<label for="name">Name</label> 
 					<input type="text" class="form-control" id="name" value="${customer.getName()}" readonly>
 				</div>
-
 				<div class="mb-3">
 					<label for="username">Username</label>
 					<div class="input-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text">User</span>
 						</div>
-						<input type="text" class="form-control" id="username" name="username" value="${username}" readonly>
+						<input type="text" class="form-control" id="username" name="username" value="${customer.getUsername()}" readonly>
 					</div>
 				</div>
-
 				<div class="mb-3">
 					<label for="email">Email <span class="text-muted">(Optional)</span></label> 
 					<input type="email" class="form-control" id="email" value="${customer.getEmail()}" readonly>
 					<div class="invalid-feedback">Please enter a valid email address for shipping updates.</div>
 				</div>
-
+				
 				<div class="mb-3">
 					<label for="receiver">Receiver</label> 
 					<input type="text" class="form-control" id="receiver" name="receiver" placeholder="" value="" required>
 					<div class="invalid-feedback">Please enter your shipping address.</div>
-				</div>
-				
+				</div>				
 				<div class="mb-3">
 					<label for="address">Address</label> 
 					<input type="text" class="form-control" id="address" name="address" placeholder="1234 Main St" value="${customer.getAddress()}" required>
 					<div class="invalid-feedback">Please enter your shipping address.</div>
 				</div>
-
 				<div class="mb-3">
 					<label for="phone">Phone</label> 
 					<input type="text" class="form-control" id="phone" name="phone" placeholder="0123456789" value="${customer.getPhone()}" required>
@@ -167,17 +162,18 @@
 
 		<div></div>
 
-
+		<!-- Cart -->
 		<div class="Content col-lg-3 col-md-3 col-sm-3 col-xs-12">
-
+		
 			<h4 class="d-flex justify-content-between align-items-center mb-3">
 				<span class="headline">Your cart</span> 
 				<span class="badge badge-secondary badge-pill">${cart.numberOfItems}</span>
 			</h4>
+			
 			<ul class="list-group mb-3">
 				<li class="list-group-item d-flex justify-content-between lh-condensed">
 					<div>
-						<h6 class="my-0">Total</h6>
+						<h6 class="my-0">Total order</h6>
 					</div>
 					<fmt:formatNumber type="currency" currencySymbol="&dollar; " value="${cart.subtotal}" />
 				</li>
@@ -187,7 +183,6 @@
 					</div>
 					<fmt:formatNumber type="currency" currencySymbol="&dollar; " value="5" />
 				</li>
-
 				<li class="list-group-item d-flex justify-content-between bg-light">
 					<div class="text-success">
 						<h6 class="my-0">Promo code</h6>
@@ -196,14 +191,13 @@
 				</li>
 				<li class="list-group-item d-flex justify-content-between">
 				<span>Total (USD)</span> 
-				<strong><fmt:formatNumber type="currency" currencySymbol="&dollar; " value="${cart.total}" /></strong></li>
+				<strong><fmt:formatNumber type="currency" currencySymbol="&dollar; " value="${cart.subtotal + 5}" /></strong></li>
 			</ul>
 
 			<form class="card p-2">
 				<a class="btn btn-primary btn-lg btn-block" href="<c:url value='viewCart'/>">View your Cart</a>
 			</form>
 		</div>
-
 	</div>
 </div>
 

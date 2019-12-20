@@ -23,7 +23,6 @@
 			<label class="col-md-4 control-label" for="product_description">PRODUCT DESCRIPTION</label>
 			<div class="col-md-4">
 				<input id="product_description" name="description" placeholder="PRODUCT DESCRIPTION" class="form-control input-md" type="text">
-
 			</div>
 		</div>
 
@@ -62,7 +61,6 @@
 			<label class="col-md-4 control-label" for="product_accessories">ACCESSORIES</label>
 			<div class="col-md-4">
 				<input id="product_accessories" name="accessories" placeholder="ACCESSORIES" class="form-control input-md" type="text">
-
 			</div>
 		</div>
 
@@ -71,7 +69,6 @@
 			<label class="col-md-4 control-label" for="product_guaranty">GUARANTY</label>
 			<div class="col-md-4">
 				<input id="product_guaranty" name="guaranty" placeholder="GUARANTY" class="form-control input-md" type="text">
-
 			</div>
 		</div>
 
@@ -89,7 +86,6 @@
 			<label class="col-md-4 control-label" for="product_quantity">QUANTITY</label>
 			<div class="col-md-4">
 				<input id="product_quantity" name="quantity" placeholder="QUANTITY" class="form-control input-md" type="text">
-
 			</div>
 		</div>
 		

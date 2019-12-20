@@ -46,7 +46,7 @@
 				<hr>
 				<div class="row">
 					<div class="col-6">
-						<
+						
 						<div class="amazingslider-wrapper" id="amazingslider-wrapper-1"
 							style="display: block; position: relative; max-width: 500px; margin: 0px auto 80px;">
 							<div class="amazingslider" id="amazingslider-1"
@@ -56,7 +56,7 @@
 									<%
 										for (String img : selectedProductDetail.getAllImages()) {
 									%>
-									<li><img src="images/<%=img%>" alt="" title="" /></li>
+										<li><img src="images/<%=img%>" alt="" title="" /></li>
 									<%
 										}
 									%>
@@ -65,7 +65,7 @@
 									<%
 										for (String img : selectedProductDetail.getAllImages()) {
 									%>
-									<li><img src="images/<%=img%>" alt="" title="" /></li>
+										<li><img src="images/<%=img%>" alt="" title="" /></li>
 									<%
 										}
 									%>
@@ -75,30 +75,29 @@
 					</div>
 					<div class="col-6">
 						<div class="OfferSingleProduct panel2 panel-default">
-							<div  class=""panel-body">
+							<div class="panel-body">
 								<div style="margin: 10px 10px 0px 10px;">
 									<h3>Price</h3>
-									<p><%=selectedProduct.getPrice()%>
-										$
-									</p>
-									
+									<p><%=selectedProduct.getPrice()%>$</p>								
 									<h3>Accessories</h3>
 									<p><%=selectedProductDetail.getAccessories()%></p>
 									<h3>Warranty Strategy</h3>
 									<p><%=selectedProductDetail.getGuaranty()%></p>
 
 									<a href="<c:url value='addToCart?${selectedProduct.getProductId()}'/>" >
-										<div class="button btn btn-primary btn-lg btn-block">Add to cart</div></a>
+										<div class="button btn btn-primary btn-lg btn-block">Add to cart</div>
+									</a>
 									<h3 style="margin-top:10px;">Technical Details</h3>
 									<p style="padding-bottom:20px;">
 										<%=selectedProductDetail.getInformation()%>
 									</p>
 									<c:choose>
 										<c:when test="${account == 1}">
-											<a href="<c:url value='deleteProduct?${selectedProduct.getProductId()}'/>" >
-										<div class="button btn btn-primary btn-lg btn-block">Delete Product</div></a>										
-										</c:when>										
-									</c:choose>									
+											<a href="<c:url value='deleteProduct?${selectedProduct.getProductId()}'/>">
+												<div class="button btn btn-primary btn-lg btn-block">Delete Product</div>
+											</a>
+										</c:when>
+									</c:choose>
 								</div>
 							</div>
 						</div>
@@ -107,8 +106,5 @@
 			</div>
 		</div>
 	</div>
-
-
-
 	<div style="clear: both; height: 40px"></div>
 </div>

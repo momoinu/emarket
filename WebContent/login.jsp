@@ -10,13 +10,11 @@
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
-<body>
-	
+<body>	
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
 				<div class="login100-form-title" style="background-image: url(images/Lol.team.png);">
-
 					<span class="login100-form-title-1">
 						Sign In
 					</span>
@@ -62,10 +60,8 @@
 					<p style="margin: 20px 0 -60px 0; text-align:center;"><a href="index.jsp">Come back home page</a>
 				</div>
 				
-			</div>
-			
+			</div>			
 		</div>
-	</div>
-	
+	</div>	
 </body>
 </html>
