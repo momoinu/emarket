@@ -99,6 +99,7 @@ public class ProductServlet extends HttpServlet {
 				p.setPrice(price);
 				java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
 				p.setLastUpdate(date);
+				p.setQuantity(quantity);
 				productSB.create(p);
 				// set for product detail
 
@@ -111,7 +112,7 @@ public class ProductServlet extends HttpServlet {
 				pd.setAccessories(accessories);
 				pd.setGuaranty(guaranty);
 				pd.setInformation(information);
-				pd.setQuantity(quantity);
+				
 
 				productDetailSB.create(pd);
 				session.setAttribute("selectedProduct", p);

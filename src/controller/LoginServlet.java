@@ -102,14 +102,14 @@ public class LoginServlet extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			Random rand = new Random();
 			Customer customer = new Customer();
-			customer.setAddress(request.getParameter("address"));
-			customer.setCityRegion(request.getParameter("city_region"));
 			customer.setCustomerId(rand.nextInt(999999999));
-			customer.setEmail(request.getParameter("email"));
 			customer.setName(request.getParameter("name"));
-			customer.setPassword(request.getParameter("password"));
+			customer.setEmail(request.getParameter("email"));
 			customer.setPhone(request.getParameter("phone"));
-			customer.setUsername(request.getParameter("username"));
+			customer.setAddress(request.getParameter("address"));
+			customer.setCity(request.getParameter("city_region"));
+			customer.setUsername(request.getParameter("username"));					
+			customer.setPassword(request.getParameter("password"));
 			Customer customerAvailble = customerSB.findByUsername(request.getParameter("username"));
 			if (customerAvailble != null) {
 				out.print("<script type=\"text/javascript\">\r\n" + "	alert('Username is not availble!');\r\n"

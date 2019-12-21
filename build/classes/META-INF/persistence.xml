@@ -6,6 +6,7 @@
 	
 	<persistence-unit name="Lab8a" transaction-type="JTA">
 		<jta-data-source>jdbc/emarket</jta-data-source>
+		<class>entity.AddressBook</class>
 		<class>entity.Category</class>
 		<class>entity.Customer</class>
 		<class>entity.CustomerOrder</class>

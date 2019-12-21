@@ -34,6 +34,8 @@ public class Product implements Serializable {
 
 	private double price;
 
+	private int quantity;
+
 	@Column(name="thumb_image")
 	private String thumbImage;
 
@@ -107,6 +109,14 @@ public class Product implements Serializable {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public int getQuantity() {
+		return this.quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 	public String getThumbImage() {

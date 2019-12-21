@@ -10,12 +10,10 @@ import java.util.List;
  * 
  */
 @Entity
-
 @NamedQueries({
 	@NamedQuery(name="Customer.findAll", query="SELECT c FROM Customer c"),
 	@NamedQuery(name="Customer.findByUserPass", query="SELECT c FROM Customer c WHERE c.username = :username AND c.password = :password"),
 	@NamedQuery(name="Customer.findByUsername", query="SELECT c FROM Customer c WHERE c.username = :username")})
-
 public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -25,8 +23,9 @@ public class Customer implements Serializable {
 
 	private String address;
 
-	@Column(name="city_region")
-	private String cityRegion;
+	private String avatar;
+
+	private String city;
 
 	private String email;
 
@@ -37,6 +36,10 @@ public class Customer implements Serializable {
 	private String phone;
 
 	private String username;
+
+	//bi-directional many-to-one association to AddressBook
+	@OneToMany(mappedBy="customer")
+	private List<AddressBook> addressBooks;
 
 	//bi-directional many-to-one association to CustomerOrder
 	@OneToMany(mappedBy="customer")
@@ -61,12 +64,20 @@ public class Customer implements Serializable {
 		this.address = address;
 	}
 
-	public String getCityRegion() {
-		return this.cityRegion;
+	public String getAvatar() {
+		return this.avatar;
 	}
 
-	public void setCityRegion(String cityRegion) {
-		this.cityRegion = cityRegion;
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public String getCity() {
+		return this.city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public String getEmail() {
@@ -107,6 +118,28 @@ public class Customer implements Serializable {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public List<AddressBook> getAddressBooks() {
+		return this.addressBooks;
+	}
+
+	public void setAddressBooks(List<AddressBook> addressBooks) {
+		this.addressBooks = addressBooks;
+	}
+
+	public AddressBook addAddressBook(AddressBook addressBook) {
+		getAddressBooks().add(addressBook);
+		addressBook.setCustomer(this);
+
+		return addressBook;
+	}
+
+	public AddressBook removeAddressBook(AddressBook addressBook) {
+		getAddressBooks().remove(addressBook);
+		addressBook.setCustomer(null);
+
+		return addressBook;
 	}
 
 	public List<CustomerOrder> getCustomerOrders() {

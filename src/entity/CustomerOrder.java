@@ -27,6 +27,8 @@ public class CustomerOrder implements Serializable {
 
 	private String ccNumber;
 
+	private String city;
+
 	@Column(name="confirmation_number")
 	private int confirmationNumber;
 
@@ -80,6 +82,14 @@ public class CustomerOrder implements Serializable {
 
 	public void setCcNumber(String ccNumber) {
 		this.ccNumber = ccNumber;
+	}
+
+	public String getCity() {
+		return this.city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public int getConfirmationNumber() {
