@@ -32,7 +32,7 @@ import session_bean.ProductSessionBean;
 import valid.Validator;
 
 @WebServlet(name = "ControllerServlet", loadOnStartup = 1, urlPatterns = { "/category", "/product", "/addToCart",
-		"/viewCart", "/updateCart", "/checkout", "/purchase", "/chooseLanguage" })
+		"/viewCart", "/updateCart", "/checkout", "/purchase", "/chooseLanguage", "/beforeCheckout" })
 public class ControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -152,10 +152,15 @@ public class ControllerServlet extends HttpServlet {
 				String ccNumber = request.getParameter("ccNumber");
 				boolean validationErrorFlag = false;
 				validationErrorFlag = validator.validateForm(username, receiver, phone, address, ccNumber);
+				System.out.println(validationErrorFlag+"888888888888888888888888888888888888");
+				Customer customer = customerSB.findByUsername(username);
 				if (!validationErrorFlag) {
 					request.setAttribute("validationErrorFlag", validationErrorFlag);
 					userPath = "checkout";
-				} else {
+				} else if(customer == null) {
+					request.setAttribute("validationErrorUsernameFlag", false);		
+					userPath = "checkout";
+				}else {
 					int orderId = orderManager.placeOrder(username, receiver, phone, address, ccNumber, cart);
 					if (orderId != 0) {
 						Locale locale = (Locale) session.getAttribute("javax.servlet.jsp.jstl.fmt.locale.session");
@@ -184,6 +189,12 @@ public class ControllerServlet extends HttpServlet {
 					}
 				}
 			}
+		}
+		else if(userPath.equals("/beforeCheckout")) {
+			String username = request.getParameter("usernameOfCustomer");
+			Customer customer = customerSB.findByUsername(username);
+			session.setAttribute("customer", customer);
+			request.getRequestDispatcher("checkout.jsp").forward(request, response);
 		}
 		String url = userPath + ".jsp";
 		try {

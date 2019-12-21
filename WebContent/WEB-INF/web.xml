@@ -15,6 +15,7 @@
       <url-pattern>/checkout.jsp</url-pattern>
       <url-pattern>/confirmation.jsp</url-pattern>
       <url-pattern>/addProduct.jsp</url-pattern>
+      <url-pattern>/beforeCheckout.jsp</url-pattern>
       <include-prelude>header.jspf</include-prelude>
       <include-coda>footer.jspf</include-coda>
     </jsp-property-group>

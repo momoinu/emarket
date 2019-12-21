@@ -48,7 +48,7 @@ public class ProductServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		String userPath = request.getRequestURI().substring(request.getContextPath().length());
 		// addproduct
-		if (userPath.equals("/addproduct")) {
+		if (userPath.equals("/addProduct")) {
 			PrintWriter out = response.getWriter();
 			Product selectedProduct = (Product) session.getAttribute("selectedProduct");
 			ProductDetail selectedProductDetail = (ProductDetail) session.getAttribute("selectedProductDetail");
@@ -116,8 +116,9 @@ public class ProductServlet extends HttpServlet {
 				productDetailSB.create(pd);
 				session.setAttribute("selectedProduct", p);
 				session.setAttribute("selectedProductDetail", pd);
+				getServletContext().setAttribute("newProducts", productSessionBean.findAll());
 				out.print("<script type=\"text/javascript\">\r\n" 
-						+ "	alert('Delete product successfully!');\r\n"
+						+ "	alert('Create product successfully!');\r\n"
 						+ "	</script>");
 				userPath = "product";
 			} catch (Exception ex) {
@@ -127,7 +128,7 @@ public class ProductServlet extends HttpServlet {
 		}
 
 		// delete product
-		else if (userPath.equals("/deleteproduct")) {
+		else if (userPath.equals("/deleteProduct")) {
 			PrintWriter out = response.getWriter();
 			int productId = Integer.parseInt(request.getQueryString());
 			if (productId != 0) {
@@ -135,11 +136,12 @@ public class ProductServlet extends HttpServlet {
 				ProductDetail productDetail = productDetailSB.find(productId);
 				productDetailSB.remove(productDetail);
 				productSB.remove(product);
-
+				getServletContext().setAttribute("newProducts", productSessionBean.findAll());
 				out.print("<script type=\"text/javascript\">\r\n" 
 						+ "	alert('Delete product successfully!');\r\n"
 						+ "	</script>");
 				request.getRequestDispatcher("index.jsp").include(request, response);
+				out.close();
 			}
 		}
 		String url = userPath + ".jsp";

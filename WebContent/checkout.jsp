@@ -1,6 +1,9 @@
 <%@page import="session_bean.CustomerSessionBean"%>
 <%@page import="entity.Customer"%>
 <%@page import="java.util.List"%>
+
+
+
 <%
 	session.setAttribute("view", "/checkout");	
 	/* Cookie user = null;
@@ -13,9 +16,20 @@
 	String username = user.getValue();
 	CustomerSessionBean customerSessionBean = new CustomerSessionBean();
 	Customer customer = customerSessionBean.findByUsername(username);  */
-
+	
 	Customer customer = (Customer) session.getAttribute("customer");
 %>
+
+
+<c:if test="${account != 1 && account != 2 }">
+	<script type="text/javascript">
+		alert('Please login before checkout');
+		window.location = 'login.jsp';
+	</script>
+</c:if>
+
+
+
 
 <div class="container-fluid">
 	<div class="row">
@@ -53,11 +67,42 @@
 			<c:if test="${!empty orderFailureFlag}">
 				<p style="color: #c00; font-style: italic">We were unable to process your order. Please try again!</p>
 			</c:if>
+			<c:if test="${!empty validationErrorFlag}">
+				<p style="color: #c00; font-style: italic">We were unable to process your order. Please complete all information!</p>
+			</c:if>
+			<c:if test="${!empty validationErrorUsernameFlag}">
+				<p style="color: #c00; font-style: italic">We were unable to process your order. Please enter the correct username!</p>
+			</c:if>
+			
+			<c:if test="${account == 1}">
+				<h4 class="headline">Admin checkout for customer</h4>
+				<form class="needs-validation" action="<c:url value='beforeCheckout' />" method="post" >
+					<div class="mb-3">
+						<label for="usernameOfCustomer">Username</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Username of customer:</span>
+							</div>
+							<input type="text" class="form-control" id="usernameOfCustomer" name="usernameOfCustomer" value="${customer.getUsername() }" required>
+						</div>
+					</div>
+					<button class="btn btn-primary btn-lg btn-block" type="submit">Continue to get information of customer</button>
+				</form>				
+				
+				<hr class="mb-4">
+			</c:if>
+			
 			<h4 class="headline">Billing address</h4>
-			<form class="needs-validation" action="<c:url value='purchase' />" method="post" novalidate>
-				<div class="col-md-6 mb-3">
+			<form class="needs-validation" action="<c:url value='purchase' />" method="post" >
+				<div class="mb-3">
 					<label for="name">Name</label> 
-					<input type="text" class="form-control" id="name" value="${customer.getName()}" readonly>
+					<input type="text" class="form-control" id="name" value="${customer.getName()}" readonly required>
+				</div>
+				
+				<div class="mb-3">
+					<label for="email">Email <span class="text-muted">(Optional)</span></label> 
+					<input type="text" class="form-control" id="email" value="${customer.getEmail()}" readonly required>
+					<div class="invalid-feedback">Please enter a valid email address for shipping updates.</div>
 				</div>
 				<div class="mb-3">
 					<label for="username">Username</label>
@@ -65,34 +110,30 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text">User</span>
 						</div>
-						<input type="text" class="form-control" id="username" name="username" value="${customer.getUsername()}" readonly>
+						<input type="text" class="form-control" id="username" name="username" value="${customer.getUsername()}" readonly required>
 					</div>
 				</div>
-				<div class="mb-3">
-					<label for="email">Email <span class="text-muted">(Optional)</span></label> 
-					<input type="email" class="form-control" id="email" value="${customer.getEmail()}" readonly>
-					<div class="invalid-feedback">Please enter a valid email address for shipping updates.</div>
-				</div>
+				
+				
 				
 				<div class="mb-3">
 					<label for="receiver">Receiver</label> 
-					<input type="text" class="form-control" id="receiver" name="receiver" placeholder="" value="" required>
+					<input type="text" class="form-control" id="receiver" name="receiver" placeholder="" value="${customer.getName()}" required>
 					<div class="invalid-feedback">Please enter your shipping address.</div>
 				</div>				
 				<div class="mb-3">
 					<label for="address">Address</label> 
 					<input type="text" class="form-control" id="address" name="address" placeholder="1234 Main St" value="${customer.getAddress()}" required>
 					<div class="invalid-feedback">Please enter your shipping address.</div>
-				</div>
+				</div>				
 				<div class="mb-3">
 					<label for="phone">Phone</label> 
-					<input type="text" class="form-control" id="phone" name="phone" placeholder="0123456789" value="${customer.getPhone()}" required>
+					<input type="text" class="form-control" id="phone" name="phone" placeholder=""  value="${customer.getPhone()}" required>
 					<div class="invalid-feedback">Please enter your shipping address.</div>
 				</div>
-
 				<div class="row">
 					<div class="col-md-6 mb-3">
-						<label for="country">Country</label> <select class="custom-select d-block w-100" id="country" name="" required>
+						<label for="country">Country</label> <select class="custom-select d-block w-100" id="country" required>
 							<option value="">Choose...</option>
 							<option value="Viet Nam">viet Nam</option>
 						</select>
@@ -122,21 +163,23 @@
 
 				<div class="d-block my-3">
 					<div class="custom-control custom-radio">
-						<input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required> 
+						<input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked > 
 						<label class="custom-control-label" for="credit">Credit card</label>
 					</div>
 					<div class="custom-control custom-radio">
-						<input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required> 
+						<input id="debit" name="paymentMethod" type="radio" class="custom-control-input" > 
 						<label class="custom-control-label" for="debit">Debit card</label>
 					</div>
 					<div class="custom-control custom-radio">
-						<input id="pay-directly" name="paymentMethod" type="radio" class="custom-control-input" required> 
+						<input id="pay-directly" name="paymentMethod" type="radio" class="custom-control-input" > 
 						<label class="custom-control-label" for="pay-directly">Pay directly</label>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-6 mb-3">
-						<label for="cc-name">Name on card</label> <input type="text" class="form-control" id="cc-name" placeholder="" required> <small class="text-muted">Full name as displayed on card</small>
+						<label for="cc-name">Name on card</label> 
+						<input type="text" class="form-control" id="cc-name" placeholder="" required> 
+						<small class="text-muted">Full name as displayed on card</small>
 						<div class="invalid-feedback">Name on card is required</div>
 					</div>
 					<div class="col-md-6 mb-3">

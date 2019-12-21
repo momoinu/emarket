@@ -48,13 +48,10 @@ public class LoginServlet extends HttpServlet {
 		String userPath = request.getRequestURI().substring(request.getContextPath().length());
 //		logout		
 		if (userPath.equals("/logout")) {
-			PrintWriter out = response.getWriter();
 			session.setAttribute("account", 0);		
 			session.setAttribute("customer", null);
-			out.print("<script type=\"text/javascript\">\r\n" + "	alert('Logout successfully ');\r\n"
-					+ "	</script>");
+			session.setAttribute("cart", null);
 			request.getRequestDispatcher("index.jsp").include(request, response);
-			out.close();
 		}
 	}
 
@@ -74,13 +71,13 @@ public class LoginServlet extends HttpServlet {
 			// admin
 			if (admin != null) {
 				if ((username.equals("rongden1211") && password.equals("admin"))
-						|| (username.equals("momoinu") && password.equals("admin"))) {
-					out.print(
-							"<script type=\"text/javascript\">\r\n" + "	alert('Welcome Admin');\r\n" + "	</script>");
+						|| (username.equals("momoinu") && password.equals("a1k43pbc"))) {
+					Customer customer = null;
+					session.setAttribute("customer", customer);				
 					session.setAttribute("account", (int) 1);
 					request.getRequestDispatcher("index.jsp").include(request, response);
 				} else {
-					out.print("<script type=\"text/javascript\">\r\n" + " alert('You are not Admin');\r\n"
+					out.print("<script type=\"text/javascript\">\r\n" + " alert('Username or password incorrect');\r\n"
 							+ "	</script>");
 					out.print("</br>");
 					request.getRequestDispatcher("login.jsp").include(request, response);
@@ -90,13 +87,11 @@ public class LoginServlet extends HttpServlet {
 				Customer customer = customerSB.findByUserPass(username, password);
 				if (customer == null) {
 					out.print("<script type=\"text/javascript\">\r\n"
-							+ "	alert('Login failed, please login again! ');\r\n" + "	</script>");
+							+ "	alert('Username or password incorrect!');\r\n" + "	</script>");
 					request.getRequestDispatcher("login.jsp").include(request, response);
 				} else {
-					session.setAttribute("account", 2);
+					session.setAttribute("account", (int)2);
 					session.setAttribute("customer", customer);
-					out.print("<script type=\"text/javascript\">\r\n" + "	alert('Login successfully ');\r\n"
-							+ "	</script>");
 					request.getRequestDispatcher("index.jsp").include(request, response);
 				}
 			}

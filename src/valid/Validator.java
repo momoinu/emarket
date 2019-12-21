@@ -13,15 +13,15 @@ public class Validator {
 		  }  
 		}
 	public boolean validateForm(String username,String receiver, String phone, String address, String ccNumber) {
-		if (username == null)
+		if (username.equals(""))
 			return false;
-		if (receiver == null)
+		if (receiver.equals(""))
 			return false;
-		if (phone == null)
+		if (phone.equals(""))
 			return false;
-		if (address == null)
+		if (address.equals(""))
 			return false;
-		if (ccNumber == null)
+		if (ccNumber.equals(""))
 			return false;
 
 		return true;

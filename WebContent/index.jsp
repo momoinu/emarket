@@ -126,7 +126,7 @@
 										</div>
 									</div>
 									<div class="panel-footer">
-										<p style="margin-left: 10px;">${product.getDescription() }
+										<p style="margin-left: 10px;">${product.getDescription() }</p>
 									</div>
 								</div>
 							</div>

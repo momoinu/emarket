@@ -84,7 +84,8 @@ public class OrderManager {
         int i = random.nextInt(999999999);
         order.setConfirmationNumber(i);
 //        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-        order.setDateCreated(new Date());
+        java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+        order.setDateCreated(date);
         order.setAddress(address);
         order.setCcNumber(ccNumber);
         order.setReceiver(receiver);

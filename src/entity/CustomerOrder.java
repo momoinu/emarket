@@ -30,7 +30,7 @@ public class CustomerOrder implements Serializable {
 	@Column(name="confirmation_number")
 	private int confirmationNumber;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date_created")
 	private Date dateCreated;
 
