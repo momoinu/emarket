@@ -10,7 +10,11 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="address_book")
-@NamedQuery(name="AddressBook.findAll", query="SELECT a FROM AddressBook a")
+
+@NamedQueries({
+	@NamedQuery(name="AddressBook.findAll", query="SELECT a FROM AddressBook a"),
+	@NamedQuery(name="AddressBook.findByAddressBookId", query="SELECT a FROM AddressBook a WHERE a.addressId = :addressId"),
+	@NamedQuery(name="AddressBook.findByCustomer", query="SELECT a FROM AddressBook a WHERE a.customer = :customer")})
 public class AddressBook implements Serializable {
 	private static final long serialVersionUID = 1L;
 

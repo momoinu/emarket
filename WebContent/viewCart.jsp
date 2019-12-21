@@ -5,6 +5,9 @@
 		<h1 style="margin-left: 50px;">Information of your cart</h1>
 	</div>
 	<hr>
+	<c:if test="${cartFailureFlag}">
+		<p style="color: #c00; font-style: italic">We were unable to update your cart. Quantity in stock we are not enough for you!</p>
+	</c:if>
 	<div class="row">
 		<div class="col-8">
 			<c:if test="${!empty cart && cart.numberOfItems != 0}">
@@ -12,6 +15,7 @@
 					<thead>
 						<tr>
 							<th>Product</th>
+							<th>Product status</th>
 							<th>Price</th>
 							<th>Quantity</th>
 						</tr>
@@ -21,6 +25,12 @@
 							<c:set var="product" value="${cartItem.product}" />
 							<tr>
 								<td>${product.name}</td>
+								<td>
+									<c:choose>
+										<c:when test="${product.getQuantity() > 0}">Stocking</c:when>
+										<c:otherwise>Out of stock</c:otherwise>
+									</c:choose>							
+								</td>							
 								<td class=""><fmt:formatNumber type="currency" currencySymbol="&dollar; " value="${cartItem.total}" /> <br> 
 									<span class="smallText">
 											( <fmt:formatNumber type="currency" currencySymbol="&dollar; " value="${product.price}" /> / unit )
@@ -36,6 +46,7 @@
 							</tr>
 						</c:forEach>
 						<tr>
+							<td></td>
 							<td></td>
 							<td>Total: <fmt:formatNumber type="currency" currencySymbol="&dollar; " value="${cart.subtotal}" /></td>
 							<td></td>

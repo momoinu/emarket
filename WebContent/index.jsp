@@ -1,3 +1,4 @@
+
 <script src="js/jquery.tools.min.js"></script>
 <script>
 	$(function() {
@@ -115,12 +116,23 @@
 												<div class="panel-body-addtocart col-6">
 													<div style="position: relative;">
 														<div class="loadable-content-wrap">
-															<a href="<c:url value='addToCart?${product.productId}'/>"  style="background-color: white;" type="button" class="btn btn-primary button">
-																<img class="InlineIcon" src="img/cart.png" viewBox="0 0 24 24" width="24" heigh="24">
-															</a>
+														<c:choose>
+															<c:when test="${product.getQuantity() > 0}">
+																<a href="<c:url value='addToCart?${product.productId}'/>"  style="background-color: white;" type="button" class="btn btn-primary button">
+																	<img class="InlineIcon" src="img/cart.png" viewBox="0 0 36 36" width="36">
+																</a>
+															</c:when>
+															<c:otherwise>
+																<a href="#"  style="background-color: white;" type="button" class="btn btn-primary button" >
+																	<img class="InlineIcon" src="img/outofstock.JPG" viewBox="0 0 36 36" width="36" height="36" >
+																</a>
+																
+															</c:otherwise>
+														</c:choose>
+															
 														</div>
 													</div>
-												</div>
+												</div>												
 												<div style="margin: 7px 0px 0px 20px" class="panel-product-price col">$${product.getPrice()}</div>
 											</div>
 										</div>
@@ -139,7 +151,7 @@
 				</div>	
 			</div>
 			<!-- category -->
-			<div>
+			<div style="margin-top: 100px;">
 				<hr>
 				<div>
 					<h1>Category</h1>

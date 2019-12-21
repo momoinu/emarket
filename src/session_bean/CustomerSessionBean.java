@@ -1,6 +1,8 @@
 package session_bean;
 
 import entity.Customer;
+import entity.CustomerOrder;
+
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -53,5 +55,6 @@ public class CustomerSessionBean extends AbstractSessionBean<Customer> {
 	    }
 	    return customers.get(0);
  
-    	}
+    }
+	
 }

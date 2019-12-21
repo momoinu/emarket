@@ -126,6 +126,7 @@ public class OrderManager {
         for (OrderedProduct op : orderedProducts) {
             Product p = (Product) productSB.find(op.getId().getProductId());
             products.add(p);
+            p.setQuantity(p.getQuantity() - op.getQuantity());
         }
 // add each item to orderMap
         orderMap.put("orderRecord", order);

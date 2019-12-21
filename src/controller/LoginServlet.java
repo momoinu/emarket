@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Random;
 
 import javax.ejb.EJB;
@@ -13,7 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import entity.AddressBook;
 import entity.Customer;
+import session_bean.AddressBookSessionBean;
 import session_bean.CategorySessionBean;
 import session_bean.CustomerSessionBean;
 import session_bean.ProductDetailSessionBean;
@@ -33,7 +36,8 @@ public class LoginServlet extends HttpServlet {
 	private CustomerSessionBean customerSB;
 	@EJB
 	private ProductDetailSessionBean productDetailSB;
-
+	@EJB
+	private AddressBookSessionBean addressBookSB;
 	@Override
 	public void init(ServletConfig servletConfig) throws ServletException {
 		super.init(servletConfig);
@@ -72,8 +76,8 @@ public class LoginServlet extends HttpServlet {
 			if (admin != null) {
 				if ((username.equals("rongden1211") && password.equals("admin"))
 						|| (username.equals("momoinu") && password.equals("a1k43pbc"))) {
-					Customer customer = null;
-					session.setAttribute("customer", customer);				
+//					Customer customer = null;
+//					session.setAttribute("customer", customer);				
 					session.setAttribute("account", (int) 1);
 					request.getRequestDispatcher("index.jsp").include(request, response);
 				} else {
@@ -92,6 +96,8 @@ public class LoginServlet extends HttpServlet {
 				} else {
 					session.setAttribute("account", (int)2);
 					session.setAttribute("customer", customer);
+					List<AddressBook> addressBooks = addressBookSB.findByCustomer(customer);
+					session.setAttribute("addressBooks", addressBooks);
 					request.getRequestDispatcher("index.jsp").include(request, response);
 				}
 			}
@@ -102,6 +108,7 @@ public class LoginServlet extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			Random rand = new Random();
 			Customer customer = new Customer();
+			
 			customer.setCustomerId(rand.nextInt(999999999));
 			customer.setName(request.getParameter("name"));
 			customer.setEmail(request.getParameter("email"));
@@ -110,16 +117,26 @@ public class LoginServlet extends HttpServlet {
 			customer.setCity(request.getParameter("city_region"));
 			customer.setUsername(request.getParameter("username"));					
 			customer.setPassword(request.getParameter("password"));
-			Customer customerAvailble = customerSB.findByUsername(request.getParameter("username"));
-			if (customerAvailble != null) {
+			Customer availbleCustomer = customerSB.findByUsername(request.getParameter("username"));
+			if (availbleCustomer != null) {
 				out.print("<script type=\"text/javascript\">\r\n" + "	alert('Username is not availble!');\r\n"
 						+ "	</script>");
 				request.getRequestDispatcher("register.jsp").include(request, response);
 			} else {
 				customerSB.create(customer);
-
+				//create base address book
+				AddressBook addressBook = new AddressBook();
+				addressBook.setAddressId(rand.nextInt(999999999));
+				addressBook.setCustomer(customer);
+				addressBook.setAddress(customer.getAddress());
+				addressBook.setCity(customer.getCity());
+				addressBook.setPhone(customer.getPhone());
+				addressBook.setReceiver(customer.getName());
+				addressBookSB.create(addressBook);
+				List<AddressBook> addressBooks = addressBookSB.findByCustomer(customer);
 				session.setAttribute("account", 2);
 				session.setAttribute("customer", customer);
+				session.setAttribute("addressBooks", addressBooks);
 				out.print("<script type=\"text/javascript\">\r\n" + "	alert('Register successfully ');\r\n"
 						+ "	</script>");
 				request.getRequestDispatcher("index.jsp").include(request, response);

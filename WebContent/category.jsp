@@ -1,3 +1,4 @@
+<c:set var="pageTitle" scope="request" value="${title}"/>
 <%@page import="entity.Category"%>
 <%@page import="java.util.List"%>
 <%@page import="entity.Product"%>
@@ -57,6 +58,9 @@
 											</a>
 										</p>
 										<h4><a href="#"><%=p.getName()%></a></h4>
+										<c:if test="${account == 1 }">
+											<p>Quantity in stock: <%=p.getQuantity()%></p>
+										</c:if>									
 										<p><%=p.getDescription()%></p>
 										<p style="text-align: left">
 											<a href="product?<%=p.getProductId()%>" class="button_small white">See Details &raquo;</a>

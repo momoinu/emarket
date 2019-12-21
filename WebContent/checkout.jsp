@@ -64,13 +64,13 @@
 		<!-- Content -->
 		
 		<div class="Content col-lg-7 col-md-7 col-sm-6 col-xs-12">
-			<c:if test="${!empty orderFailureFlag}">
+			<c:if test="${orderFailureFlag}">
 				<p style="color: #c00; font-style: italic">We were unable to process your order. Please try again!</p>
 			</c:if>
-			<c:if test="${!empty validationErrorFlag}">
+			<c:if test="${validationFailureFlag}">
 				<p style="color: #c00; font-style: italic">We were unable to process your order. Please complete all information!</p>
 			</c:if>
-			<c:if test="${!empty validationErrorUsernameFlag}">
+			<c:if test="${usernameFailureFlag}">
 				<p style="color: #c00; font-style: italic">We were unable to process your order. Please enter the correct username!</p>
 			</c:if>
 			
@@ -92,6 +92,48 @@
 				<hr class="mb-4">
 			</c:if>
 			
+			<h4 class="headline">Choose AddressBook</h4>
+			<c:choose>
+				<c:when test="${customer != null}">
+					<!-- Choose addressbook -->
+					<c:if test="${addressBook == null}"> <p style="color: #c00; font-style: italic">Please select an Address Book!</p></c:if>					
+					<form class="needs-validation mb-3" action="<c:url value='addressBook' />" method="post" >			
+						<label for="addressBook">Address Book</label>						
+						<select class="custom-select d-block w-100" id="addressBook" name="addressBookId" required>								
+							<c:choose>
+								<c:when test="${addressBook == null }"><option value="">Choose... </option>	
+								</c:when>
+								<c:otherwise>
+									<option value="">
+										<b>${addressBook.getReceiver()}: ${addressBook.getPhone()},   </b>
+										<span>${addressBook.getAddress()}, ${addressBook.getCity()}</span> 
+									</option>
+								</c:otherwise>
+							</c:choose>
+									
+							<c:forEach var="addressBook" items="${addressBooks}">
+								<option value="${addressBook.getAddressId()}">
+									<b>${addressBook.getReceiver()}: ${addressBook.getPhone()},   </b>
+									<span>${addressBook.getAddress()}, ${addressBook.getCity()}</span>  
+								</option>
+							</c:forEach>
+							<option value="createNewAddressBook">Create New Address Book</option>	
+						</select>
+						<div class="invalid-feedback">Please select a valid address book.</div>
+						<br>
+						<button class="btn btn-primary btn-lg btn-block" type="submit">Confirm</button>
+					</form>	
+				</c:when>
+				<c:otherwise>
+					<p style="color: #c00; font-style: italic">Please select customer first!</p>
+				</c:otherwise>
+			</c:choose>
+			
+			
+			<hr class="mb-4">
+			<hr class="mb-4">
+			
+			<!-- Infomartion -->
 			<h4 class="headline">Billing address</h4>
 			<form class="needs-validation" action="<c:url value='purchase' />" method="post" >
 				<div class="mb-3">
@@ -115,42 +157,33 @@
 				</div>
 				
 				
-				
-				<div class="mb-3">
-					<label for="receiver">Receiver</label> 
-					<input type="text" class="form-control" id="receiver" name="receiver" placeholder="" value="${customer.getName()}" required>
-					<div class="invalid-feedback">Please enter your shipping address.</div>
-				</div>				
-				<div class="mb-3">
-					<label for="address">Address</label> 
-					<input type="text" class="form-control" id="address" name="address" placeholder="1234 Main St" value="${customer.getAddress()}" required>
-					<div class="invalid-feedback">Please enter your shipping address.</div>
-				</div>				
-				<div class="mb-3">
-					<label for="phone">Phone</label> 
-					<input type="text" class="form-control" id="phone" name="phone" placeholder=""  value="${customer.getPhone()}" required>
-					<div class="invalid-feedback">Please enter your shipping address.</div>
-				</div>
 				<div class="row">
 					<div class="col-md-6 mb-3">
-						<label for="country">Country</label> <select class="custom-select d-block w-100" id="country" required>
-							<option value="">Choose...</option>
-							<option value="Viet Nam">viet Nam</option>
-						</select>
-						<div class="invalid-feedback">Please select a valid country.</div>
+						<label for="receiver">Receiver</label> 
+						<input type="text" class="form-control" id="receiver" name="receiver"  value="${addressBook.getReceiver()}" required readonly>
+						<div class="invalid-feedback">Please enter your shipping address.</div>
 					</div>
 					<div class="col-md-6 mb-3">
-						<label for="state">State</label> <select class="custom-select d-block w-100" id="state" required>
-							<option value="">Choose...</option>
-							<option value="Ha Noi">Ha Noi</option>
-							<option value="TP. Ho Chi minh">TP. Ho Chi minh</option>
-							<option value="Vinh">Vinh</option>
-						</select>
-						<div class="invalid-feedback">Please provide a valid state.</div>
+						<label for="phone">Phone</label> 
+						<input type="text" class="form-control" id="phone" name="phone"   value="${addressBook.getPhone()}" required readonly>
+						<div class="invalid-feedback">Please enter your shipping address.</div>
 					</div>
 				</div>
-				<hr class="mb-4">
+				
+				<div class="row">
+					<div class="col-md-6 mb-3">
+						<label for="address">Address</label> 
+						<input type="text" class="form-control" id="address" name="address"  value="${addressBook.getAddress()}" required readonly>
+						<div class="invalid-feedback">Please enter your shipping address.</div>
+					</div>	
+					<div class="col-md-6 mb-3">
+						<label for="city">City</label> 
+						<input type="text" class="form-control" id="city" name="city"  value="${addressBook.getCity()}" required readonly>
+						<div class="invalid-feedback">Please enter your shipping address.</div>
+					</div>	
+				</div>		
 
+				<hr class="mb-4">
 				<!-- save infomartion for the next time -->
 
 				<!-- <div class="custom-control custom-checkbox">
@@ -163,15 +196,7 @@
 
 				<div class="d-block my-3">
 					<div class="custom-control custom-radio">
-						<input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked > 
-						<label class="custom-control-label" for="credit">Credit card</label>
-					</div>
-					<div class="custom-control custom-radio">
-						<input id="debit" name="paymentMethod" type="radio" class="custom-control-input" > 
-						<label class="custom-control-label" for="debit">Debit card</label>
-					</div>
-					<div class="custom-control custom-radio">
-						<input id="pay-directly" name="paymentMethod" type="radio" class="custom-control-input" > 
+						<input id="pay-directly" name="paymentMethod" type="radio" class="custom-control-input" checked> 
 						<label class="custom-control-label" for="pay-directly">Pay directly</label>
 					</div>
 				</div>

@@ -1,4 +1,4 @@
-<%@page import="entity.ProductDetail"%>
+	<%@page import="entity.ProductDetail"%>
 <%@page import="entity.Product"%>
 <%
 	session.setAttribute("view", "/product ");
@@ -77,6 +77,10 @@
 						<div class="OfferSingleProduct panel2 panel-default">
 							<div class="panel-body">
 								<div style="margin: 10px 10px 0px 10px;">
+									<c:if test="${account == 1 }">
+										<h3>Quantity of stock</h3>
+										<p><%=selectedProduct.getQuantity()%></p>	
+									</c:if>								
 									<h3>Price</h3>
 									<p><%=selectedProduct.getPrice()%>$</p>								
 									<h3>Accessories</h3>

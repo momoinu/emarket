@@ -20,10 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import cart.ShoppingCart;
+import entity.AddressBook;
 import entity.Category;
 import entity.Customer;
 import entity.Product;
 import entity.ProductDetail;
+import session_bean.AddressBookSessionBean;
 import session_bean.CategorySessionBean;
 import session_bean.CustomerSessionBean;
 import session_bean.OrderManager;
@@ -32,7 +34,7 @@ import session_bean.ProductSessionBean;
 import valid.Validator;
 
 @WebServlet(name = "ControllerServlet", loadOnStartup = 1, urlPatterns = { "/category", "/product", "/addToCart",
-		"/viewCart", "/updateCart", "/checkout", "/purchase", "/chooseLanguage", "/beforeCheckout" })
+		"/viewCart", "/updateCart", "/checkout", "/purchase", "/chooseLanguage", "/beforeCheckout", "/addressBook" })
 public class ControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -48,6 +50,8 @@ public class ControllerServlet extends HttpServlet {
 	private ProductDetailSessionBean productDetailSB;
 	@EJB
 	private OrderManager orderManager;
+	@EJB
+	private AddressBookSessionBean addressBookSB;
 
 	@Override
 	public void init(ServletConfig servletConfig) throws ServletException {
@@ -72,6 +76,7 @@ public class ControllerServlet extends HttpServlet {
 				session.setAttribute("selectedCategory", selectedCategory);
 				categoryProducts = (List<Product>) selectedCategory.getProducts();
 				session.setAttribute("categoryProducts", categoryProducts);
+				request.setAttribute("title", "Category");
 			}
 		}
 		// view product
@@ -119,7 +124,12 @@ public class ControllerServlet extends HttpServlet {
 			String productId = request.getParameter("productId");
 			String quantity = request.getParameter("quantity");
 			Product product = productSB.find(Integer.parseInt(productId));
-			cart.update(product, quantity);
+			if(product.getQuantity() < Integer.parseInt(quantity)) {
+				request.setAttribute("cartFailureFlag", true);				
+			}else {
+				cart.update(product, quantity);
+				request.setAttribute("cartFailureFlag", false);	
+			}			
 			String userView = (String) session.getAttribute("view");
 			userPath = userView;
 		}
@@ -155,10 +165,10 @@ public class ControllerServlet extends HttpServlet {
 				System.out.println(validationErrorFlag+"888888888888888888888888888888888888");
 				Customer customer = customerSB.findByUsername(username);
 				if (!validationErrorFlag) {
-					request.setAttribute("validationErrorFlag", validationErrorFlag);
+					request.setAttribute("validationFailureFlag", true);
 					userPath = "checkout";
 				} else if(customer == null) {
-					request.setAttribute("validationErrorUsernameFlag", false);		
+					request.setAttribute("usernameFailureFlag", true);		
 					userPath = "checkout";
 				}else {
 					int orderId = orderManager.placeOrder(username, receiver, phone, address, ccNumber, cart);
@@ -172,7 +182,7 @@ public class ControllerServlet extends HttpServlet {
 						double total = cart.getTotal();
 						cart = null;
 						session.setAttribute("cart", cart);
-						session.setAttribute("total", total);
+						request.setAttribute("total", total);
 						if (!language.isEmpty()) { 
 							request.setAttribute("language", language); 
 						}
@@ -182,6 +192,7 @@ public class ControllerServlet extends HttpServlet {
 						request.setAttribute("products", orderMap.get("products"));
 						request.setAttribute("orderRecord", orderMap.get("orderRecord"));
 						request.setAttribute("orderedProducts", orderMap.get("orderedProducts"));
+						
 						userPath = "/confirmation";
 					} else {
 						userPath = "/checkout";
@@ -194,7 +205,22 @@ public class ControllerServlet extends HttpServlet {
 			String username = request.getParameter("usernameOfCustomer");
 			Customer customer = customerSB.findByUsername(username);
 			session.setAttribute("customer", customer);
+			List<AddressBook> addressBooks = addressBookSB.findByCustomer(customer);
+			request.setAttribute("addressBooks", addressBooks);
 			request.getRequestDispatcher("checkout.jsp").forward(request, response);
+		}
+		else if(userPath.equals("/addressBook")) {
+			String addressBookIdtoString = request.getParameter("addressBookId");
+			
+			if(addressBookIdtoString.equals("createNewAddressBook")) {
+				request.getRequestDispatcher("addAddressBook.jsp").forward(request, response);
+			}else {
+				int addressBookId = Integer.parseInt(addressBookIdtoString);
+				AddressBook addressBook = addressBookSB.findByAddressBookId(addressBookId);
+				request.setAttribute("addressBook", addressBook);
+				request.getRequestDispatcher("checkout.jsp").forward(request, response);
+			}
+			
 		}
 		String url = userPath + ".jsp";
 		try {
