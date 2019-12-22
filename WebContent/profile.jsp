@@ -1,15 +1,18 @@
 
 <link rel="stylesheet" type="text/css" media="screen" href="css/style.css">
- <div class="container">
+ <div class="">
        
             <div class="row">
                 <div class="col-md-4">
                     <div class="profile-img">
                         <img src="https://hotnew.com.vn/upload/baiviet/avatar-9741.jpg"  alt=""/>
-                        <div class="file btn btn-lg btn-primary">
-                            Change Photo
-                            <input type="file" name="file"/>
-                        </div>
+                        <c:if test="${account == 2 }">
+	                        <div class="file btn btn-lg btn-primary">
+	                            Change Photo
+	                            <input type="file" name="file"/>
+	                        </div>
+                        </c:if>
+                        
                     </div>
                     
                 </div>
@@ -23,24 +26,28 @@
                         <h6>
                            New member
                         </h6>
+                        <c:if test="${createAddressSuccessfully}"> <p style="color: #c00; font-style: italic">Create new address successfully!</p></c:if>		
+                        <c:if test="${deleteAddressSuccessfully}"> <p style="color: #c00; font-style: italic">Delete address successfully!</p></c:if>		
+                                	
                         <p class="proile-rating"></p>
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a  class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Profile</a>
-                            </li>
+								<a  class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Profile</a>
+                            </li>                        	
                             <li class="nav-item">
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Purchase History</a>
-                            </li>
+                                <a class="nav-link" id="purcharse-history-tab" data-toggle="tab" href="#purcharse-history" role="tab" aria-controls="purcharse-history" aria-selected="false">Purchase History</a>
+                            </li>                         
                             <li class="nav-item">
-                                <a class="nav-link" id="edit-profile-tab" data-toggle="tab" href="#edit-profile" role="tab" aria-controls="edit-profile" aria-selected="false">Edit Profile</a>
+								<a class="nav-link" id="address-book-tab" data-toggle="tab" href="#address-book" role="tab" aria-controls="address-book" aria-selected="false">Address book</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="address-book" data-toggle="tab" href="#address-book" role="tab" aria-controls="address-book" aria-selected="false">Edit Profile</a>
-                            </li>
-
+                            <c:if test="${account == 2 }">
+                            	<li class="nav-item">
+	                                <a class="nav-link" id="edit-profile-tab" data-toggle="tab" href="#edit-profile" role="tab" aria-controls="edit-profile" aria-selected="false">Edit Profile</a>
+	                            </li>                          	
+                            </c:if>
                         </ul>
                         <div class="tab-content profile-tab" id="myTabContent">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        	<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label>User Name</label>
@@ -82,12 +89,71 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                             	 
+                            <div class="tab-pane fade" id="purcharse-history" role="tabpanel" aria-labelledby="profile-tab">
                                 <p>The function is not complete</p>
-
                             </div>
                             <div class="tab-pane fade" id="address-book" role="tabpanel" aria-labelledby="adress-book-tap">
-                                <p>take care by yourself. i dont help you any more.!!</p>
+                                <div class="row">
+                                	<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>RECEIVER</th>
+												<th>PHONE</th>
+												<th>ADDRESS</th>
+												<th>CITY</th>
+												<c:if test="${account == 2 }"><th></th></c:if>
+												
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach var="addressBook" items="${addressBooks}" varStatus="iter">
+												<tr>
+												    <td>${addressBook.getReceiver()}</td>
+												    <td>${addressBook.getPhone()}</td>							    
+												    <td>${addressBook.getAddress()}</td>
+													<td>${addressBook.getCity()}</td>	
+													
+													<c:if test="${account == 2 }">
+														<td>
+															<form action="<c:url value='deleteAddress'/>" method="get">
+																<input type="hidden" name="addressId" value="${addressBook.getAddressId()}" /> 
+																<button style="color: #c00; font-style: italic" type="submit">Remove</button>
+															</form>
+														</td>
+													</c:if>													
+													
+												</tr>
+									        </c:forEach>
+										</tbody>
+									</table>
+									<c:if test="${account == 2 }">
+										<b>ADD ADDRESS: </b>
+										<table class="table table-bordered">
+											<thead>
+												<tr>
+													<th>RECEIVER</th>
+													<th>PHONE</th>
+													<th>ADDRESS</th>
+													<th>CITY</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												<form action="<c:url value='addAddress'/>" method="post">
+													<tr>
+														<td><input type="text" class="form-control" name="receiver" required></td>
+														<td><input type="text" class="form-control" name="phone" required></td>
+														<td><input type="text" class="form-control" name="address" required></td>
+														<td><input type="text" class="form-control" name="city" required></td>
+														<td><button style="color: #007bff; font-style: italic" type="submit">Add Address</button></td>
+													</tr>
+												</form>										
+											</tbody>
+										</table>
+									</c:if>
+									
+                                </div>
                             </div>
                            
                             <div class="tab-pane fade show "  id="edit-profile" role="tabpanel" aria-labelledby="edit-profile-tab">
@@ -97,7 +163,7 @@
                                         <label>Password</label>
                                     </div>
                                     <div class=" col-md-8">
-                                        <input  class="form-control" type="text" value="${customer.getPassword() }" name="pass">
+                                        <input  class="form-control" type="text" value="${customer.getPassword() }" name="password">
                                     </div>
                                 </div>
                                 <br>                              
@@ -143,12 +209,11 @@
                                         <label>City Region</label>
                                     </div>
                                     <div class="col-md-8">
-                                        <input class="form-control" type="text" value="${customer.getCity() }" name="city-region">
+                                        <input class="form-control" type="text" value="${customer.getCity() }" name="city">
                                     </div>
                                 </div>
                                 <br>
-                                <button class="col-md-4 profile-edit-btn" value="Update Profile">Update Profile
-                                </button>
+                                <button class="col-md-4 profile-edit-btn" value="Update Profile">Update Profile</button>
                                	</form>   
                             </div>
                             

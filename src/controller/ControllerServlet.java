@@ -34,7 +34,7 @@ import session_bean.ProductSessionBean;
 import valid.Validator;
 
 @WebServlet(name = "ControllerServlet", loadOnStartup = 1, urlPatterns = { "/category", "/product", "/addToCart",
-		"/viewCart", "/updateCart", "/checkout", "/purchase", "/chooseLanguage", "/beforeCheckout", "/addressBook" })
+		"/viewCart", "/updateCart", "/checkout", "/purchase", "/chooseLanguage", "/chooseCustomerToCheckout", "/addressBook" })
 public class ControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -159,7 +159,7 @@ public class ControllerServlet extends HttpServlet {
 				String receiver = request.getParameter("receiver");
 				String phone = request.getParameter("phone");
 				String address = request.getParameter("address");
-				String ccNumber = request.getParameter("ccNumber");
+				String ccNumber = "187730755";
 				boolean validationErrorFlag = false;
 				validationErrorFlag = validator.validateForm(username, receiver, phone, address, ccNumber);
 				System.out.println(validationErrorFlag+"888888888888888888888888888888888888");
@@ -201,7 +201,7 @@ public class ControllerServlet extends HttpServlet {
 				}
 			}
 		}
-		else if(userPath.equals("/beforeCheckout")) {
+		else if(userPath.equals("/chooseCustomerToCheckout")) {
 			String username = request.getParameter("usernameOfCustomer");
 			Customer customer = customerSB.findByUsername(username);
 			session.setAttribute("customer", customer);

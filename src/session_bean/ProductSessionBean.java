@@ -1,11 +1,14 @@
 package session_bean;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import entity.Category;
+import entity.Customer;
 import entity.Product;
 
 @Stateless
@@ -37,4 +40,18 @@ public class ProductSessionBean extends AbstractSessionBean<Product> {
 //		c.addProduct(p);
 		categorySB.getEntityManager().refresh(c);
 	}	
+	public Product findByName(String name) {
+		
+		
+//		return (Customer) em.createNamedQuery("Customer.findByUsername")
+//				.setParameter("username",username).getSingleResult();
+		
+		List<Product> products =  em.createNamedQuery("Product.findByName")
+				.setParameter("name",name).getResultList();
+	    if (products.isEmpty()) {
+	        return null;
+	    }
+	    return products.get(0);
+ 
+    }
 }

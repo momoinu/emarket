@@ -89,6 +89,7 @@
 							<a class="nav-link text-light " href="#"><i class="fa fa-user-circle" style="font-size:24px"></i> Admin</a>
 							<div class="dropdown-content">
 								<a class="dropdown-item" href="addProduct.jsp">Add Product</a>
+								<a class="dropdown-item" href="adminViewProfile.jsp">View profile of customer</a>
 								<a class="dropdown-item" href="/Lab8a/logout">Log out</a>
 							</div>
 						</li>

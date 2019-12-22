@@ -22,7 +22,8 @@ import session_bean.CustomerSessionBean;
 import session_bean.ProductDetailSessionBean;
 import session_bean.ProductSessionBean;
 
-@WebServlet(name = "LoginServlet", loadOnStartup = 1, urlPatterns = { "/login", "/register", "/viewProfile", "/logout","/editProfile" })
+@WebServlet(name = "LoginServlet", loadOnStartup = 1, urlPatterns = { "/login", "/register", "/viewProfile", "/logout","/editProfile",
+		"/chooseCustomerToViewProfile", "/deleteAddress", "/addAddress" })
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -57,6 +58,16 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("cart", null);
 			request.getRequestDispatcher("index.jsp").include(request, response);
 		}
+		else if(userPath.equals("/deleteAddress")) {
+			Customer customer = (Customer) session.getAttribute("customer");
+			int addressId = Integer.parseInt(request.getParameter("addressId"));
+			AddressBook addressBook = addressBookSB.findByAddressBookId(addressId);
+			addressBookSB.remove(addressBook);
+			List<AddressBook> addressBooks = addressBookSB.findByCustomer(customer);
+			session.setAttribute("addressBooks", addressBooks);
+			request.setAttribute("deleteAddressSuccessfully", true);
+			request.getRequestDispatcher("profile.jsp").include(request, response);
+		}
 	}
 
 	@Override
@@ -64,6 +75,7 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		String userPath = request.getRequestURI().substring(request.getContextPath().length());
+		Random random = new Random();
 
 //		login
 		if (userPath.equals("/login")) {
@@ -149,17 +161,51 @@ public class LoginServlet extends HttpServlet {
 			Customer customer = (Customer) session.getAttribute("customer");
 			customer.setAddress(request.getParameter("address"));
 			customer.setName(request.getParameter("name"));
-			customer.setCity(request.getParameter("city-region"));
+			customer.setCity(request.getParameter("city"));
 			customer.setEmail(request.getParameter("email"));
-			customer.setPassword(request.getParameter("pass"));
+			customer.setPassword(request.getParameter("password"));
 			customer.setPhone(request.getParameter("phone"));
 			customerSB.edit(customer);
-			session.setAttribute("customer", customer);
-			
-			request.getRequestDispatcher("profile.jsp").forward(request, response);
-			
-			
-			
+			session.setAttribute("customer", customer);			
+			request.getRequestDispatcher("profile.jsp").forward(request, response);							
+		}
+		else if(userPath.equals("/chooseCustomerToViewProfile")) {
+			String username = request.getParameter("usernameOfCustomer");
+			Customer customer = customerSB.findByUsername(username);
+			if(customer != null) {
+				session.setAttribute("customer", customer);
+				List<AddressBook> addressBooks = addressBookSB.findByCustomer(customer);
+				session.setAttribute("addressBooks", addressBooks);
+				request.getRequestDispatcher("profile.jsp").forward(request, response);
+			}else {
+				request.setAttribute("customerErrorFlag", true);
+				request.getRequestDispatcher("adminViewProfile.jsp").forward(request, response);
+			}			
+		}
+		else if(userPath.equals("/addAddress")) {
+			Customer customer = (Customer) session.getAttribute("customer");
+			String receiver = request.getParameter("receiver");
+			String phone = request.getParameter("phone");
+			String address = request.getParameter("address");
+			String city = request.getParameter("city");
+			AddressBook addressBook = new AddressBook();
+			addressBook.setAddressId(random.nextInt(999999999));
+			addressBook.setCustomer(customer);
+			addressBook.setAddress(address);
+			addressBook.setCity(city);
+			addressBook.setPhone(phone);
+			addressBook.setReceiver(receiver);
+			addressBookSB.create(addressBook);
+			List<AddressBook> addressBooks = addressBookSB.findByCustomer(customer);
+			session.setAttribute("addressBooks", addressBooks);
+			request.setAttribute("createAddressSuccessfully", true);
+			userPath = "profile";
+		}
+		String url = userPath + ".jsp";
+		try {
+			request.getRequestDispatcher(url).forward(request, response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 
 	}

@@ -77,6 +77,9 @@
 						<div class="OfferSingleProduct panel2 panel-default">
 							<div class="panel-body">
 								<div style="margin: 10px 10px 0px 10px;">
+									<c:if test="${updateQuantity}">
+										<p style="color: #c00; font-style: italic">This product is available. We have increased the number for it!</p>
+									</c:if>
 									<c:if test="${account == 1 }">
 										<h3>Quantity of stock</h3>
 										<p><%=selectedProduct.getQuantity()%></p>	

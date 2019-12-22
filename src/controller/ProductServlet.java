@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 import entity.Category;
 import entity.Customer;
 import entity.OrderedProduct;
@@ -46,8 +45,7 @@ public class ProductServlet extends HttpServlet {
 	private ProductDetailSessionBean productDetailSB;
 	@EJB
 	private OrderedProductSessionBean orderedProductSB;
-	
-	
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -90,48 +88,62 @@ public class ProductServlet extends HttpServlet {
 				productDetailSB.remove(pd);
 				productSB.remove(p);
 			}
+			Product product = productSB.findByName(name);
+			
+			if (product != null) {
+				product.setQuantity(product.getQuantity() + quantity);
+				productSB.edit(product);
+				ProductDetail productDetail = productDetailSB.find(product.getProductId());
+				session.setAttribute("selectedProduct", product);
+				session.setAttribute("selectedProductDetail", productDetail);
+				request.getServletContext().setAttribute("newProducts", productSessionBean.findAll());
+				request.getServletContext().setAttribute("categories", categorySB.findAll());
+				request.setAttribute("updateQuantity", true);
+				userPath="product";
+//				request.getRequestDispatcher("index.jsp").forward(request, response);
+			} else {
+				try {
+					Product p = new Product();
+					ProductDetail pd = new ProductDetail();
+					Category category = categorySB.find(categoryId);
+					// set for product
+					p.setProductId(productId);
+					p.setName(name);
+					p.setImage(image);
+					p.setCategory(category);
+					p.setDescription(description);
+					p.setDescriptionDetail(descriptionDetail);
+					p.setThumbImage(image);
+					p.setPrice(price);
+					java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+					p.setLastUpdate(date);
+					p.setQuantity(quantity);
+					productSB.create(p);
+					// set for product detail
 
-			try {
-				Product p = new Product();
-				ProductDetail pd = new ProductDetail();
-				Category category = categorySB.find(categoryId);
-				// set for product
-				p.setProductId(productId);
-				p.setName(name);
-				p.setImage(image);
-				p.setCategory(category);
-				p.setDescription(description);
-				p.setDescriptionDetail(descriptionDetail);
-				p.setThumbImage(image);
-				p.setPrice(price);
-				java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
-				p.setLastUpdate(date);
-				p.setQuantity(quantity);
-				productSB.create(p);
-				// set for product detail
+					pd.setProductId(productId);
+					pd.setImage1(image1);
+					pd.setImage1(image2);
+					pd.setImage1(image3);
+					pd.setImage1(image4);
+					pd.setImage1(image5);
+					pd.setAccessories(accessories);
+					pd.setGuaranty(guaranty);
+					pd.setInformation(information);
 
-				pd.setProductId(productId);
-				pd.setImage1(image1);
-				pd.setImage1(image2);
-				pd.setImage1(image3);
-				pd.setImage1(image4);
-				pd.setImage1(image5);
-				pd.setAccessories(accessories);
-				pd.setGuaranty(guaranty);
-				pd.setInformation(information);
-				
-
-				productDetailSB.create(pd);
-				session.setAttribute("selectedProduct", p);
-				session.setAttribute("selectedProductDetail", pd);
-				getServletContext().setAttribute("newProducts", productSessionBean.findAll());
-				out.print("<script type=\"text/javascript\">\r\n" 
-						+ "	alert('Create product successfully!');\r\n"
-						+ "	</script>");
-				userPath = "product";
-			} catch (Exception ex) {
-				System.out.println(ex);
+					productDetailSB.create(pd);
+					session.setAttribute("selectedProduct", p);
+					session.setAttribute("selectedProductDetail", pd);
+					request.getServletContext().setAttribute("newProducts", productSessionBean.findAll());
+					request.getServletContext().setAttribute("categories", categorySB.findAll());
+					out.print("<script type=\"text/javascript\">\r\n" + "	alert('Create product successfully!');\r\n"
+							+ "	</script>");
+					userPath = "product";
+				} catch (Exception ex) {
+					System.out.println(ex);
+				}
 			}
+			
 
 		}
 
@@ -143,24 +155,22 @@ public class ProductServlet extends HttpServlet {
 				Product product = productSB.find(productId);
 				ProductDetail productDetail = productDetailSB.find(productId);
 				List<OrderedProduct> orderedProducts = orderedProductSB.findByProductId(productId);
-				if(product.getQuantity() == 0 && orderedProducts.isEmpty()) {
+				if (product.getQuantity() == 0 && orderedProducts.isEmpty()) {
 					productDetailSB.remove(productDetail);
 					productSB.remove(product);
 					getServletContext().setAttribute("newProducts", productSessionBean.findAll());
-					out.print("<script type=\"text/javascript\">\r\n" 
-							+ "	alert('Delete product successfully!');\r\n"
+					out.print("<script type=\"text/javascript\">\r\n" + "	alert('Delete product successfully!');\r\n"
 							+ "	</script>");
 					request.getRequestDispatcher("index.jsp").include(request, response);
 					out.close();
-				}else {
-					out.print("<script type=\"text/javascript\">\r\n" 
+				} else {
+					out.print("<script type=\"text/javascript\">\r\n"
 							+ "	alert('Can not delete product, pls check your quantity & your order!');\r\n"
 							+ "	</script>");
 					request.getRequestDispatcher("index.jsp").include(request, response);
 					out.close();
 				}
-				
-				
+
 			}
 		}
 		String url = userPath + ".jsp";
@@ -171,11 +181,12 @@ public class ProductServlet extends HttpServlet {
 		}
 
 	}
+
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
