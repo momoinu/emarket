@@ -17,7 +17,7 @@
 	CustomerSessionBean customerSessionBean = new CustomerSessionBean();
 	Customer customer = customerSessionBean.findByUsername(username);  */
 	
-	Customer customer = (Customer) session.getAttribute("customer");
+
 %>
 
 
