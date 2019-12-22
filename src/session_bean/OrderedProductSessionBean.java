@@ -30,4 +30,7 @@ public class OrderedProductSessionBean extends AbstractSessionBean<OrderedProduc
 	public List<OrderedProduct> findByOrderId(Object id) {
         return em.createNamedQuery("OrderedProduct.findByOrderId").setParameter("orderId",id).getResultList();
     }
+	public List<OrderedProduct> findByProductId(Object id) {
+        return em.createNamedQuery("OrderedProduct.findByProductId").setParameter("productId",id).getResultList();
+    }
 }

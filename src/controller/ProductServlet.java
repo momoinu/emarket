@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Random;
 import java.sql.Date;
 
@@ -14,12 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 import entity.Category;
 import entity.Customer;
+import entity.OrderedProduct;
 import entity.Product;
 import entity.ProductDetail;
 import session_bean.CategorySessionBean;
 import session_bean.CustomerSessionBean;
+import session_bean.OrderedProductSessionBean;
 import session_bean.ProductDetailSessionBean;
 import session_bean.ProductSessionBean;
 
@@ -40,6 +44,9 @@ public class ProductServlet extends HttpServlet {
 	private CustomerSessionBean customerSB;
 	@EJB
 	private ProductDetailSessionBean productDetailSB;
+	@EJB
+	private OrderedProductSessionBean orderedProductSB;
+	
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -135,14 +142,25 @@ public class ProductServlet extends HttpServlet {
 			if (productId != 0) {
 				Product product = productSB.find(productId);
 				ProductDetail productDetail = productDetailSB.find(productId);
-				productDetailSB.remove(productDetail);
-				productSB.remove(product);
-				getServletContext().setAttribute("newProducts", productSessionBean.findAll());
-				out.print("<script type=\"text/javascript\">\r\n" 
-						+ "	alert('Delete product successfully!');\r\n"
-						+ "	</script>");
-				request.getRequestDispatcher("index.jsp").include(request, response);
-				out.close();
+				List<OrderedProduct> orderedProducts = orderedProductSB.findByProductId(productId);
+				if(product.getQuantity() == 0 && orderedProducts.isEmpty()) {
+					productDetailSB.remove(productDetail);
+					productSB.remove(product);
+					getServletContext().setAttribute("newProducts", productSessionBean.findAll());
+					out.print("<script type=\"text/javascript\">\r\n" 
+							+ "	alert('Delete product successfully!');\r\n"
+							+ "	</script>");
+					request.getRequestDispatcher("index.jsp").include(request, response);
+					out.close();
+				}else {
+					out.print("<script type=\"text/javascript\">\r\n" 
+							+ "	alert('Can not delete product, pls check your quantity & your order!');\r\n"
+							+ "	</script>");
+					request.getRequestDispatcher("index.jsp").include(request, response);
+					out.close();
+				}
+				
+				
 			}
 		}
 		String url = userPath + ".jsp";
