@@ -16,6 +16,7 @@
       <url-pattern>/confirmation.jsp</url-pattern>
       <url-pattern>/addProduct.jsp</url-pattern>
       <url-pattern>/addAddressBook.jsp</url-pattern>
+      <url-pattern>/profile.jsp</url-pattern>
       <include-prelude>header.jspf</include-prelude>
       <include-coda>footer.jspf</include-coda>
     </jsp-property-group>

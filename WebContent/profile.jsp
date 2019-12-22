@@ -1,173 +1,168 @@
-<div class="container-fluid">
-	<div class="row">
-		<div class="SideBar col-lg-2 col-md-2 col-sm-3 col-xs-12">
-			<div class="SideBarItem">
-				<h4 class="headline">Main Categories</h4>
-				<div style="margin-left: -40px;">
-					<nav>
-						<ul class="sidebar-list">
-							<li><a href="category?1">Mac</a></li>
-							<li><a href="category?3">iPhone</a></li>
-							<li><a href="category?2">iPad</a></li>
-							<li><a href="category?4">Accessories</a></li>
-						</ul>
-					</nav>
-				</div>
-			</div>
-			<div class="SideBarItem">
-				<h4>Free Shipping</h4>
-				<p>We offer you a Free Shipping, if your order value is over 1000.000 VND. For more information please check:</p>
-				<p>
-					<a href="#">Free Shipping Information and Conditions</a>
-				</p>
-			</div>
-			<div class="SideBarItem">
-				<h4>Pickup</h4>
-				<p>You can pickup your goods, after you placed an order and and received a ready-for-pickup notification.</p>
-			</div>
-		</div>
 
-		<div class="Content col-lg-6 col-md-6 col-sm-6 col-xs-12">
-			<h4 class="mb-3">Billing address</h4>
-			<form class="needs-validation" novalidate>
-				<div class="col-md-6 mb-3">
-					<label for="name">Name</label> 
-					<input type="text" class="form-control" id="name" placeholder="" value="" required>
-					<div class="invalid-feedback">Valid first name is required.</div>
-				</div>
+<link rel="stylesheet" type="text/css" media="screen" href="css/style.css">
+ <div class="container">
+       
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-img">
+                        <img src="https://hotnew.com.vn/upload/baiviet/avatar-9741.jpg"  alt=""/>
+                        <div class="file btn btn-lg btn-primary">
+                            Change Photo
+                            <input type="file" name="file"/>
+                        </div>
+                    </div>
+                    
+                </div>
+              
+                <div class="col-md-6">
+                    <div class="profile-head">
+                    	
+                        <h5>
+                           	${customer.getName() }
+                        </h5>
+                        <h6>
+                           New member
+                        </h6>
+                        <p class="proile-rating"></p>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a  class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Purchase History</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="edit-profile-tab" data-toggle="tab" href="#edit-profile" role="tab" aria-controls="edit-profile" aria-selected="false">Edit Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="address-book" data-toggle="tab" href="#address-book" role="tab" aria-controls="address-book" aria-selected="false">Edit Profile</a>
+                            </li>
 
-				<div class="mb-3">
-					<label for="username">Username</label>
-					<div class="input-group">
-						<div class="input-group-prepend">
-							<span class="input-group-text">@</span>
-						</div>
-						<input type="text" class="form-control" id="username" placeholder="Username" required>
-						<div class="invalid-feedback" style="width: 100%;">Your username is required.</div>
-					</div>
-				</div>
+                        </ul>
+                        <div class="tab-content profile-tab" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>User Name</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p>${customer.getUsername() }</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Email</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p>${customer.getEmail() }</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Phone</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p>${customer.getPhone() }</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Address</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p>${customer.getAddress() }</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>City Region</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p>${customer.getCity() }</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <p>The function is not complete</p>
 
-				<div class="mb-3">
-					<label for="email">Email <span class="text-muted">(Optional)</span></label> <input type="email" class="form-control" id="email" placeholder="you@example.com">
-					<div class="invalid-feedback">Please enter a valid email address for shipping updates.</div>
-				</div>
+                            </div>
+                            <div class="tab-pane fade" id="address-book" role="tabpanel" aria-labelledby="adress-book-tap">
+                                <p>take care by yourself. i dont help you any more.!!</p>
+                            </div>
+                           
+                            <div class="tab-pane fade show "  id="edit-profile" role="tabpanel" aria-labelledby="edit-profile-tab">
+                                <form action="/Lab8a/editProfile" method="post"> 
+                                <div class="row ">
+                                    <div class="col-md-4">
+                                        <label>Password</label>
+                                    </div>
+                                    <div class=" col-md-8">
+                                        <input  class="form-control" type="text" value="${customer.getPassword() }" name="pass">
+                                    </div>
+                                </div>
+                                <br>                              
 
-				<div class="mb-3">
-					<label for="address">Address</label> <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
-					<div class="invalid-feedback">Please enter your shipping address.</div>
-				</div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Name</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                         <input class="form-control" type="text" value="${customer.getName() }" name="name">
+                                    </div>
+                                </div>
+                                <br> 
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Email</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                         <input class="form-control" type="text" value="${customer.getEmail() }" name="email">
+                                    </div>
+                                </div>
+                                <br> 
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Phone</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input class="form-control" type="text" value="${customer.getPhone() }" name="phone">
+                                    </div>
+                                </div>
+                                <br> 
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Address</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input class="form-control" type="text" value="${customer.getAddress() }" name="address">
+                                    </div>
+                                </div>
+                                <br> 
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>City Region</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input class="form-control" type="text" value="${customer.getCity() }" name="city-region">
+                                    </div>
+                                </div>
+                                <br>
+                                <button class="col-md-4 profile-edit-btn" value="Update Profile">Update Profile
+                                </button>
+                               	</form>   
+                            </div>
+                            
+                        </div>
+                        
 
-				<div class="mb-3">
-					<label for="address2">Address 2 <span class="text-muted">(Optional)</span></label> <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
-				</div>
+                        
+                    </div>
 
-				<div class="row">
-					<div class="col-md-5 mb-3">
-						<label for="country">Country</label> <select class="custom-select d-block w-100" id="country" required>
-							<option value="">Choose...</option>
-							<option>United States</option>
-						</select>
-						<div class="invalid-feedback">Please select a valid country.</div>
-					</div>
-					<div class="col-md-4 mb-3">
-						<label for="state">State</label> <select class="custom-select d-block w-100" id="state" required>
-							<option value="">Choose...</option>
-							<option>California</option>
-						</select>
-						<div class="invalid-feedback">Please provide a valid state.</div>
-					</div>
-					<div class="col-md-3 mb-3">
-						<label for="zip">Zip</label> <input type="text" class="form-control" id="zip" placeholder="" required>
-						<div class="invalid-feedback">Zip code required.</div>
-					</div>
-				</div>
-				<hr class="mb-4">
-				<div class="custom-control custom-checkbox">
-					<input type="checkbox" class="custom-control-input" id="same-address"> <label class="custom-control-label" for="same-address">Shipping address is the same as my billing address</label>
-				</div>
-				<div class="custom-control custom-checkbox">
-					<input type="checkbox" class="custom-control-input" id="save-info"> <label class="custom-control-label" for="save-info">Save this information for next time</label>
-				</div>
-				<hr class="mb-4">
 
-				<h4 class="mb-3">Payment</h4>
-
-				<div class="d-block my-3">
-					<div class="custom-control custom-radio">
-						<input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required> <label class="custom-control-label" for="credit">Credit card</label>
-					</div>
-					<div class="custom-control custom-radio">
-						<input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required> <label class="custom-control-label" for="debit">Debit card</label>
-					</div>
-					<div class="custom-control custom-radio">
-						<input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required> <label class="custom-control-label" for="paypal">PayPal</label>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6 mb-3">
-						<label for="cc-name">Name on card</label> <input type="text" class="form-control" id="cc-name" placeholder="" required> <small class="text-muted">Full name as displayed on card</small>
-						<div class="invalid-feedback">Name on card is required</div>
-					</div>
-					<div class="col-md-6 mb-3">
-						<label for="cc-number">Credit card number</label> <input type="text" class="form-control" id="cc-number" placeholder="" required>
-						<div class="invalid-feedback">Credit card number is required</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3 mb-3">
-						<label for="cc-expiration">Expiration</label> <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
-						<div class="invalid-feedback">Expiration date required</div>
-					</div>
-					<div class="col-md-3 mb-3">
-						<label for="cc-cvv">CVV</label> <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
-						<div class="invalid-feedback">Security code required</div>
-					</div>
-				</div>
-				<hr class="mb-4">
-				<button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
-			</form>
-		</div>
-		<div class="Content col-lg-4 col-md-4 col-sm-3 col-xs-12">
-			<h4 class="d-flex justify-content-between align-items-center mb-3">
-				<span class="text-muted">Your cart</span> <span class="badge badge-secondary badge-pill">3</span>
-			</h4>
-			<ul class="list-group mb-3">
-				<li class="list-group-item d-flex justify-content-between lh-condensed">
-					<div>
-						<h6 class="my-0">Product name</h6>
-						<small class="text-muted">Brief description</small>
-					</div> <span class="text-muted">$12</span>
-				</li>
-				<li class="list-group-item d-flex justify-content-between lh-condensed">
-					<div>
-						<h6 class="my-0">Second product</h6>
-						<small class="text-muted">Brief description</small>
-					</div> <span class="text-muted">$8</span>
-				</li>
-				<li class="list-group-item d-flex justify-content-between lh-condensed">
-					<div>
-						<h6 class="my-0">Third item</h6>
-						<small class="text-muted">Brief description</small>
-					</div> <span class="text-muted">$5</span>
-				</li>
-				<li class="list-group-item d-flex justify-content-between bg-light">
-					<div class="text-success">
-						<h6 class="my-0">Promo code</h6>
-						<small>EXAMPLECODE</small>
-					</div> <span class="text-success">-$5</span>
-				</li>
-				<li class="list-group-item d-flex justify-content-between"><span>Total (USD)</span> <strong>$20</strong></li>
-			</ul>
-
-			<form class="card p-2">
-				<div class="input-group">
-					<input type="text" class="form-control" placeholder="Promo code">
-					<div class="input-group-append">
-						<button type="submit" class="btn btn-secondary">Redeem</button>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
+                    
+                </div>
+            </div>
+                
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> 
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 

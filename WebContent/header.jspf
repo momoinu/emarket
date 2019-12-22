@@ -2,8 +2,13 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="entity.Customer"%>
+<%
+	Customer customer = (Customer) session.getAttribute("customer");
+	
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +16,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.4/css/all.css">
 <link rel="stylesheet" type="text/css" media="screen" href="css/style2.css">
-<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -66,7 +71,7 @@
 					<button class="btn text-light my-2 my-sm-0" type="submit">Search</button>
 				</form>
 				<li class="nav-item active text">
-					<a class="nav-link text-light" href="index.jsp">
+					<a class="nav-link text-light" href="index.jsp"><i class="fa fa-home" style="font-size:24px"></i>
 						Home <span class="sr-only">(current)</span>
 					</a>
 				</li>
@@ -76,12 +81,12 @@
 				<c:choose>
 					<c:when test="${account == 0}">
 						<li class="nav-item text ">
-							<a class="nav-link text-light" href="login.jsp">Login</a>
+							<a class="nav-link text-light" href="login.jsp"><i class="fa fa-sign-in" style="font-size:24px"></i> Login</a>
 						</li>
 					</c:when>
 					<c:when test="${account == 1}">
 						<li class="nav-item dropdown">
-							<a class="nav-link text-light " href="#">Admin</a>
+							<a class="nav-link text-light " href="#"><i class="fa fa-user-circle" style="font-size:24px"></i> Admin</a>
 							<div class="dropdown-content">
 								<a class="dropdown-item" href="addProduct.jsp">Add Product</a>
 								<a class="dropdown-item" href="/Lab8a/logout">Log out</a>
@@ -90,7 +95,7 @@
 					</c:when>
 					<c:when test="${account == 2}">
 						<li class="nav-item dropdown">
-							<a class="nav-link text-light " href="#">${customer.getUsername() }</a>
+							<a class="nav-link text-light " href="#"><i class="fa fa-user-circle" style="font-size:24px"></i> ${customer.getName() }</a>
 							<div class="dropdown-content">
 								<a class="dropdown-item" href="profile.jsp">Profile</a>
 								<a class="dropdown-item" href="/Lab8a/logout">Log out</a>
@@ -100,39 +105,26 @@
 				</c:choose>
 				<!-- Cart -->
 				<li class="nav-item text">
-					<a class="nav-link text-light" href="viewCart.jsp">Cart</a>
+					
+					<a class="nav-link text-light" href="viewCart.jsp"><i class="fa fa-cart-plus" style="font-size:24px"></i>
+						Cart <c:choose>
+							<c:when test="${cart.total == null}">
+ 							0
+ 							</c:when>
+							<c:otherwise>
+ 									${cart.subtotal} $
+ 							</c:otherwise>
+						</c:choose> </a>
 				</li>
 			</ul>
 		</div>
 		<hr>
 	</nav>
 	
-	<!-- ViewCart -->
+	<div style="margin: 5px 0 5px 50px; font-size: 15px;"">
+		<strong><i>Contact me: <u>0393666888/094456789</u></i></strong>
+	</div>
 	
-	<img style="margin-left: 50px;" src="img/cart.png" alt="">
-	<a href="<c:url value='viewCart'/>">
-		<c:choose>
-			<c:when test="${cart.numberOfItems == null}">
- 				0
- 			</c:when>
-			<c:otherwise>
- 				${cart.numberOfItems}
- 			</c:otherwise>
-		</c:choose>
-		<c:choose>
-			<c:when test="${cart.numberOfItems == 1}">
- 				item
- 			</c:when>
-			<c:otherwise>
- 				items
- 			</c:otherwise>
-		</c:choose>
-	</a>
 	
-	<!-- Check out -->
 	
-	<c:if test="${!empty cart && cart.numberOfItems != 0 && !fn:contains(pageContext.request.servletPath,'/checkout') &&
-		requestScope['javax.servlet.forward.servlet_path'] ne '/checkout' &&!fn:contains(pageContext.request.servletPath,'/viewCart') &&
-		requestScope['javax.servlet.forward.servlet_path'] ne '/viewCart' && validationErrorFlag ne true && orderFailureFlag ne true}">				
- 		<a href="<c:url value='checkout'/>">Check out</a>	
-	</c:if>
+

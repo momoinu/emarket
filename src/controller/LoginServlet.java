@@ -22,7 +22,7 @@ import session_bean.CustomerSessionBean;
 import session_bean.ProductDetailSessionBean;
 import session_bean.ProductSessionBean;
 
-@WebServlet(name = "LoginServlet", loadOnStartup = 1, urlPatterns = { "/login", "/register", "/viewProfile", "/logout" })
+@WebServlet(name = "LoginServlet", loadOnStartup = 1, urlPatterns = { "/login", "/register", "/viewProfile", "/logout","/editProfile" })
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -81,7 +81,7 @@ public class LoginServlet extends HttpServlet {
 					session.setAttribute("account", (int) 1);
 					request.getRequestDispatcher("index.jsp").include(request, response);
 				} else {
-					out.print("<script type=\"text/javascript\">\r\n" + " alert('Username or password incorrect');\r\n"
+					out.print("<script type=\"text/javascript\">\r\n" + " alert('You are not Admin');\r\n"
 							+ "	</script>");
 					out.print("</br>");
 					request.getRequestDispatcher("login.jsp").include(request, response);
@@ -142,6 +142,24 @@ public class LoginServlet extends HttpServlet {
 				request.getRequestDispatcher("index.jsp").include(request, response);
 			}
 			out.close();
+		}
+		//edit profile
+		else if(userPath.equals("/editProfile")) {
+			PrintWriter out = response.getWriter();
+			Customer customer = (Customer) session.getAttribute("customer");
+			customer.setAddress(request.getParameter("address"));
+			customer.setName(request.getParameter("name"));
+			customer.setCity(request.getParameter("city-region"));
+			customer.setEmail(request.getParameter("email"));
+			customer.setPassword(request.getParameter("pass"));
+			customer.setPhone(request.getParameter("phone"));
+			customerSB.edit(customer);
+			session.setAttribute("customer", customer);
+			
+			request.getRequestDispatcher("profile.jsp").forward(request, response);
+			
+			
+			
 		}
 
 	}
