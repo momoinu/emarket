@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -23,18 +24,20 @@ import cart.ShoppingCart;
 import entity.AddressBook;
 import entity.Category;
 import entity.Customer;
+import entity.CustomerOrder;
 import entity.Product;
 import entity.ProductDetail;
 import session_bean.AddressBookSessionBean;
 import session_bean.CategorySessionBean;
+import session_bean.CustomerOrderSessionBean;
 import session_bean.CustomerSessionBean;
 import session_bean.OrderManager;
 import session_bean.ProductDetailSessionBean;
 import session_bean.ProductSessionBean;
 import valid.Validator;
 
-@WebServlet(name = "ControllerServlet", loadOnStartup = 1, urlPatterns = { "/category", "/product", "/addToCart",
-		"/viewCart", "/updateCart", "/checkout", "/purchase", "/chooseLanguage", "/chooseCustomerToCheckout", "/addressBook" })
+@WebServlet(name = "ControllerServlet", loadOnStartup = 1, urlPatterns = { "/category", "/product", "/addToCart", "/orderDetail",
+		"/viewCart", "/updateCart", "/checkout", "/purchase", "/chooseLanguage", "/chooseCustomerToCheckout", "/addressBook", "/updateStatusOrder" })
 public class ControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -52,6 +55,8 @@ public class ControllerServlet extends HttpServlet {
 	private OrderManager orderManager;
 	@EJB
 	private AddressBookSessionBean addressBookSB;
+	@EJB
+	private CustomerOrderSessionBean customerOrderSB;
 
 	@Override
 	public void init(ServletConfig servletConfig) throws ServletException {
@@ -133,6 +138,18 @@ public class ControllerServlet extends HttpServlet {
 			String userView = (String) session.getAttribute("view");
 			userPath = userView;
 		}
+		// order detail
+		else if (userPath.contentEquals("/orderDetail")) {
+			String orderId = request.getQueryString();
+			CustomerOrder customerOrder = customerOrderSB.find(Integer.parseInt(orderId));
+			Map orderMap = orderManager.getOrderDetails(Integer.parseInt(orderId));
+			// place order details in request scope
+			request.setAttribute("customer", orderMap.get("customer"));
+			request.setAttribute("products", orderMap.get("products"));
+			request.setAttribute("orderRecord", orderMap.get("orderRecord"));
+			request.setAttribute("orderedProducts", orderMap.get("orderedProducts"));
+			userPath = "orderDetail";
+		}
 		
 		String url = userPath + ".jsp";
 		try {
@@ -192,7 +209,8 @@ public class ControllerServlet extends HttpServlet {
 						request.setAttribute("products", orderMap.get("products"));
 						request.setAttribute("orderRecord", orderMap.get("orderRecord"));
 						request.setAttribute("orderedProducts", orderMap.get("orderedProducts"));
-						
+						List<CustomerOrder> customerOrders = customerOrderSB.findAll();
+						session.setAttribute("customerOrderHistories", customerOrders);
 						userPath = "/confirmation";
 					} else {
 						userPath = "/checkout";
@@ -213,12 +231,31 @@ public class ControllerServlet extends HttpServlet {
 			String addressBookIdtoString = request.getParameter("addressBookId");
 			
 			if(addressBookIdtoString.equals("createNewAddressBook")) {
-				request.getRequestDispatcher("addAddressBook.jsp").forward(request, response);
+				request.setAttribute("pleaseCreateNewAddress", true);
+				request.getRequestDispatcher("profile.jsp").forward(request, response);
 			}else {
 				int addressBookId = Integer.parseInt(addressBookIdtoString);
 				AddressBook addressBook = addressBookSB.findByAddressBookId(addressBookId);
 				request.setAttribute("addressBook", addressBook);
 				request.getRequestDispatcher("checkout.jsp").forward(request, response);
+			}
+			
+		}
+		else if(userPath.equals("/updateStatusOrder")) {
+			int orderId = Integer.parseInt(request.getParameter("orderId"));
+			CustomerOrder customerOrder = customerOrderSB.find(orderId);
+			int updateValue = Integer.parseInt(request.getParameter("status"));
+			customerOrder.setStatus(updateValue);
+			customerOrderSB.edit(customerOrder);
+			List<CustomerOrder> customerOrderHistories = customerOrderSB.findAll();
+			Collections.reverse(customerOrderHistories);
+			session.setAttribute("customerOrderHistories", customerOrderHistories);
+			userPath = "orderHistory";
+
+			if (updateValue == 3) {
+				orderManager.updateQuantity(orderId);
+				request.getServletContext().setAttribute("newProducts", productSessionBean.findAll());
+				request.getServletContext().setAttribute("newCategories", categorySB.findAll());
 			}
 			
 		}

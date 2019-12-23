@@ -1,4 +1,3 @@
-
 <link rel="stylesheet" type="text/css" media="screen" href="css/style.css">
  <div class="">
        
@@ -28,7 +27,7 @@
                         </h6>
                         <c:if test="${createAddressSuccessfully}"> <p style="color: #c00; font-style: italic">Create new address successfully!</p></c:if>		
                         <c:if test="${deleteAddressSuccessfully}"> <p style="color: #c00; font-style: italic">Delete address successfully!</p></c:if>		
-                                	
+                        <c:if test="${pleaseCreateNewAddress }"><p style="color: #c00; font-style: italic">Please choose addressbook and create a new one!</p></c:if>        	
                         <p class="proile-rating"></p>
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
@@ -91,7 +90,35 @@
                             </div>
                              	 
                             <div class="tab-pane fade" id="purcharse-history" role="tabpanel" aria-labelledby="profile-tab">
-                                <p>The function is not complete</p>
+                                <div class="row">
+                                <p>Please click the confirmation number to see more detail!</p>
+                                <hr>
+                                	<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>No.</th>
+												<th>Confirmation number</th>
+												<th>Receiver</th>
+												<th>Date created</th>
+												<th>Address</th>												
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach var="customerOrder" items="${customerOrders}" varStatus="iter">
+												<tr>
+													<td>${iter.count }</td>		
+												    <td><a href="<c:url value='orderDetail?${customerOrder.getOrderId()}'/>">${customerOrder.getConfirmationNumber()}</td>
+												    <td>${customerOrder.getReceiver()}</td>							    
+												    <td>${customerOrder.getDateCreated()}</td>
+													<td>${customerOrder.getAddress()}</td>	
+													
+																									
+													
+												</tr>
+									        </c:forEach>
+										</tbody>
+									</table>
+								</div>	
                             </div>
                             <div class="tab-pane fade" id="address-book" role="tabpanel" aria-labelledby="adress-book-tap">
                                 <div class="row">

@@ -1,6 +1,9 @@
 package session_bean;
 
 import entity.CustomerOrder;
+
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,8 +32,8 @@ public class CustomerOrderSessionBean extends AbstractSessionBean<CustomerOrder>
 		return order;
 	}
 
-	public CustomerOrder findByCustomer(Object customer) {
-		return (CustomerOrder) em.createNamedQuery("CustomerOrder.findByCustomer").setParameter("customer", customer)
-				.getSingleResult();
+	public List<CustomerOrder> findByCustomer(Object customer) {
+		return em.createNamedQuery("CustomerOrder.findByCustomer").setParameter("customer", customer)
+				.getResultList();
 	}
 }

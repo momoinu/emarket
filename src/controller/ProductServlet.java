@@ -173,6 +173,7 @@ public class ProductServlet extends HttpServlet {
 
 			}
 		}
+
 		String url = userPath + ".jsp";
 		try {
 			request.getRequestDispatcher(url).forward(request, response);
@@ -185,7 +186,35 @@ public class ProductServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+		String userPath = request.getRequestURI().substring(request.getContextPath().length());
+		if (userPath.equals("/editProduct")) {			
+			String productId = request.getParameter("id");
+			Product	selectedProduct = productSB.find((int) Integer.parseInt(productId));
+			ProductDetail selectedProductDetail = productDetailSB.find((int) Integer.parseInt(productId));
+				
+			
+			selectedProduct.setQuantity(Integer.parseInt(request.getParameter("quantity")));			
+			selectedProduct.setPrice(Double.parseDouble(request.getParameter("price")));	
+			selectedProductDetail.setAccessories(request.getParameter("accessory"));	
+			selectedProductDetail.setInformation(request.getParameter("technical-details"));
+			selectedProductDetail.setGuaranty(request.getParameter("warranty"));			
+			
+			productDetailSB.edit(selectedProductDetail);
+			productSB.edit(selectedProduct);
+			session.setAttribute("selectedProduct", selectedProduct);
+			session.setAttribute("selectedProductDetail", selectedProductDetail);
+			request.getServletContext().setAttribute("newProducts", productSessionBean.findAll());
+			request.getServletContext().setAttribute("newCategories", categorySB.findAll());
+			request.setAttribute("editProductSuccessfully", true);
+			userPath = "product";		
+		}
+		String url = userPath + ".jsp";
+		try {
+			request.getRequestDispatcher(url).forward(request, response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 
 	}
 

@@ -44,6 +44,8 @@
 					<h1><%=selectedProduct.getName()%></h1>
 				</div>
 				<hr>
+				<c:if test="${editProductSuccessfully }"><p style="color: #c00; font-style: italic">Update product successfully!</p></c:if>
+				<hr>
 				<div class="row">
 					<div class="col-6">
 						
@@ -76,14 +78,10 @@
 					<div class="col-6">
 						<div class="OfferSingleProduct panel2 panel-default">
 							<div class="panel-body">
-								<div style="margin: 10px 10px 0px 10px;">
-									<c:if test="${updateQuantity}">
-										<p style="color: #c00; font-style: italic">This product is available. We have increased the number for it!</p>
-									</c:if>
-									<c:if test="${account == 1 }">
-										<h3>Quantity of stock</h3>
-										<p><%=selectedProduct.getQuantity()%></p>	
-									</c:if>								
+							<c:choose>
+								
+									<c:when test="${account != 1}">
+										<div style="margin: 10px 10px 0px 10px;">														
 									<h3>Price</h3>
 									<p><%=selectedProduct.getPrice()%>$</p>								
 									<h3>Accessories</h3>
@@ -92,21 +90,99 @@
 									<p><%=selectedProductDetail.getGuaranty()%></p>
 
 									<a href="<c:url value='addToCart?${selectedProduct.getProductId()}'/>" >
-										<div class="button btn btn-primary btn-lg btn-block">Add to cart</div>
+										<div style="font-size: 30px" class="fa fa-cart-plus btn-block"> Add to cart</div>
 									</a>
 									<h3 style="margin-top:10px;">Technical Details</h3>
 									<p style="padding-bottom:20px;">
 										<%=selectedProductDetail.getInformation()%>
 									</p>
-									<c:if test="${account == 1}">
-										<a href="<c:url value='deleteProduct?${selectedProduct.getProductId()}'/>">
-											<div class="button btn btn-primary btn-lg btn-block">Delete Product</div>
-										</a>
-									</c:if>
+									
 								</div>
+									</c:when>
+									<c:when test="${account == 1}">
+										<p class="proile-rating"></p>
+                        			<ul style="color:black;" class="nav nav-tabs" id="myTab" role="tablist">
+                            			<li class="nav-item">
+                                			<a  class="nav-link active" id="product-tap" data-toggle="tab" href="#product" role="tab" aria-controls="product" aria-selected="true">Detail</a>
+                           				</li>
+                           				 <li class="nav-item">
+                           				    <a class="nav-link" id="edit-product-tap" data-toggle="tab" href="#edit-product" role="tab" aria-controls="edit-product" aria-selected="false">Edit Product</a>
+                           				 </li>
+                           				 <li class="nav-item">
+                           				    <a class="nav-link" id="delete-product-tap" data-toggle="tab" href="#delete-product" role="tab" aria-controls="delete-product" aria-selected="false">Delete Product</a>
+                           				 </li>
+                            			
+                        			</ul>
+                        			  <div class="tab-content profile-tab" id="myTabContent">
+                        			  
+       <!-- ------------------------------------------------------------------------------------------------------------------------------- -->                 			  
+                        			  
+			                          <div class="tab-pane fade show active" id="product" role="tabpanel" aria-labelledby="product-tab">
+			                             <div style="margin: 10px 10px 0px 10px;">
+										<h3>Quantity of stock</h3>
+										<p><%=selectedProduct.getQuantity()%></p>															
+										<h3>Price</h3>
+										<p><%=selectedProduct.getPrice()%>$</p>								
+										<h3>Accessories</h3>
+										<p><%=selectedProductDetail.getAccessories()%></p>
+										<h3>Warranty Strategy</h3>
+										<p><%=selectedProductDetail.getGuaranty()%></p>
+			
+										<a href="<c:url value='addToCart?${selectedProduct.getProductId()}'/>" >
+											<div style="font-size: 30px" class="fa fa-cart-plus btn-block"> Add to cart</div>
+										</a>
+										<h3 style="margin-top:10px;">Technical Details</h3>
+										<p style="padding-bottom:20px;">
+											<%=selectedProductDetail.getInformation()%>
+										</p>
+										
+									</div>
+		                          </div>
+		                            <div class="tab-pane fade show "  id="edit-product" role="tabpanel" aria-labelledby="edit-product-tab">
+			                            	
+			                            	
+			                                 <div style="margin: 10px 10px 0px 15px;">
+			                                 <br>
+			                                 <a href="<c:url value='deleteProduct?${selectedProduct.getProductId()}'/>">
+													
+												
+												</a>
+				                                <form action="/Lab8a/editProduct" method="post">
+					                                		<input type="text"  value="${selectedProduct.getProductId() }" hidden name="id">
+													<h3>Quantity of stock</h3>
+														<input class="form-control"  value="${selectedProduct.getQuantity() }" type="text" name="quantity">															
+													<h3>Price</h3>
+														<input class="form-control"  value="${selectedProduct.getPrice() }" type="text" name="price">
+																					
+													<h3>Accessories</h3>
+														<input class="form-control"  value="${selectedProductDetail.getAccessories() }" type="text" name="accessory">
+													<h3>Warranty Strategy</h3>
+														<input class="form-control"  value="${selectedProductDetail.getGuaranty() }" type="text" name="warranty">
+																
+													<h3 style="margin-top:10px;">Technical Details</h3>
+														<textarea class="form-control" type="text" style="height: 300px;" aria-label="With textarea" name="technical-details">
+															${selectedProductDetail.getInformation() }
+														</textarea>
+													
+													<br> <br>
+													<button class="col-md-4 profile-edit-btn" >Update</button>
+												</form>	
+												<br>
+											</div>
+										</div>
+							<div class="tab-pane fade show" id="delete-product" role="tabpanel" aria-labelledby="delete-product-tab">
+								<br>
+								<button style="color:red; font-size:30 " class="form-control col-md-4 fa fa-close"> Delete Product</button>
+								<br>
 							</div>
-						</div>
+									</c:when>
+								</c:choose>			
+														                             
+                            </div>
+                        </div>												
 					</div>
+					
+					
 				</div>
 			</div>
 		</div>

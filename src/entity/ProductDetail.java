@@ -42,6 +42,7 @@ public class ProductDetail implements Serializable {
 	@PrimaryKeyJoinColumn
 	private Product product;
 
+
 	public ProductDetail() {
 	}
 
@@ -124,7 +125,6 @@ public class ProductDetail implements Serializable {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-	
 	public List<String> getAllImages(){
 		List<String> adds = new ArrayList();
 		adds.add(image1);

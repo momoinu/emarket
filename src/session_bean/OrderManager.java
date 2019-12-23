@@ -48,6 +48,8 @@ public class OrderManager {
     public OrderedProductSessionBean orderedProductSB;
     @EJB
     public CustomerSessionBean customerSB;
+    @EJB
+    public ProductDetailSessionBean productDetailSB;
     @PersistenceContext(unitName = "Lab8a")
     public EntityManager em;
     @Resource
@@ -90,6 +92,7 @@ public class OrderManager {
         order.setCcNumber(ccNumber);
         order.setReceiver(receiver);
         order.setPhone(phone);
+        order.setStatus(1);
         customerOrderSB.create(order);
         return order;
     }
@@ -126,7 +129,7 @@ public class OrderManager {
         for (OrderedProduct op : orderedProducts) {
             Product p = (Product) productSB.find(op.getId().getProductId());
             products.add(p);
-            p.setQuantity(p.getQuantity() - op.getQuantity());
+//            p.setQuantity(p.getQuantity() - op.getQuantity());
         }
 // add each item to orderMap
         orderMap.put("orderRecord", order);
@@ -135,4 +138,22 @@ public class OrderManager {
         orderMap.put("products", products);
         return orderMap;
     }
+    public void updateQuantity(int orderId) {
+		CustomerOrder customerOrder = customerOrderSB.find(orderId);
+		List<OrderedProduct> orderedProducts = orderedProductSB.findByOrderId(orderId);
+		for (OrderedProduct orderedProduct : orderedProducts) {
+			int quantity = orderedProduct.getQuantity();
+			Product product = productSB.find(orderedProduct.getProduct().getProductId());
+//			ProductDetail product = productDetailSB.find(orderedProduct.getProduct().getProductId());
+			int tmp = product.getQuantity();
+			if (tmp - quantity <= 0) {
+				tmp = 0;
+			} else {
+				tmp -= quantity;
+			}
+			product.setQuantity(tmp);
+//			product.setSale(product.getSale() + quantity);
+			productSB.edit(product);
+		}
+	}
 }

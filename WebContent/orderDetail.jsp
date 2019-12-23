@@ -1,3 +1,7 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Confirmation</title>
+</head>
 
 <div class="container-fluid">
 	<div class="row">
@@ -47,7 +51,8 @@
 							<tr>
 								<th>PRODUCT</th>
 								<th>QUANTITY</th>
-								<th>PRICE</th>								
+								<th>PRICE</th>
+								
 							</tr>
 						</thead>
 						<tbody>
@@ -56,7 +61,7 @@
 								    <td>${products[iter.index].name}</td>
 								    <td>${orderedProduct.quantity}</td>							    
 								    <td><fmt:formatNumber type="currency" currencySymbol="&dollar; " value="${products[iter.index].price * orderedProduct.quantity}" /></td>
-										
+									
 								</tr>
 					        </c:forEach>
 							<tr>
@@ -76,10 +81,21 @@
 							</tr>
 							<tr>
 								<td>Date create: ${orderRecord.dateCreated}</td>
-							
+								
 							</tr>
 							<tr>
-								<td>Status: Awaiting delivery</td>
+								<td>Status: <c:if test="${orderRecord.getStatus() == 3 }">
+											<b>Delivered</b>
+										</c:if>
+										<c:if test="${orderRecord.getStatus() == 1}">
+											<b>Awaiting delivery</b>					
+										</c:if>	
+										<c:if test="${orderRecord.getStatus() == 2}">
+											<b>Shipping	</b>				
+										</c:if>	
+										<c:if test="${orderRecord.getStatus() == 4}">
+											<b>Cancel Order	</b>			
+										</c:if>	</td>
 								
 							</tr>
 						</tbody>
@@ -104,7 +120,6 @@
 							</td>
 						</tr>
 		        	</table>
-		        	<h4 class="headline">Delivery Address</h4>
 		        	<hr>
 					<table>
 						<tr>
@@ -120,7 +135,6 @@
 							</td>
 						</tr>
 		        	</table>
-		        	
 				</div>
 			</div>
 		</div>		

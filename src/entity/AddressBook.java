@@ -10,7 +10,6 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="address_book")
-
 @NamedQueries({
 	@NamedQuery(name="AddressBook.findAll", query="SELECT a FROM AddressBook a"),
 	@NamedQuery(name="AddressBook.findByAddressBookId", query="SELECT a FROM AddressBook a WHERE a.addressId = :addressId"),

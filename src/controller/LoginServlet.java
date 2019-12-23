@@ -16,14 +16,16 @@ import javax.servlet.http.HttpSession;
 
 import entity.AddressBook;
 import entity.Customer;
+import entity.CustomerOrder;
 import session_bean.AddressBookSessionBean;
 import session_bean.CategorySessionBean;
+import session_bean.CustomerOrderSessionBean;
 import session_bean.CustomerSessionBean;
 import session_bean.ProductDetailSessionBean;
 import session_bean.ProductSessionBean;
 
-@WebServlet(name = "LoginServlet", loadOnStartup = 1, urlPatterns = { "/login", "/register", "/viewProfile", "/logout","/editProfile",
-		"/chooseCustomerToViewProfile", "/deleteAddress", "/addAddress" })
+@WebServlet(name = "LoginServlet", loadOnStartup = 1, urlPatterns = { "/login", "/register", "/profile", "/logout","/editProfile",
+		"/deleteAddress", "/addAddress" })
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -39,6 +41,8 @@ public class LoginServlet extends HttpServlet {
 	private ProductDetailSessionBean productDetailSB;
 	@EJB
 	private AddressBookSessionBean addressBookSB;
+	@EJB
+	private CustomerOrderSessionBean customerOrderSB;
 	@Override
 	public void init(ServletConfig servletConfig) throws ServletException {
 		super.init(servletConfig);
@@ -68,6 +72,30 @@ public class LoginServlet extends HttpServlet {
 			request.setAttribute("deleteAddressSuccessfully", true);
 			request.getRequestDispatcher("profile.jsp").include(request, response);
 		}
+		else if(userPath.equals("/profile")) {
+			Customer customer = (Customer) session.getAttribute("customer");
+			if(customer == null) {
+				int customerId = Integer.parseInt(request.getQueryString());
+				customer = customerSB.find(customerId);
+			}
+			List<CustomerOrder> customerOrders = (List<CustomerOrder>) customerOrderSB.findByCustomer(customer);
+			session.setAttribute("customerOrders", customerOrders);
+			if(customer != null) {
+				session.setAttribute("customer", customer);
+				List<AddressBook> addressBooks = addressBookSB.findByCustomer(customer);
+				session.setAttribute("addressBooks", addressBooks);
+				userPath = "profile";
+			}else {
+				request.setAttribute("customerErrorFlag", true);
+				request.getRequestDispatcher("adminViewProfile.jsp").forward(request, response);
+			}			
+		}
+		String url = userPath + ".jsp";
+		try {
+			request.getRequestDispatcher(url).forward(request, response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	@Override
@@ -91,6 +119,10 @@ public class LoginServlet extends HttpServlet {
 //					Customer customer = null;
 //					session.setAttribute("customer", customer);				
 					session.setAttribute("account", (int) 1);
+					List<Customer> customers = customerSB.findAll();
+					session.setAttribute("customers", customers);
+					List<CustomerOrder> customerOrders = customerOrderSB.findAll();
+					session.setAttribute("customerOrderHistories", customerOrders);
 					request.getRequestDispatcher("index.jsp").include(request, response);
 				} else {
 					out.print("<script type=\"text/javascript\">\r\n" + " alert('You are not Admin');\r\n"
@@ -169,19 +201,7 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("customer", customer);			
 			request.getRequestDispatcher("profile.jsp").forward(request, response);							
 		}
-		else if(userPath.equals("/chooseCustomerToViewProfile")) {
-			String username = request.getParameter("usernameOfCustomer");
-			Customer customer = customerSB.findByUsername(username);
-			if(customer != null) {
-				session.setAttribute("customer", customer);
-				List<AddressBook> addressBooks = addressBookSB.findByCustomer(customer);
-				session.setAttribute("addressBooks", addressBooks);
-				request.getRequestDispatcher("profile.jsp").forward(request, response);
-			}else {
-				request.setAttribute("customerErrorFlag", true);
-				request.getRequestDispatcher("adminViewProfile.jsp").forward(request, response);
-			}			
-		}
+		
 		else if(userPath.equals("/addAddress")) {
 			Customer customer = (Customer) session.getAttribute("customer");
 			String receiver = request.getParameter("receiver");
