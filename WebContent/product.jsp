@@ -172,7 +172,10 @@
 										</div>
 							<div class="tab-pane fade show" id="delete-product" role="tabpanel" aria-labelledby="delete-product-tab">
 								<br>
+								<form action="/Lab8a/deleteProduct" method="get">
+								<input type="hidden" name="productId" value="${selectedProduct.getProductId() }">
 								<button style="color:red; font-size:30 " class="form-control col-md-4 fa fa-close"> Delete Product</button>
+								</form>
 								<br>
 							</div>
 									</c:when>

@@ -150,7 +150,7 @@ public class ProductServlet extends HttpServlet {
 		// delete product
 		else if (userPath.equals("/deleteProduct")) {
 			PrintWriter out = response.getWriter();
-			int productId = Integer.parseInt(request.getQueryString());
+			int productId = Integer.parseInt(request.getParameter("productId"));
 			if (productId != 0) {
 				Product product = productSB.find(productId);
 				ProductDetail productDetail = productDetailSB.find(productId);

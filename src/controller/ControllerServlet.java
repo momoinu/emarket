@@ -222,10 +222,17 @@ public class ControllerServlet extends HttpServlet {
 		else if(userPath.equals("/chooseCustomerToCheckout")) {
 			String username = request.getParameter("usernameOfCustomer");
 			Customer customer = customerSB.findByUsername(username);
-			session.setAttribute("customer", customer);
-			List<AddressBook> addressBooks = addressBookSB.findByCustomer(customer);
-			request.setAttribute("addressBooks", addressBooks);
-			request.getRequestDispatcher("checkout.jsp").forward(request, response);
+			if(customer == null) {
+				request.setAttribute("usernameFailureFlag", true);
+				request.getRequestDispatcher("checkout.jsp").forward(request, response);
+			}
+			else {
+				session.setAttribute("customer", customer);
+				List<AddressBook> addressBooks = addressBookSB.findByCustomer(customer);
+				request.setAttribute("addressBooks", addressBooks);
+				request.getRequestDispatcher("checkout.jsp").forward(request, response);
+			}
+			
 		}
 		else if(userPath.equals("/addressBook")) {
 			String addressBookIdtoString = request.getParameter("addressBookId");

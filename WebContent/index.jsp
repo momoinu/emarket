@@ -24,17 +24,17 @@
 	<div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-ride="carousel">
 		<div class="carousel-inner">
 			<div class="carousel-item active" data-interval="4000">
-				<img src="./images/iphone-11.png" class="d-block w-100" alt="...">
+				<img src="./images/iphone-11.png" class="d-block w-100" style="height:700px;" alt="...">
 			</div>
 			<div class="carousel-item" data-interval="3000">
-				<img src="./images/laptop-gaming2.png" class="d-block w-100"
+				<img src="./images/laptop-gaming2.png" class="d-block w-100" style="height:700px;"
 					alt="...">
 				<div class="carousel-caption d-none d-md-block">
 					<h1>Laptop Gaming</h1>
 				</div>
 			</div>
 			<div class="carousel-item" data-interval="3000">
-				<img src="./images/macbook-pro-13-inch-2019.png" 	
+				<img src="./images/macbook-pro-13-inch-2019.png" style="height:700px;"	
 					class="d-block w-100" alt="...">
 				<div class="carousel-caption d-none d-md-block">
 					<h1>Macbook Pro 13 inch 2019</h1>
