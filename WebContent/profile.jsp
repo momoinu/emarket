@@ -184,7 +184,7 @@
                             </div>
                            
                             <div class="tab-pane fade show "  id="edit-profile" role="tabpanel" aria-labelledby="edit-profile-tab">
-                                <form action="/Lab8a/editProfile" method="post"> 
+                                <form action="/emarket/editProfile" method="post"> 
                                 <div class="row ">
                                     <div class="col-md-4">
                                         <label>Password</label>
