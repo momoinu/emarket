@@ -147,7 +147,7 @@
 													
 												
 												</a>
-				                                <form action="/Lab8a/editProduct" method="post">
+				                                <form action="/emarket/editProduct" method="post">
 					                                		<input type="text"  value="${selectedProduct.getProductId() }" hidden name="id">
 													<h3>Quantity of stock</h3>
 														<input class="form-control"  value="${selectedProduct.getQuantity() }" type="text" name="quantity">															
@@ -172,7 +172,7 @@
 										</div>
 							<div class="tab-pane fade show" id="delete-product" role="tabpanel" aria-labelledby="delete-product-tab">
 								<br>
-								<form action="/Lab8a/deleteProduct" method="get">
+								<form action="/emarket/deleteProduct" method="get">
 								<input type="hidden" name="productId" value="${selectedProduct.getProductId() }">
 								<button style="color:red; font-size:30 " class="form-control col-md-4 fa fa-close"> Delete Product</button>
 								</form>

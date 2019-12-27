@@ -91,7 +91,7 @@
 								<a class="dropdown-item" href="addProduct.jsp">Add Product</a>
 								<a class="dropdown-item" href="adminViewProfile.jsp">View profile of customer</a>
 								<a class="dropdown-item" href="orderHistory.jsp">View all orders</a>
-								<a class="dropdown-item" href="/Lab8a/logout">Log out</a>
+								<a class="dropdown-item" href="/emarket/logout">Log out</a>
 							</div>
 						</li>
 					</c:when>
@@ -100,7 +100,7 @@
 							<a class="nav-link text-light " href="#"><i class="fa fa-user-circle" style="font-size:24px"></i> ${customer.getName() }</a>
 							<div class="dropdown-content">
 								<a class="dropdown-item" href="<c:url value='profile?${customer.getCustomerId() }' />">Profile</a>
-								<a class="dropdown-item" href="/Lab8a/logout">Log out</a>
+								<a class="dropdown-item" href="/emarket/logout">Log out</a>
 							</div>
 						</li>
 					</c:when>
