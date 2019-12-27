@@ -1,2 +1,2 @@
 # NMCNPM-TeamLOL
-thằng ngu huy :))
+New world
