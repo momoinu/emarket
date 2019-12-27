@@ -1,0 +1,132 @@
+<%-- any content can be specified here e.g.: --%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="entity.Customer"%>
+<%
+	Customer customer = (Customer) session.getAttribute("customer");
+	
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<title>LoL Team</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.4/css/all.css">
+<link rel="stylesheet" type="text/css" media="screen" href="css/style2.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script src="sliderengine/jquery.js"></script>
+<script src="sliderengine/amazingslider.js"></script>
+<link rel="stylesheet" type="text/css" href="sliderengine/amazingslider-1.css">
+<script src="sliderengine/initslider-1.js"></script>
+
+</head>
+
+<body>
+	<!--Navigation-->
+	<nav class="navbar navbar-expand-lg  container-fluid">
+		<a style="margin: -10px 50px 0px 30px;" href="index.jsp">
+			<img src="./images/Lol.team.png" alt="lo go" width="125" height="50">
+		</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li style="margin-right: 190px;" class="nav-item dropdown">
+					<a class="nav-link text-light " href="#">ALL Category</a>
+					<div class="dropdown-content">
+						<div class="nav-item dropright">
+							<a href="category?1" class="dropdown-item">Mac</a>
+							<div style="background-color: #f5f5f5;" class="dropdown-menu">
+								<a class="dropdown-item" href="#" />iMac</a>
+								<a class="dropdown-item" href="#">Mac Pro</a>
+								<a class="dropdown-item" href="#">Macbook Air</a>
+							</div>
+						</div>
+						<a class="dropdown-item" href="category?3">iPad</a>
+						<a class="dropdown-item" href="category?2">iPhone</a>
+						<a class="dropdown-item" href="category?4">Accessories</a>
+					</div>
+				</li>
+				
+				<!-- search box -->
+				
+				<form class="form-inline my-2 my-lg-0 align-from ">
+					<input class="form-control mr-sm-2" type="search" placeholder="Search product" aria-label="Search">
+					<button class="btn text-light my-2 my-sm-0" type="submit">Search</button>
+				</form>
+				<li class="nav-item active text">
+					<a class="nav-link text-light" href="index.jsp"><i class="fa fa-home" style="font-size:24px"></i>
+						Home <span class="sr-only">(current)</span>
+					</a>
+				</li>
+
+				<!-- account -->
+				
+				<c:choose>
+					<c:when test="${account == 0}">
+						<li class="nav-item text ">
+							<a class="nav-link text-light" href="login.jsp"><i class="fa fa-sign-in" style="font-size:24px"></i> Login</a>
+						</li>
+					</c:when>
+					<c:when test="${account == 1}">
+						<li class="nav-item dropdown">
+							<a class="nav-link text-light " href="#"><i class="fa fa-user-circle" style="font-size:24px"></i> Admin</a>
+							<div class="dropdown-content">
+								<a class="dropdown-item" href="addProduct.jsp">Add Product</a>
+								<a class="dropdown-item" href="adminViewProfile.jsp">View profile of customer</a>
+								<a class="dropdown-item" href="orderHistory.jsp">View all orders</a>
+								<a class="dropdown-item" href="/emarket/logout">Log out</a>
+							</div>
+						</li>
+					</c:when>
+					<c:when test="${account == 2}">
+						<li class="nav-item dropdown">
+							<a class="nav-link text-light " href="#"><i class="fa fa-user-circle" style="font-size:24px"></i> ${customer.getName() }</a>
+							<div class="dropdown-content">
+								<a class="dropdown-item" href="<c:url value='profile?${customer.getCustomerId() }' />">Profile</a>
+								<a class="dropdown-item" href="/emarket/logout">Log out</a>
+							</div>
+						</li>
+					</c:when>
+				</c:choose>
+				<!-- Cart -->
+				<li class="nav-item text">
+					
+					<a class="nav-link text-light" href="viewCart.jsp"><i class="fa fa-cart-plus" style="font-size:24px"></i>
+						Cart <c:choose>
+							<c:when test="${cart.total == null}">
+ 							0
+ 							</c:when>
+							<c:otherwise>
+ 									${cart.subtotal} $
+ 							</c:otherwise>
+						</c:choose> </a>
+				</li>
+			</ul>
+		</div>
+		<hr>
+	</nav>
+	
+	<div style="margin: 5px 0 5px 50px; font-size: 15px;"">
+		<strong><i>Contact me: <u>0393666888/094456789</u></i></strong>
+	</div>
+	
+	
+	
+
