@@ -4,9 +4,11 @@
 <%@page import="entity.Product"%>
 <%
 	session.setAttribute("view", "/category");
-	Category category = (Category) session.getAttribute("selectedCategory");
+	Category category = (Category) request.getAttribute("category");
+	List<Product> products = (List<Product>) request.getAttribute("products");
+	
 %>
-<hr>
+<hr> 
 <div class="container-fluid">
 	<div class="row">
 		<div class="SideBar col-lg-2 col-md-2 col-sm-3 col-xs-12">
@@ -48,8 +50,7 @@
 				<div class="container">
 					<div class="row row-cols-4">						
 							<%
-								List<Product> categoryProducts = (List<Product>) session.getAttribute("categoryProducts");
-								for (Product p : categoryProducts) {
+								for (Product p : products) {
 							%>
 								<div class="col">	
 										<p>

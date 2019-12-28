@@ -43,11 +43,11 @@ public class OrderedProduct implements Serializable {
 	public void setId(OrderedProductPK id) {
 		this.id = id;
 	}
-
+	
 	public OrderedProduct(OrderedProductPK orderedProductPK) {	
 		this.id = orderedProductPK;
 	}
-	
+
 	public int getQuantity() {
 		return this.quantity;
 	}

@@ -73,27 +73,22 @@ public class ControllerServlet extends HttpServlet {
 		String userPath = request.getRequestURI().substring(request.getContextPath().length());
 		// view category
 		if (userPath.equals("/category")) {
-			String categoryId = request.getQueryString();
-			if (categoryId != null) {
-				Category selectedCategory;
-				List<Product> categoryProducts;
-				selectedCategory = categorySB.find(Integer.parseInt(categoryId));
-				session.setAttribute("selectedCategory", selectedCategory);
-				categoryProducts = (List<Product>) selectedCategory.getProducts();
-				session.setAttribute("categoryProducts", categoryProducts);
-				request.setAttribute("title", "Category");
+			int categoryId = Integer.parseInt(request.getQueryString());
+			if (categoryId > 0) {
+				Category category = categorySB.find(categoryId);
+				List<Product> products = (List<Product>) category.getProducts();
+				request.setAttribute("category", category);			
+				request.setAttribute("products", products);			
 			}
 		}
 		// view product
 		else if (userPath.equals("/product")) {
-			Product selectedProduct;
-			ProductDetail selectedProductDetail;
-			String productId = request.getQueryString();
-			if (productId != null) {
-				selectedProduct = productSB.find(Integer.parseInt(productId));
-				selectedProductDetail = productDetailSB.find(Integer.parseInt(productId));
-				session.setAttribute("selectedProduct", selectedProduct);
-				session.setAttribute("selectedProductDetail", selectedProductDetail);
+			int productId = Integer.parseInt(request.getQueryString());			
+			if (productId > 0) {
+				Product product = productSB.find(productId);
+				ProductDetail productDetail = productDetailSB.find(productId);
+				request.setAttribute("product", product);
+				request.setAttribute("productDetail", productDetail);
 			}
 		}
 		// viewCart
@@ -179,13 +174,12 @@ public class ControllerServlet extends HttpServlet {
 				String ccNumber = "187730755";
 				boolean validationErrorFlag = false;
 				validationErrorFlag = validator.validateForm(username, receiver, phone, address, ccNumber);
-				System.out.println(validationErrorFlag+"888888888888888888888888888888888888");
 				Customer customer = customerSB.findByUsername(username);
 				if (!validationErrorFlag) {
-					request.setAttribute("validationFailureFlag", true);
+					request.setAttribute("validationErrorFlag", true);
 					userPath = "checkout";
 				} else if(customer == null) {
-					request.setAttribute("usernameFailureFlag", true);		
+					request.setAttribute("usernameErrorFlag", true);		
 					userPath = "checkout";
 				}else {
 					int orderId = orderManager.placeOrder(username, receiver, phone, address, ccNumber, cart);
@@ -198,7 +192,8 @@ public class ControllerServlet extends HttpServlet {
 						// dissociate shopping cart from session
 						double total = cart.getTotal();
 						cart = null;
-						session.setAttribute("cart", cart);
+						session.removeAttribute("cart");
+						
 						request.setAttribute("total", total);
 						if (!language.isEmpty()) { 
 							request.setAttribute("language", language); 
@@ -211,9 +206,9 @@ public class ControllerServlet extends HttpServlet {
 						request.setAttribute("orderedProducts", orderMap.get("orderedProducts"));
 						List<CustomerOrder> customerOrders = customerOrderSB.findAll();
 						session.setAttribute("customerOrderHistories", customerOrders);
-						userPath = "/confirmation";
+						userPath = "confirmation";
 					} else {
-						userPath = "/checkout";
+						userPath = "checkout";
 						request.setAttribute("orderFailureFlag", true);
 					}
 				}

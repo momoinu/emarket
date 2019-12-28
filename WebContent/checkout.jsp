@@ -67,10 +67,10 @@
 			<c:if test="${orderFailureFlag}">
 				<p style="color: #c00; font-style: italic">We were unable to process your order. Please try again!</p>
 			</c:if>
-			<c:if test="${validationFailureFlag}">
+			<c:if test="${validationErrorFlag}">
 				<p style="color: #c00; font-style: italic">We were unable to process your order. Please complete all information!</p>
 			</c:if>
-			<c:if test="${usernameFailureFlag}">
+			<c:if test="${usernameErrorFlag}">
 				<p style="color: #c00; font-style: italic">We were unable to process your order. Please enter the correct username!</p>
 			</c:if>
 			

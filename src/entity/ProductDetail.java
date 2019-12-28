@@ -42,7 +42,6 @@ public class ProductDetail implements Serializable {
 	@PrimaryKeyJoinColumn
 	private Product product;
 
-
 	public ProductDetail() {
 	}
 

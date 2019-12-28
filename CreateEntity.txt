@@ -1,0 +1,42 @@
+@NamedQueries({
+    @NamedQuery(name = "OrderedProduct.findAll", query = "SELECT o FROM OrderedProduct o"),
+    @NamedQuery(name = "OrderedProduct.findByOrderId", query = "SELECT o FROM OrderedProduct o WHERE o.id.orderId = :orderId"),
+    @NamedQuery(name = "OrderedProduct.findByProductId", query = "SELECT o FROM OrderedProduct o WHERE o.id.productId = :productId"),
+    @NamedQuery(name = "OrderedProduct.findByQuantity", query = "SELECT o FROM OrderedProduct o WHERE o.quantity = :quantity")})
+
+@NamedQueries({
+	@NamedQuery(name="AddressBook.findAll", query="SELECT a FROM AddressBook a"),
+	@NamedQuery(name="AddressBook.findByAddressBookId", query="SELECT a FROM AddressBook a WHERE a.addressId = :addressId"),
+	@NamedQuery(name="AddressBook.findByCustomer", query="SELECT a FROM AddressBook a WHERE a.customer = :customer")})
+
+@NamedQueries({
+	@NamedQuery(name="Customer.findAll", query="SELECT c FROM Customer c"),
+	@NamedQuery(name="Customer.findByUserPass", query="SELECT c FROM Customer c WHERE c.username = :username AND c.password = :password"),
+	@NamedQuery(name="Customer.findByUsername", query="SELECT c FROM Customer c WHERE c.username = :username")})
+
+@NamedQueries({
+	@NamedQuery(name="Product.findAll", query="SELECT p FROM Product p"),
+	@NamedQuery(name="Product.findByName", query="SELECT p FROM Product p WHERE p.name = :name")})
+
+@OneToOne(cascade={CascadeType.ALL})
+	@PrimaryKeyJoinColumn
+	private Product product;
+
+public OrderedProduct(OrderedProductPK orderedProductPK) {	
+		this.id = orderedProductPK;
+	}
+
+@NamedQueries({
+	@NamedQuery(name="CustomerOrder.findAll", query="SELECT c FROM CustomerOrder c"),
+	@NamedQuery(name="CustomerOrder.findByCustomer", query="SELECT c FROM CustomerOrder c WHERE c.customer = :customer")})
+
+public List<String> getAllImages(){
+		List<String> adds = new ArrayList();
+		adds.add(image1);
+		adds.add(image2);
+		adds.add(image3);
+		adds.add(image4);
+		adds.add(image5);
+		return adds;
+	}
+

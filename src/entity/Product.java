@@ -11,9 +11,11 @@ import java.util.List;
  * 
  */
 @Entity
+
 @NamedQueries({
 	@NamedQuery(name="Product.findAll", query="SELECT p FROM Product p"),
 	@NamedQuery(name="Product.findByName", query="SELECT p FROM Product p WHERE p.name = :name")})
+
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 

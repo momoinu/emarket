@@ -1,9 +1,9 @@
-	<%@page import="entity.ProductDetail"%>
+<%@page import="entity.ProductDetail"%>
 <%@page import="entity.Product"%>
 <%
 	session.setAttribute("view", "/product ");
-	Product selectedProduct = (Product) session.getAttribute("selectedProduct");
-	ProductDetail selectedProductDetail = (ProductDetail) session.getAttribute("selectedProductDetail");
+	Product product = (Product) request.getAttribute("product");
+	ProductDetail productDetail = (ProductDetail) request.getAttribute("productDetail");
 %>
 <br>
 <hr>
@@ -41,10 +41,13 @@
 			<div>
 				<hr>
 				<div>
-					<h1><%=selectedProduct.getName()%></h1>
+					<h1><%=product.getName()%></h1>
 				</div>
 				<hr>
-				<c:if test="${editProductSuccessfully }"><p style="color: #c00; font-style: italic">Update product successfully!</p></c:if>
+				<c:if test="${addProductSuccessfullyFlag}"><p style="color: #c00; font-style: italic">Add product successfully!</p></c:if>
+				<c:if test="${updateQuantitySuccessfullyFlag }"><p style="color: #c00; font-style: italic">This product is available, update quantity successfully!</p></c:if>
+				<c:if test="${editProductSuccessfullyFlag}"><p style="color: #c00; font-style: italic">Update product successfully!</p></c:if>
+				<c:if test="${deleteProductErrorFlag }"><p style="color: #c00; font-style: italic">Can't delete product, pls check your quantity and order!</p></c:if>
 				<hr>
 				<div class="row">
 					<div class="col-6">
@@ -56,7 +59,7 @@
 								<ul class="amazingslider-slides"
 									style="display: none; border-radius: 4px;">
 									<%
-										for (String img : selectedProductDetail.getAllImages()) {
+										for (String img : productDetail.getAllImages()) {
 									%>
 										<li><img src="images/<%=img%>" alt="" title="" /></li>
 									<%
@@ -65,7 +68,7 @@
 								</ul>
 								<ul class="amazingslider-thumbnails" style="display: none;">
 									<%
-										for (String img : selectedProductDetail.getAllImages()) {
+										for (String img : productDetail.getAllImages()) {
 									%>
 										<li><img src="images/<%=img%>" alt="" title="" /></li>
 									<%
@@ -83,18 +86,18 @@
 									<c:when test="${account != 1}">
 										<div style="margin: 10px 10px 0px 10px;">														
 									<h3>Price</h3>
-									<p><%=selectedProduct.getPrice()%>$</p>								
+									<p><%=product.getPrice()%>$</p>								
 									<h3>Accessories</h3>
-									<p><%=selectedProductDetail.getAccessories()%></p>
+									<p><%=productDetail.getAccessories()%></p>
 									<h3>Warranty Strategy</h3>
-									<p><%=selectedProductDetail.getGuaranty()%></p>
+									<p><%=productDetail.getGuaranty()%></p>
 
-									<a href="<c:url value='addToCart?${selectedProduct.getProductId()}'/>" >
+									<a href="<c:url value='addToCart?${product.getProductId()}'/>" >
 										<div style="font-size: 30px" class="fa fa-cart-plus btn-block"> Add to cart</div>
 									</a>
 									<h3 style="margin-top:10px;">Technical Details</h3>
 									<p style="padding-bottom:20px;">
-										<%=selectedProductDetail.getInformation()%>
+										<%=productDetail.getInformation()%>
 									</p>
 									
 								</div>
@@ -120,20 +123,20 @@
 			                          <div class="tab-pane fade show active" id="product" role="tabpanel" aria-labelledby="product-tab">
 			                             <div style="margin: 10px 10px 0px 10px;">
 										<h3>Quantity of stock</h3>
-										<p><%=selectedProduct.getQuantity()%></p>															
+										<p><%=product.getQuantity()%></p>															
 										<h3>Price</h3>
-										<p><%=selectedProduct.getPrice()%>$</p>								
+										<p><%=product.getPrice()%>$</p>								
 										<h3>Accessories</h3>
-										<p><%=selectedProductDetail.getAccessories()%></p>
+										<p><%=productDetail.getAccessories()%></p>
 										<h3>Warranty Strategy</h3>
-										<p><%=selectedProductDetail.getGuaranty()%></p>
+										<p><%=productDetail.getGuaranty()%></p>
 			
-										<a href="<c:url value='addToCart?${selectedProduct.getProductId()}'/>" >
+										<a href="<c:url value='addToCart?${product.getProductId()}'/>" >
 											<div style="font-size: 30px" class="fa fa-cart-plus btn-block"> Add to cart</div>
 										</a>
 										<h3 style="margin-top:10px;">Technical Details</h3>
 										<p style="padding-bottom:20px;">
-											<%=selectedProductDetail.getInformation()%>
+											<%=productDetail.getInformation()%>
 										</p>
 										
 									</div>
@@ -143,25 +146,25 @@
 			                            	
 			                                 <div style="margin: 10px 10px 0px 15px;">
 			                                 <br>
-			                                 <a href="<c:url value='deleteProduct?${selectedProduct.getProductId()}'/>">
+			                                 <a href="<c:url value='deleteProduct?${product.getProductId()}'/>">
 													
 												
 												</a>
-				                                <form action="/emarket/editProduct" method="post">
-					                                		<input type="text"  value="${selectedProduct.getProductId() }" hidden name="id">
+				                                <form action="/emarket/editProduct" method="get">
+					                                		<input type="text"  value="${product.getProductId() }" hidden name="productId">
 													<h3>Quantity of stock</h3>
-														<input class="form-control"  value="${selectedProduct.getQuantity() }" type="text" name="quantity">															
+														<input class="form-control"  value="${product.getQuantity() }" type="text" name="quantity">															
 													<h3>Price</h3>
-														<input class="form-control"  value="${selectedProduct.getPrice() }" type="text" name="price">
+														<input class="form-control"  value="${product.getPrice() }" type="text" name="price">
 																					
 													<h3>Accessories</h3>
-														<input class="form-control"  value="${selectedProductDetail.getAccessories() }" type="text" name="accessory">
+														<input class="form-control"  value="${productDetail.getAccessories() }" type="text" name="accessories">
 													<h3>Warranty Strategy</h3>
-														<input class="form-control"  value="${selectedProductDetail.getGuaranty() }" type="text" name="warranty">
+														<input class="form-control"  value="${productDetail.getGuaranty() }" type="text" name="guaranty">
 																
 													<h3 style="margin-top:10px;">Technical Details</h3>
-														<textarea class="form-control" type="text" style="height: 300px;" aria-label="With textarea" name="technical-details">
-															${selectedProductDetail.getInformation() }
+														<textarea class="form-control" type="text" style="height: 300px;" aria-label="With textarea" name="information">
+															${productDetail.getInformation() }
 														</textarea>
 													
 													<br> <br>
@@ -173,7 +176,7 @@
 							<div class="tab-pane fade show" id="delete-product" role="tabpanel" aria-labelledby="delete-product-tab">
 								<br>
 								<form action="/emarket/deleteProduct" method="get">
-								<input type="hidden" name="productId" value="${selectedProduct.getProductId() }">
+								<input type="hidden" name="productId" value="${product.getProductId() }">
 								<button style="color:red; font-size:30 " class="form-control col-md-4 fa fa-close"> Delete Product</button>
 								</form>
 								<br>

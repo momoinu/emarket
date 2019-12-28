@@ -55,13 +55,7 @@ public class ProductServlet extends HttpServlet {
 		// addproduct
 		if (userPath.equals("/addProduct")) {
 			PrintWriter out = response.getWriter();
-			Product selectedProduct = (Product) session.getAttribute("selectedProduct");
-			ProductDetail selectedProductDetail = (ProductDetail) session.getAttribute("selectedProductDetail");
-
 			// get info from web
-			Random random = new Random();
-			int productId = random.nextInt(999999999);
-			System.out.println(productId);
 			String name = request.getParameter("name");
 			String description = request.getParameter("description");
 			String descriptionDetail = request.getParameter("descriptionDetail");
@@ -69,7 +63,6 @@ public class ProductServlet extends HttpServlet {
 			String image = request.getParameter("image");
 			Double price = Double.parseDouble(request.getParameter("price"));
 			int quantity = Integer.parseInt(request.getParameter("quantity"));
-
 			String information = request.getParameter("information");
 			String accessories = request.getParameter("accessories");
 			String guaranty = request.getParameter("guaranty");
@@ -79,15 +72,6 @@ public class ProductServlet extends HttpServlet {
 			String image4 = request.getParameter("image4");
 			String image5 = request.getParameter("image5");
 
-			if (selectedProduct != null) {
-				productId = selectedProduct.getProductId();
-				session.removeAttribute("selectedProduct");
-				session.removeAttribute("selectedProductDetail");
-				Product p = productSB.find(productId);
-				ProductDetail pd = productDetailSB.find(productId);
-				productDetailSB.remove(pd);
-				productSB.remove(p);
-			}
 			Product product = productSB.findByName(name);
 			
 			if (product != null) {
@@ -98,16 +82,15 @@ public class ProductServlet extends HttpServlet {
 				session.setAttribute("selectedProductDetail", productDetail);
 				request.getServletContext().setAttribute("newProducts", productSessionBean.findAll());
 				request.getServletContext().setAttribute("categories", categorySB.findAll());
-				request.setAttribute("updateQuantity", true);
+				request.setAttribute("updateQuantitySuccessfullyFlag", true);
 				userPath="product";
-//				request.getRequestDispatcher("index.jsp").forward(request, response);
 			} else {
 				try {
 					Product p = new Product();
 					ProductDetail pd = new ProductDetail();
 					Category category = categorySB.find(categoryId);
 					// set for product
-					p.setProductId(productId);
+//					p.setProductId(productId);
 					p.setName(name);
 					p.setImage(image);
 					p.setCategory(category);
@@ -119,8 +102,10 @@ public class ProductServlet extends HttpServlet {
 					p.setLastUpdate(date);
 					p.setQuantity(quantity);
 					productSB.create(p);
+					
 					// set for product detail
-
+					int productId = productSB.findByName(name).getProductId();
+					p.setProductId(productId);
 					pd.setProductId(productId);
 					pd.setImage1(image1);
 					pd.setImage1(image2);
@@ -130,26 +115,22 @@ public class ProductServlet extends HttpServlet {
 					pd.setAccessories(accessories);
 					pd.setGuaranty(guaranty);
 					pd.setInformation(information);
-
 					productDetailSB.create(pd);
-					session.setAttribute("selectedProduct", p);
-					session.setAttribute("selectedProductDetail", pd);
+					
+					request.setAttribute("product", p);
+					request.setAttribute("productDetail", pd);
 					request.getServletContext().setAttribute("newProducts", productSessionBean.findAll());
 					request.getServletContext().setAttribute("categories", categorySB.findAll());
-					out.print("<script type=\"text/javascript\">\r\n" + "	alert('Create product successfully!');\r\n"
-							+ "	</script>");
+					request.setAttribute("addProductSuccessfullyFlag", true);
 					userPath = "product";
 				} catch (Exception ex) {
 					System.out.println(ex);
 				}
-			}
-			
-
+			}			
 		}
 
 		// delete product
-		else if (userPath.equals("/deleteProduct")) {
-			PrintWriter out = response.getWriter();
+		else if (userPath.equals("/deleteProduct")) {			
 			int productId = Integer.parseInt(request.getParameter("productId"));
 			if (productId != 0) {
 				Product product = productSB.find(productId);
@@ -159,21 +140,40 @@ public class ProductServlet extends HttpServlet {
 					productDetailSB.remove(productDetail);
 					productSB.remove(product);
 					getServletContext().setAttribute("newProducts", productSessionBean.findAll());
+					PrintWriter out = response.getWriter();
 					out.print("<script type=\"text/javascript\">\r\n" + "	alert('Delete product successfully!');\r\n"
 							+ "	</script>");
 					request.getRequestDispatcher("index.jsp").include(request, response);
 					out.close();
 				} else {
-					out.print("<script type=\"text/javascript\">\r\n"
-							+ "	alert('Can not delete product, pls check your quantity & your order!');\r\n"
-							+ "	</script>");
-					request.getRequestDispatcher("index.jsp").include(request, response);
-					out.close();
+					request.setAttribute("deleteProductErrorFlag", true);
+					request.setAttribute("product", product);
+					request.setAttribute("productDetail", productDetail);
+					userPath = "product";
 				}
-
 			}
 		}
-
+		//edit product
+		else if (userPath.equals("/editProduct")) {			
+			String productId = request.getParameter("productId");
+			Product	product = productSB.find(Integer.parseInt(productId));
+			ProductDetail productDetail = productDetailSB.find(Integer.parseInt(productId));			
+			
+			product.setQuantity(Integer.parseInt(request.getParameter("quantity")));			
+			product.setPrice(Double.parseDouble(request.getParameter("price")));	
+			productDetail.setAccessories(request.getParameter("accessories"));	
+			productDetail.setInformation(request.getParameter("information"));
+			productDetail.setGuaranty(request.getParameter("guaranty"));			
+			
+			productDetailSB.edit(productDetail);
+			productSB.edit(product);
+			request.setAttribute("product", product);
+			request.setAttribute("productDetail", productDetail);
+			request.getServletContext().setAttribute("newProducts", productSessionBean.findAll());
+			request.getServletContext().setAttribute("newCategories", categorySB.findAll());
+			request.setAttribute("editProductSuccessfully", true);
+			userPath = "product";		
+		}
 		String url = userPath + ".jsp";
 		try {
 			request.getRequestDispatcher(url).forward(request, response);
@@ -186,35 +186,7 @@ public class ProductServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		String userPath = request.getRequestURI().substring(request.getContextPath().length());
-		if (userPath.equals("/editProduct")) {			
-			String productId = request.getParameter("id");
-			Product	selectedProduct = productSB.find((int) Integer.parseInt(productId));
-			ProductDetail selectedProductDetail = productDetailSB.find((int) Integer.parseInt(productId));
-				
-			
-			selectedProduct.setQuantity(Integer.parseInt(request.getParameter("quantity")));			
-			selectedProduct.setPrice(Double.parseDouble(request.getParameter("price")));	
-			selectedProductDetail.setAccessories(request.getParameter("accessory"));	
-			selectedProductDetail.setInformation(request.getParameter("technical-details"));
-			selectedProductDetail.setGuaranty(request.getParameter("warranty"));			
-			
-			productDetailSB.edit(selectedProductDetail);
-			productSB.edit(selectedProduct);
-			session.setAttribute("selectedProduct", selectedProduct);
-			session.setAttribute("selectedProductDetail", selectedProductDetail);
-			request.getServletContext().setAttribute("newProducts", productSessionBean.findAll());
-			request.getServletContext().setAttribute("newCategories", categorySB.findAll());
-			request.setAttribute("editProductSuccessfully", true);
-			userPath = "product";		
-		}
-		String url = userPath + ".jsp";
-		try {
-			request.getRequestDispatcher(url).forward(request, response);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+		
 
 	}
 

@@ -62,7 +62,7 @@ public class OrderManager {
         try {
         	Customer customer = customerSB.findByUsername(username);
             
-            CustomerOrder order = addOrder(customer, cart, receiver, phone, address, ccNumber);
+            CustomerOrder order = addCustomerOrder(customer, cart, receiver, phone, address, ccNumber);
             addOrderedItems(order, cart);
             return order.getOrderId();
         } catch (Exception e) {
@@ -72,29 +72,30 @@ public class OrderManager {
         }
     }
 
-    public CustomerOrder addOrder(Customer customer, ShoppingCart cart, String receiver, String phone, String address, String ccNumber) {
+    public CustomerOrder addCustomerOrder(Customer customer, ShoppingCart cart, String receiver, String phone, String address, String ccNumber) {
 // set up customer order
-        int id = customerOrderSB.findAll().size() + 1;
-        CustomerOrder order = new CustomerOrder();
-        order.setOrderId(id);
-        order.setCustomer(customer);
+ 
+        CustomerOrder customerOrder = new CustomerOrder();
+
+        customerOrder.setCustomer(customer);
         cart.calculateTotal("5");
-        order.setAmount(new BigDecimal(cart.getTotal()));
+        customerOrder.setAmount(new BigDecimal(cart.getTotal()));
         
 // create confirmation number
         Random random = new Random();
         int i = random.nextInt(999999999);
-        order.setConfirmationNumber(i);
+        customerOrder.setOrderId(i);
+        customerOrder.setConfirmationNumber(i);
 //        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
-        order.setDateCreated(date);
-        order.setAddress(address);
-        order.setCcNumber(ccNumber);
-        order.setReceiver(receiver);
-        order.setPhone(phone);
-        order.setStatus(1);
-        customerOrderSB.create(order);
-        return order;
+        customerOrder.setDateCreated(date);
+        customerOrder.setAddress(address);
+        customerOrder.setCcNumber(ccNumber);
+        customerOrder.setReceiver(receiver);
+        customerOrder.setPhone(phone);
+        customerOrder.setStatus(1);
+        customerOrderSB.create(customerOrder);
+        return customerOrder;
     }
 
     public void addOrderedItems(CustomerOrder order, ShoppingCart cart) {

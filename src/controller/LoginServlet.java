@@ -103,57 +103,45 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		String userPath = request.getRequestURI().substring(request.getContextPath().length());
-		Random random = new Random();
-
 //		login
 		if (userPath.equals("/login")) {
-			PrintWriter out = response.getWriter();
 			response.setContentType("text/html");
 			String admin = request.getParameter("admin-login");
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
 			// admin
 			if (admin != null) {
-				if ((username.equals("rongden1211") && password.equals("admin"))
-						|| (username.equals("momoinu") && password.equals("a1k43pbc"))) {
-//					Customer customer = null;
-//					session.setAttribute("customer", customer);				
+				if (username.equals("momoinu") && password.equals("a1k43pbc")) {		
 					session.setAttribute("account", (int) 1);
 					List<Customer> customers = customerSB.findAll();
 					session.setAttribute("customers", customers);
 					List<CustomerOrder> customerOrders = customerOrderSB.findAll();
 					session.setAttribute("customerOrderHistories", customerOrders);
-					request.getRequestDispatcher("index.jsp").include(request, response);
+					userPath = "index";
 				} else {
-					out.print("<script type=\"text/javascript\">\r\n" + " alert('You are not Admin');\r\n"
-							+ "	</script>");
-					out.print("</br>");
-					request.getRequestDispatcher("login.jsp").include(request, response);
+					request.setAttribute("loginErrorFlag", true);
+					userPath = "Login";
 				}
 			} // user
 			else {
 				Customer customer = customerSB.findByUserPass(username, password);
 				if (customer == null) {
-					out.print("<script type=\"text/javascript\">\r\n"
-							+ "	alert('Username or password incorrect!');\r\n" + "	</script>");
-					request.getRequestDispatcher("login.jsp").include(request, response);
+					request.setAttribute("loginErrorFlag", true);
+					userPath = "Login";
 				} else {
 					session.setAttribute("account", (int)2);
 					session.setAttribute("customer", customer);
+					System.out.println(session.getId() + "--------------------------------1111111111111111111111111111111111111");
 					List<AddressBook> addressBooks = addressBookSB.findByCustomer(customer);
 					session.setAttribute("addressBooks", addressBooks);
-					request.getRequestDispatcher("index.jsp").include(request, response);
+					userPath = "index";
 				}
 			}
-			out.close();
 		}
 //		register		
 		else if (userPath.equals("/register")) {
-			PrintWriter out = response.getWriter();
-			Random rand = new Random();
 			Customer customer = new Customer();
-			
-			customer.setCustomerId(rand.nextInt(999999999));
+
 			customer.setName(request.getParameter("name"));
 			customer.setEmail(request.getParameter("email"));
 			customer.setPhone(request.getParameter("phone"));
@@ -163,14 +151,12 @@ public class LoginServlet extends HttpServlet {
 			customer.setPassword(request.getParameter("password"));
 			Customer availbleCustomer = customerSB.findByUsername(request.getParameter("username"));
 			if (availbleCustomer != null) {
-				out.print("<script type=\"text/javascript\">\r\n" + "	alert('Username is not availble!');\r\n"
-						+ "	</script>");
-				request.getRequestDispatcher("register.jsp").include(request, response);
+				request.setAttribute("registerErrorFlag", true);
+				request.getRequestDispatcher("register.jsp").forward(request, response);
 			} else {
 				customerSB.create(customer);
 				//create base address book
 				AddressBook addressBook = new AddressBook();
-				addressBook.setAddressId(rand.nextInt(999999999));
 				addressBook.setCustomer(customer);
 				addressBook.setAddress(customer.getAddress());
 				addressBook.setCity(customer.getCity());
@@ -181,11 +167,8 @@ public class LoginServlet extends HttpServlet {
 				session.setAttribute("account", 2);
 				session.setAttribute("customer", customer);
 				session.setAttribute("addressBooks", addressBooks);
-				out.print("<script type=\"text/javascript\">\r\n" + "	alert('Register successfully ');\r\n"
-						+ "	</script>");
-				request.getRequestDispatcher("index.jsp").include(request, response);
+				request.getRequestDispatcher("index.jsp").forward(request, response);
 			}
-			out.close();
 		}
 		//edit profile
 		else if(userPath.equals("/editProfile")) {
@@ -209,7 +192,6 @@ public class LoginServlet extends HttpServlet {
 			String address = request.getParameter("address");
 			String city = request.getParameter("city");
 			AddressBook addressBook = new AddressBook();
-			addressBook.setAddressId(random.nextInt(999999999));
 			addressBook.setCustomer(customer);
 			addressBook.setAddress(address);
 			addressBook.setCity(city);

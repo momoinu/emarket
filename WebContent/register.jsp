@@ -24,6 +24,7 @@
 				</div>
 				
 				<form action="/Lab8a/register" method="post" class="login100-form validate-form" >
+				<c:if test="${registerErrorFlag}"><p style="color: #c00; font-style: italic">Username is not availble!</p></c:if>
 					<div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
 						<span class="label-input100">Username</span>
 						<input class="input100" type="text" name="username" placeholder="Enter username">
